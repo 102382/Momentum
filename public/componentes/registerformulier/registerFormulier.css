@@ -1,0 +1,107 @@
+.registerForm{
+    text-align: center;
+    margin-left: 5%;
+    width: 28%;
+    display: none;
+}
+
+.show {
+    display: block;
+}
+.registerForm h2{
+    font-size: 2.5rem;
+    text-shadow: #FF943E 1px 1px 0px, #FF943E -1px -1px 0px, #FF943E -1px 1px 0px, #FF943E 1px -1px 0px;
+}
+
+.registerForm label{
+    display: block;
+    font-size: 2rem;
+    margin-top: 20px;
+    color: white;
+}
+
+.registerForm input{
+    width: 95%;
+    height: 30px;
+    padding: 10px;
+    border-radius: 100px;
+    margin: 20px auto;
+    background-color: rgba(49, 47, 47, 0.192);
+    border: #ff953e83 2px solid;
+    font-size: large;
+    color: white;
+    transition: 0.3s;
+}
+
+.registerForm input:active, .registerForm input:focus{
+    outline: none;
+    border: #ff953e 2px solid;
+}
+
+
+.registerForm button{
+    width: 70%;
+    padding: 10px;
+    border-radius: 100px;
+    margin: 20px;
+    background-color: #ff953e;
+    border: none;
+    height: 45px;
+    font-size: large;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.registerForm button::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -110%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: skewX(-45deg);
+    transition: 0.5s;
+}
+
+
+.registerForm button:hover::before{
+    left: 200%;
+}
+
+
+.registerForm button:hover{
+    scale: 1.05;
+}
+
+.RegisterTitle{
+    font-size: 4rem;
+    animation: none;
+    animation: fadeIn 0.5s ease-in-out forwards;
+    margin-right: 10px;
+    opacity: 1;
+}
+.RegisterTitle{
+    text-align: center;
+    margin-right: 70px;
+}
+.Momentum{
+    position: relative;
+    color: black;
+    font-size: 5rem;
+    text-align: center;
+    text-shadow: black 1px 1px 0px, black -1px -1px 0px, black -1px 1px 0px, black 1px -1px 0px;
+}
+.Momentum::before{
+    content: "";
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    width: 100%;
+    height: 2%;
+    background-color: black;
+}

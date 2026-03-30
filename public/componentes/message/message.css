@@ -1,0 +1,41 @@
+.message{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: green;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    width: 300px;
+    font-family: Montserrat, sans-serif;
+    opacity: 0;
+    transform: translateX(-100px);
+    animation: message 0.2s ease-in-out forwards;
+    display: none;
+}
+
+@keyframes message {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.message.show {
+    display: block;
+}
+
+.error {
+    background-color: red;
+}
+.warning {
+    background-color: orange;
+}
+.info {
+    background-color: blue;
+}
