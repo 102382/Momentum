@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import { verify } from "crypto";
 
 const app = express();
 const PORT = 3001;
@@ -28,8 +29,13 @@ db.once("open", () => {
 
 // Schema
 const accountSchema = new mongoose.Schema({
+  id: Number,
   email: String,
-  password: String
+  password: String,
+  verified: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const Account = mongoose.model("momentum_accounts", accountSchema);
@@ -49,9 +55,13 @@ app.post("/makeAccount", async (req, res) => {
       return res.status(400).send("Wachtwoorden komen niet overeen");
     }
 
+    const users = await Account.find();
+
     const newAccount = new Account({
+      id: users.length + 1,
       email,
-      password
+      password,
+      verified: false
     });
 
     await newAccount.save();
@@ -89,5 +99,5 @@ app.post("/login", async (req, res) => {
 
 // start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
