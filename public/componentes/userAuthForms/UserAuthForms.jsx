@@ -80,8 +80,7 @@ const UserAuthForms = () => {
           "Welkom terug"
         )}
       </h1>
-          
-          <img src="../fotos/logindesign.png" alt="" style={{ display: !isHidden ? 'none' : 'block' }} />
+      <img src="../fotos/Group 1.svg" alt="" />
         </div>
 
         <Login onToggle={toggleForm} isRegistering={isRegistering} showMessage={showMessage} />

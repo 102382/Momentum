@@ -1,7 +1,7 @@
-.container{
+.container {
     display: flex;
     justify-content: space-between;
-    height: 70vh;
+    height: 80vh;
     width: 65%;
     border: 3px solid white;
     position: absolute;
@@ -12,35 +12,47 @@
     overflow: hidden;
     font-family: Montserrat, sans-serif;
 }
-.loginBackground, .loginForm, .registerForm{
+
+.container >div {
+    margin-top: 4%;
+}
+
+.loginBackground,
+.loginForm,
+.registerForm {
     z-index: 1;
     margin-top: 100px;
 }
-.loginBackground{
+
+.loginBackground {
     margin-left: 100px;
 }
-.loginBackground h1{
+
+.loginBackground h1 {
     font-size: 3rem;
     text-shadow: #FF943E 10px;
 }
-.loginBackground img{
-    width: 1100px;
-    margin-top: -300px;
-    margin-left: -200px;
-    position: relative;
+
+.loginBackground img {
+    position: absolute;
+    left: 0;
+    top: 7%;
+    scale: 1.4;
 }
-.loginBackground h1, .loginBackground img{
+
+.loginBackground h1,
+.loginBackground img {
     animation: fadeIn 0.3s ease-in-out forwards;
     opacity: 0;
     animation-delay: 1.3s;
 }
 
-.container::before{
-  content: "";
-  width: 400%;
-  height: 400%;
-  background-color: #FF943E;
-  position: absolute;
+.container::before {
+    content: "";
+    width: 400%;
+    height: 400%;
+    background-color: #FF943E;
+    position: absolute;
     top: -20%;
     rotate: -65deg;
     left: -320%;
@@ -50,44 +62,51 @@
     animation: flip 1.5s ease-in-out forwards;
     animation-delay: 0.5s;
 }
-.container.byRegistering h1{
+
+
+.container.byRegistering h1 {
     animation: fadeback 2s ease-in-out forwards;
 }
 
-.container.byRegistering img{
+.container.byRegistering img {
     animation: fadeuit 0.5s ease-in-out forwards;
 }
+
 @keyframes fadeuit {
-    to{
+    to {
         opacity: 0;
     }
 }
 
-/* .container.byRegistering img{
+.container.byRegistering img{
     width: 720px;
     rotate: 90deg;
     margin-top: 140px;
+    display: none; /* dit moet later aangepast worden */
 }
-*/ 
-.RegisterTitle{
+
+.RegisterTitle {
     font-size: 4rem;
     animation: none;
     animation: fadeIn 0.5s ease-in-out forwards;
     margin-right: 10px;
     opacity: 1;
 }
-.RegisterTitle{
+
+.RegisterTitle {
     text-align: center;
     margin-right: 70px;
 }
-.Momentum{
+
+.Momentum {
     position: relative;
     color: black;
     font-size: 5rem;
     text-align: center;
     text-shadow: black 1px 1px 0px, black -1px -1px 0px, black -1px 1px 0px, black 1px -1px 0px;
 }
-.Momentum::before{
+
+.Momentum::before {
     content: "";
     position: absolute;
     bottom: 14px;
@@ -96,28 +115,29 @@
     height: 2%;
     background-color: black;
 }
+
 .divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  font-weight: 500;
-  width: 55%;
-  margin: auto;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-weight: 500;
+    width: 55%;
+    margin: auto;
 }
 
 .divider::before,
 .divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 2px solid orange;
+    content: "";
+    flex: 1;
+    border-bottom: 2px solid orange;
 }
 
 .divider::before {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .divider::after {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 #registreren::before {
@@ -136,17 +156,19 @@
 
 
 @keyframes flip {
-    0%{
+    0% {
         top: -20%;
         rotate: -65deg;
         left: -320%;
     }
-    50%{
+
+    50% {
         left: -60%;
         rotate: 0deg;
         top: -80%;
     }
-    100%{
+
+    100% {
         left: -55%;
         rotate: 115deg;
     }
@@ -157,41 +179,48 @@
     30% {
         opacity: 0;
     }
+
     90% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
 }
+
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
 }
 
 
-.container.byLogin::before{
+.container.byLogin::before {
     animation: flipback 1.5s ease-in-out forwards;
     animation-delay: 0.5s;
     left: -55%;
     rotate: 115deg;
 
 }
+
 @keyframes flipback {
-    0%{
+    0% {
         left: -55%;
         rotate: 115deg;
     }
-    50%{
+
+    50% {
         left: -60%;
         rotate: 0deg;
         top: -80%;
     }
-    100%{
+
+    100% {
         top: -20%;
         rotate: -65deg;
         left: -320%;
@@ -213,35 +242,63 @@
 }
 
 .hideLogin {
-  animation: slideOutRight 0.3s forwards;
+    animation: slideOutRight 0.3s forwards;
 }
 
 .showRegister {
-  animation: slideInLeft 0.3s forwards 2s;
-  opacity: 0;
+    animation: slideInLeft 0.3s forwards 2s;
+    opacity: 0;
 }
 
 .hideRegister {
-  animation: slideOutLeft 0.3s forwards;
+    animation: slideOutLeft 0.3s forwards;
 }
 
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-320px); }
-  to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(-320px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes slideOutLeft {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(-320px); }
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-320px);
+    }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(320px); }
-  to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(320px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes slideOutRight {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(320px); }
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(320px);
+    }
 }
