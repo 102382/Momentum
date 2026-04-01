@@ -44,6 +44,7 @@ const Login = ({ onToggle, isRegistering, showMessage  }) =>{
 
     const handleSubmit = async (e) => {
   e.preventDefault();
+    formData.email = formData.email.trim().toLowerCase();
 
   try {
     const res = await fetch("http://localhost:3001/login", {

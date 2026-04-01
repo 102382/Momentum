@@ -1,0 +1,88 @@
+.formulierContainer {
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    font-family: Montserrat, sans-serif;
+}
+
+.gegevens-formulier {
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+.gegevens-formulier h2 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 125px;
+
+}
+
+/* Naam, Leeftijd, Geslacht naast elkaar */
+.NaamEnLeeftijd {
+    display: flex;
+    gap: 15px;
+}
+
+.NaamEnLeeftijd > div {
+    flex: 1;
+}
+
+
+.gegevens-formulier label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: white;
+    font-weight: 500;
+    text-align: left;
+}
+
+.gegevens-formulier input,
+.gegevens-formulier select {
+    width: 400px;
+    height: 55px;
+    padding: 15px;
+    border-radius: 100px;
+    background-color: rgba(49, 47, 47, 0.192);
+    border: #ff953e83 2px solid;
+    font-size: 1rem;
+    color: white;
+    transition: 0.3s;
+    box-sizing: border-box;
+    font-family: Montserrat, sans-serif;
+}
+
+.gegevens-formulier input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.gegevens-formulier input:active,
+.gegevens-formulier input:focus,
+.gegevens-formulier select:active,
+.gegevens-formulier select:focus {
+    outline: none;
+    border: #ff953e 2px solid;
+}
+
+.gegevens-formulier select {
+    cursor: pointer;
+    appearance: none;
+    padding-right: 30px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff953e' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 35px;
+}
+
+.gegevens-formulier select option {
+    background-color: #2a2a2a;
+    color: white;
+}
+
+/* Hobbies veld eronder */
+.hobbies {
+    text-align: center;
+    margin-top: 10px;
+}

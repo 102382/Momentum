@@ -45,6 +45,7 @@ const RegisterFormulier = ({ onToggle, isRegistering, showMessage  }) => {
   // NIEUW: submit handler
 const handleSubmit = async (e) => {
   e.preventDefault();
+  formData.email = formData.email.trim().toLowerCase();
 
   if (formData.password !== formData.confirmPassword) {
     showMessage("Wachtwoorden komen niet overeen", "error");
@@ -67,7 +68,7 @@ const handleSubmit = async (e) => {
       return;
     }
 
-    showMessage("Account aangemaakt!", "success");
+    showMessage("Account aangemaakt! Check je e-mail voor verificatie.", "success");
 
   } catch (err) {
     console.error(err);

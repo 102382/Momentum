@@ -1,6 +1,55 @@
+/* ========================
+   CSS VARIABLES
+   ======================== */
+
+:root {
+  /* Kleuren */
+  --primary-color: #FF943E;
+  --secondary-color: #995924;
+  --text-color: white;
+  --dark-color: black;
+  --border-color: orange;
+
+  /* Font Familie */
+  --font-primary: Montserrat, sans-serif;
+
+  /* Font Sizes */
+  --font-size-h1: 3rem;
+  --font-size-register-title: 4rem;
+  --font-size-momentum: 5rem;
+  --font-weight-medium: 500;
+
+  /* Spacing */
+  --spacing-xs: 10px;
+  --spacing-sm: 14px;
+  --spacing-md: 70px;
+  --spacing-lg: 100px;
+  --spacing-xl: 140px;
+
+  /* Borders */
+  --border-width-sm: 2px;
+  --border-width-md: 3px;
+  --border-radius: 10px;
+
+  /* Dimensions */
+  --container-height: 80vh;
+  --container-width: 65%;
+  --divider-width: 55%;
+  --gradient-size: 400%;
+  --image-width: 720px;
+  --translate-distance: 320px;
+  --image-scale: 1.4;
+
+  /* Text Shadow */
+  --text-shadow-dark: black 1px 1px 0px, black -1px -1px 0px, black -1px 1px 0px, black 1px -1px 0px;
+  --text-shadow-orange: #995924 0px 0 10px;
+}
+
+
 body {
     margin: 0;
     padding: 0;
     background-color: #131314;
     color: white;
+    font-family: Montserrat;
 }

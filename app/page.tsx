@@ -1,8 +1,9 @@
-import UserAuthForms from "../public/componentes/userAuthForms/UserAuthForms.jsx";
+import UserAuthForms from "./componentes/userAuthForms/UserAuthForms.jsx";
+import GegevensFormulier from "./componentes/gegevensformulier/GegevensFormulier.jsx";
 
 
 export default function Home() {
   return (
-    <UserAuthForms />
+    <GegevensFormulier />
   );
 };

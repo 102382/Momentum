@@ -25,6 +25,9 @@ mongoose.connect(process.env.MONGO_URI, {
 mongoose.connection.once("open", () => {
   console.log("✅ Connected to MongoDB");
 });
+mongoose.connection.on("error", (err) => {
+  console.error("❌ MongoDB Error:", err.message);
+});
 
 // Schema
 const accountSchema = new mongoose.Schema({
@@ -87,18 +90,23 @@ app.post("/makeAccount", async (req, res) => {
     const verifyLink = `${process.env.BACKEND_URL}/verify/${token}`;
 
     // ✉️ Verstuur email via Gmail
-    await transporter.sendMail({
-      from: `"Momentum App" <${process.env.GMAIL_USER}>`, // afzender
-      to: email,
-      subject: "Verify je account",
-      html: `
-        <h2>Email verificatie</h2>
-        <p>Klik hieronder om je account te activeren:</p>
-        <a href="${verifyLink}">${verifyLink}</a>
-      `
-    });
-
-    res.status(200).send("Account aangemaakt! Check je inbox.");
+    try {
+      await transporter.sendMail({
+        from: `"Momentum App" <${process.env.GMAIL_USER}>`, // afzender
+        to: email,
+        subject: "Verify je account",
+        html: `
+          <h2>Email verificatie</h2>
+          <p>Klik hieronder om je account te activeren:</p>
+          <a href="${verifyLink}">${verifyLink}</a>
+        `
+      });
+      console.log("✅ Email sent to:", email);
+      res.status(200).send("Account aangemaakt! Check je inbox.");
+    } catch (emailErr) {
+      console.error("❌ Email Error:", emailErr.message);
+      res.status(500).send("Account created, but email failed: " + emailErr.message);
+    }
   } catch (err) {
     console.error("❌ ERROR:", err.message);
     res.status(500).send("Server error");
