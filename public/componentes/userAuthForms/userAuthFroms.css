@@ -1,10 +1,8 @@
-@import "tailwindcss";
-
 .container {
     display: flex;
     justify-content: space-between;
-    height: 100vh;
-    width: 100%;
+    height: 80vh;
+    width: 65%;
     border: 3px solid white;
     position: absolute;
     top: 50%;
@@ -12,27 +10,34 @@
     transform: translate(-50%, -50%);
     border-radius: 10px;
     overflow: hidden;
-    font-family: var(--font-montserrat);
+    font-family: Montserrat, sans-serif;
 }
 
-.loginBackground{
+.container >div {
+    margin-top: 4%;
+}
+
+.loginBackground,
+.loginForm,
+.registerForm {
     z-index: 1;
     margin-top: 100px;
+}
+
+.loginBackground {
     margin-left: 100px;
-    width: 50%;
 }
 
 .loginBackground h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
     text-shadow: #FF943E 10px;
-    text-shadow: black 0px 0px 4px;
 }
 
 .loginBackground img {
     position: absolute;
     left: 0;
-    top: 20%;
-    scale: 1.7;
+    top: 7%;
+    scale: 1.4;
 }
 
 .loginBackground h1,
@@ -116,7 +121,7 @@
     align-items: center;
     text-align: center;
     font-weight: 500;
-    width: 40%;
+    width: 55%;
     margin: auto;
 }
 
@@ -164,7 +169,7 @@
     }
 
     100% {
-        left: -70%;
+        left: -55%;
         rotate: 115deg;
     }
 }
@@ -218,7 +223,7 @@
     100% {
         top: -20%;
         rotate: -65deg;
-        left: -290%;
+        left: -320%;
     }
 }
 
