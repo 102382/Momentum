@@ -4,6 +4,6 @@ import GegevensFormulier from "./componentes/gegevensformulier/GegevensFormulier
 
 export default function Home() {
   return (
-    <GegevensFormulier />
+    <UserAuthForms />
   );
 };

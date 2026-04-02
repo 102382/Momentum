@@ -37,7 +37,8 @@ const accountSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  verificationToken: String
+  verificationToken: String,
+  verificationTokenExpires: Date
 });
 
 const Account = mongoose.model("momentum_accounts", accountSchema);
@@ -77,12 +78,14 @@ app.post("/makeAccount", async (req, res) => {
 
     // 🔑 token genereren
     const token = crypto.randomBytes(32).toString("hex");
+    const tokenExpires = Date.now() + 5 * 60 * 1000; // 5 minuten geldig
 
     const newAccount = new Account({
       email,
       password: hashedPassword,
       verified: false,
-      verificationToken: token
+      verificationToken: token,
+      verificationTokenExpires: tokenExpires
     });
 
     await newAccount.save();
@@ -125,7 +128,7 @@ app.get("/verify/:token", async (req, res) => {
     user.verificationToken = undefined;
     await user.save();
 
-    res.send("✅ Email succesvol geverifieerd!");
+    res.send("Email succesvol geverifieerd!");
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
