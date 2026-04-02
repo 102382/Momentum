@@ -122,8 +122,15 @@ app.post("/makeAccount", async (req, res) => {
 app.get("/verify/:token", async (req, res) => {
   try {
     const user = await Account.findOne({ verificationToken: req.params.token });
-    if (!user) return res.status(400).send("Ongeldige of verlopen link");
-
+    if (!user) {
+      return res.status(400).send("Ongeldige link");
+    }
+    
+    //  Token verlopen → account verwijderen
+    if (user.verificationTokenExpires < Date.now()) {
+      await Account.deleteOne({ _id: user._id });
+      return res.status(400).send("Token verlopen, account verwijderd. Registreer opnieuw.");
+    }
     user.verified = true;
     user.verificationToken = undefined;
     await user.save();
