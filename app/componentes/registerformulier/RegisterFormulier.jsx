@@ -1,12 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import "../registerformulier/registerFormulier.css";
-import { useRouter } from "next/navigation";
-
 const RegisterFormulier = ({ onToggle, isRegistering, showMessage  }) => {
   const [isHidden, setIsHidden] = useState(!isRegistering);
-
-  const router = useRouter();
 
   // NIEUW: form state
   const [formData, setFormData] = useState({
@@ -72,9 +68,6 @@ const handleSubmit = async (e) => {
     }
 
     showMessage("Account aangemaakt! Check je e-mail voor verificatie.", "success");
-    setTimeout(() => {
-      router.push("/pages/extraInfoPage");
-    }, 2000);
   } catch (err) {
     console.error(err);
     showMessage("Server error", "error");

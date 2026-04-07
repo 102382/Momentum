@@ -1,22 +1,34 @@
 "use client";
 import GegevensFormulier from "../../componentes/gegevensFormulier/GegevensFormulier";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
-export default function ExtraInfoPage() {
+function ExtraInfoPageContent() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") || "";
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/me", {
-      credentials: "include",
-    })
+    if (!token) return;
+    fetch(`http://localhost:3001/pendingRegistration/${token}`)
       .then((res) => res.json())
-      .then((data) => setEmail(data.email))
-      .catch(() => console.log("Niet ingelogd"));
-  }, []);
+      .then((data) => {
+        if (data.email) setEmail(data.email);
+      })
+      .catch(() => console.log("Token ophalen mislukt"));
+  }, [token]);
 
   return (
     <div>
-      <GegevensFormulier />
+      <GegevensFormulier email={email} />
     </div>
+  );
+}
+
+export default function ExtraInfoPage() {
+  return (
+    <Suspense>
+      <ExtraInfoPageContent />
+    </Suspense>
   );
 }

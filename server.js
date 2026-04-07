@@ -39,11 +39,13 @@ const accountSchema = new mongoose.Schema({
   },
   verificationToken: String,
   verificationTokenExpires: Date,
+  registrationToken: String,
+  registrationTokenExpires: Date,
 });
 
 // Gberuikers informatie schema
 const gebruikerInfoSchema = new mongoose.Schema({
-  email: String,
+  email: { type: String, unique: true },
   naam: String,
   leeftijd: Number,
   geslacht: String,
@@ -149,13 +151,18 @@ app.get("/verify/:token", async (req, res) => {
     }
     user.verified = true;
     user.verificationToken = undefined;
+    user.verificationTokenExpires = undefined;
+
+    const regToken = crypto.randomBytes(32).toString("hex");
+    user.registrationToken = regToken;
+    user.registrationTokenExpires = Date.now() + 10 * 60 * 1000; // 10 minuten
     await user.save();
 
     res.send(`
   Email succesvol geverifieerd! Je wordt doorgestuurd...
   <script>
     setTimeout(() => {
-      window.location.href = "${process.env.FRONTEND_URL}/pages/extraInfoPage";
+      window.location.href = "${process.env.FRONTEND_URL}/pages/extraInfoPage?token=${regToken}";
     }, 2000);
   </script>
 `);
@@ -166,18 +173,79 @@ app.get("/verify/:token", async (req, res) => {
 });
 
 // =========================
-// Gberuiker info opslaan
+// 🎫 PENDING REGISTRATION
+// =========================
+app.get("/pendingRegistration/:token", async (req, res) => {
+  try {
+    const user = await Account.findOne({ registrationToken: req.params.token });
+    if (!user || user.registrationTokenExpires < Date.now()) {
+      return res.status(400).json({ error: "Ongeldige of verlopen link" });
+    }
+
+    const email = user.email;
+    user.registrationToken = undefined;
+    user.registrationTokenExpires = undefined;
+    await user.save();
+
+    res.json({ email });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// =========================
+// Gebruiker info opslaan
 // =========================
 app.post("/gebruikerInfo", async (req, res) => {
   try {
     const { email, naam, leeftijd, geslacht } = req.body;
-    if (!email || !naam || !leeftijd || !geslacht) {
-      return res.status(400).send("Server error: Missing fields");
+
+    // Prevent NoSQL injection: all fields must be plain primitives, not objects
+    if (
+      typeof email !== "string" ||
+      typeof naam !== "string" ||
+      typeof geslacht !== "string" ||
+      (typeof leeftijd !== "string" && typeof leeftijd !== "number")
+    ) {
+      return res.status(400).send("Ongeldige invoer");
     }
-    const newUser = new GebruikerInfo({ email, naam, leeftijd, geslacht });
+
+    // Sanitize
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanNaam = naam.trim();
+    const cleanLeeftijd = Number(leeftijd);
+    const cleanGeslacht = geslacht.trim();
+
+    if (!cleanEmail || !cleanNaam || !cleanGeslacht) {
+      return res.status(400).send("Vul alle velden in");
+    }
+    if (!["man", "vrouw"].includes(cleanGeslacht)) {
+      return res.status(400).send("Ongeldig geslacht");
+    }
+    if (!Number.isInteger(cleanLeeftijd) || cleanLeeftijd < 1 || cleanLeeftijd > 120) {
+      return res.status(400).send("Ongeldige leeftijd");
+    }
+
+    // Reject if already submitted
+    const existing = await GebruikerInfo.findOne({ email: cleanEmail });
+    if (existing) {
+      return res.status(409).send("Gegevens zijn al opgeslagen");
+    }
+
+    const newUser = new GebruikerInfo({
+      email: cleanEmail,
+      naam: cleanNaam,
+      leeftijd: cleanLeeftijd,
+      geslacht: cleanGeslacht,
+    });
     await newUser.save();
     res.send("Gegevens opgeslagen!");
   } catch (err) {
+    // Unique index violation — race condition safety net
+    if (err.code === 11000) {
+      return res.status(409).send("Gegevens zijn al opgeslagen");
+    }
     console.error(err);
     res.status(500).send("Server error");
   }

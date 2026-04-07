@@ -1,11 +1,10 @@
 "use client";
 import "../gegevensFormulier/gegevensFormulier.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Message from "../message/Message.jsx";
 
-const GegevensFormulier = () => {
+const GegevensFormulier = ({ email = "" }) => {
   const [formData, setFormData] = useState({
-    email: "",
     naam: "",
     leeftijd: "",
     geslacht: "",
@@ -13,6 +12,8 @@ const GegevensFormulier = () => {
   const [message, setMessage] = useState("");
   const [messageVisible, setMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState("success");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const showMessage = (text, type = "success") => {
     setMessage(text);
@@ -24,16 +25,6 @@ const GegevensFormulier = () => {
     }, 3000);
   };
 
-  const [email, setEmail] = useState("");
-  useEffect(() => {
-    fetch("http://localhost:3001/me", {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => setEmail(data.email))
-      .catch(() => console.log("Niet ingelogd"));
-  }, []);
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -44,11 +35,14 @@ const GegevensFormulier = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (submitting || submitted) return;
+
     if (!formData.naam || !formData.leeftijd || !formData.geslacht) {
       showMessage("Vul alle velden in", "error");
       return;
     }
 
+    setSubmitting(true);
     try {
       const res = await fetch("http://localhost:3001/gebruikerInfo", {
         method: "POST",
@@ -65,10 +59,13 @@ const GegevensFormulier = () => {
         return;
       }
 
+      setSubmitted(true);
       showMessage("Gegevens succesvol opgeslagen!", "success");
     } catch (err) {
       console.error(err);
-      console.error("Server error");
+      showMessage("Server error", "error");
+    } finally {
+      setSubmitting(false);
     }
   };
   return (
@@ -78,7 +75,7 @@ const GegevensFormulier = () => {
         <h2>Vertel ons meer over jezelf</h2>
 
         <form onSubmit={handleSubmit}>
-          <input type="text" id="email" value={email} onChange={handleChange} />
+          <input type="text" id="email" value={email} readOnly />
           <div className="informatie">
             <div className="input-group">
               <label htmlFor="naam">Naam</label>
@@ -112,7 +109,9 @@ const GegevensFormulier = () => {
             </div>
           </div>
 
-          <button type="submit" className="Sumbitbtn">Verstuur</button>
+          <button type="submit" className="Sumbitbtn" disabled={submitting || submitted}>
+            {submitting ? "Bezig..." : submitted ? "Opgeslagen" : "Verstuur"}
+          </button>
         </form>
       </div>
     </div>
