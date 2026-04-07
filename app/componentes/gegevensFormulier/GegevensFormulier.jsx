@@ -75,7 +75,7 @@ const GegevensFormulier = ({ email = "" }) => {
         <h2>Vertel ons meer over jezelf</h2>
 
         <form onSubmit={handleSubmit}>
-          <input type="text" id="email" value={email} readOnly />
+          <input type="hidden" id="email" value={email} readOnly />
           <div className="informatie">
             <div className="input-group">
               <label htmlFor="naam">Naam</label>
