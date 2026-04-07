@@ -2,8 +2,10 @@
 import "../gegevensFormulier/gegevensFormulier.css";
 import { useState } from "react";
 import Message from "../message/Message.jsx";
+import { useRouter } from "next/navigation";
 
 const GegevensFormulier = ({ email = "" }) => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     naam: "",
     leeftijd: "",
@@ -60,7 +62,10 @@ const GegevensFormulier = ({ email = "" }) => {
       }
 
       setSubmitted(true);
-      showMessage("Gegevens succesvol opgeslagen!", "success");
+      showMessage("Gegevens succesvol opgeslagen! Je kan inloggen", "success");
+      setTimeout(() => {
+        router.replace("/")
+      }, 2000);
     } catch (err) {
       console.error(err);
       showMessage("Server error", "error");

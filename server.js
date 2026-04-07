@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -259,24 +260,22 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     const user = await Account.findOne({ email });
-    const gebruikerInfo = await GebruikerInfo.findOne({ email });
-
     if (!user) return res.status(400).send("Gebruiker bestaat niet");
     if (!user.verified) return res.status(400).send("Verifieer eerst je email");
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).send("Wachtwoord klopt niet");
 
-    const userData = {
-      naam: gebruikerInfo.naam,
-      email: gebruikerInfo.email,
-      leeftijd: gebruikerInfo.leeftijd,
-      geslacht: gebruikerInfo.geslacht,
-    };
+    // 🔑 JWT token maken
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" } // blijft ingelogd
+    );
 
-    res.cookie("user", JSON.stringify(userData), {
+    res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
+      secure: false, // true in production (https)
       sameSite: "lax",
     });
 
@@ -287,34 +286,78 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/me", (req, res) => {
-  const user = req.cookies.user;
 
-  if (!user) {
+// =========================
+// authMiddleware
+// =========================
+
+const authMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
     return res.status(401).json({ error: "Niet ingelogd" });
   }
 
-  res.json(JSON.parse(user));
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // { id, email }
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Ongeldige token" });
+  }
+};
+
+app.get("/me", authMiddleware, async (req, res) => {
+  try {
+    const user = await Account.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ error: "Gebruiker niet gevonden" });
+    }
+
+    res.json({
+      email: user.email,
+      verified: user.verified,
+    });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
 });
+
 
 // =========================
 // MIJN INFO
 // =========================
-app.get("/mijnInfo", (req, res) => {
-  const user = req.cookies.user;
+app.get("/mijnInfo", authMiddleware, async (req, res) => {
+  try {
+    const gebruikerInfo = await GebruikerInfo.findOne({
+      email: req.user.email,
+    });
 
-  if (!user) {
-    return res.status(401).json({ error: "Niet ingelogd" });
+    if (!gebruikerInfo) {
+      return res.status(404).json({ error: "Geen info gevonden" });
+    }
+
+    res.json({
+      naam: gebruikerInfo.naam,
+      email: gebruikerInfo.email,
+      leeftijd: gebruikerInfo.leeftijd,
+      geslacht: gebruikerInfo.geslacht,
+    });
+  } catch (err) {
+    res.status(500).send("Server error");
   }
+});
 
-  const data = JSON.parse(user);
 
-  res.json({
-    naam: data.naam,
-    email: data.email,
-    leeftijd: data.leeftijd,
-    geslacht: data.geslacht,
-  });
+
+// =========================
+// Uitloggen
+// =========================
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/");
 });
 
 // =========================
