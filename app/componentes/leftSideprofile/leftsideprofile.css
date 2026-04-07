@@ -1,10 +1,72 @@
-.LeftprofileContainer{
-    text-align: center;
+.LeftprofileContainer {
+  text-align: center;
 }
 
-.profileContainer h1{
-    font-size: 2.5rem;
+.profileContainer h1 {
+  font-size: 2.5rem;
 }
-.pictue img{
-    background-color: transparent;
+.MijnSideProfile {
+  margin-top: 20%;
+}
+
+.MijnSideProfile > div {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: url(https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg)
+    no-repeat center center;
+  margin: 40px auto;
+  border: white 4px solid;
+}
+.MijnSideProfile p {
+  text-align: left;
+  width: 90%;
+  margin: 0 auto;
+  font-weight: 600;
+}
+.underline {
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color);
+  margin-top: 20px;
+}
+.SideNavbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8%;
+  margin-left: 30px;
+}
+.SideNavbar button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font: var(--font-primary);
+  font-weight: 1000;
+  font-size: 1.3rem;
+  text-align: left;
+  transition: 0.3s;
+}
+
+.SideNavbar button:hover {
+  background-color: rgba(255, 255, 255, 0.082);
+  scale: 1.005;
+}
+
+.SideNavbar button > i {
+  margin-right: 20px;
+}
+
+.SideNavbar button.active {
+  border-right: 10px solid var(--primary-color);
+  background-color: rgba(255, 255, 255, 0.082);
+}
+.SideNavbar button.active > i {
+  color: var(--primary-color);
 }

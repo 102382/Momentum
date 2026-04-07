@@ -16,6 +16,10 @@
 .profileContainer > div:nth-child(2){
     flex: 3;
     position: relative;
+    border: 2px solid var(--primary-color);
+    position: relative;
+    height: 98vh;
+    top: 1%;
 }
 
 .profileContainer > div:nth-child(2)::before{
