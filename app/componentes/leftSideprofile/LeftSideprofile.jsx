@@ -4,9 +4,10 @@ import "../leftSideprofile/leftsideprofile.css";
 
 const LeftSideprofile = () => {
   const [Naam, setNaam] = useState("");
-  const [email, setEmail] = useState("");
-  const [leeftijd, setLeeftijd] = useState("");
-  const [geslacht, setGeslacht] = useState("");
+  const [About, setAbout] = useState("")
+  const [Posten, setPosten] = useState();
+  const [Streaks, setStreaks] = useState();
+  const [Volgers, setVolgers] = useState();
 
   useEffect(() => {
     fetch("http://localhost:3001/mijnInfo", {
@@ -15,9 +16,10 @@ const LeftSideprofile = () => {
       .then((res) => res.json())
       .then((data) => {
         setNaam(data.naam);
-        setEmail(data.email);
-        setLeeftijd(data.leeftijd);
-        setGeslacht(data.geslacht);
+        setAbout(data.about);
+        setPosten(data.posten);
+        setStreaks(data.streaks);
+        setVolgers(data.volgers);
       })
       .catch(() => console.log("Niet ingelogd"));
   }, []);
@@ -40,12 +42,7 @@ const LeftSideprofile = () => {
       <div className="MijnSideProfile">
         <div className="bgFoto"></div>
         <h2>{Naam}</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit
-          autem quasi ut ullam, quae sapiente ipsam consequatur perferendis nisi
-          impedit veniam! Illo, unde corporis tempora eius doloremque dolore
-          placeat. Aut fuga architecto molestiae tempora?
-        </p>
+        <p>{About}</p>
       </div>
 
       <div className="underline"></div>

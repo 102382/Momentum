@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
-import { type } from "os";
 
 dotenv.config();
 
@@ -25,10 +24,10 @@ mongoose.connect(process.env.MONGO_URI, {
   dbName: process.env.DB_NAME,
 });
 mongoose.connection.once("open", () => {
-  console.log("✅ Connected to MongoDB");
+  console.log("Connected to MongoDB");
 });
 mongoose.connection.on("error", (err) => {
-  console.error("❌ MongoDB Error:", err.message);
+  console.error("MongoDB Error:", err.message);
 });
 
 // Schema
@@ -57,11 +56,22 @@ const gebruikerInfoSchema = new mongoose.Schema({
   volgers: Number
 });
 
+
+// Gberuikers post schema
+const  GberuikersPostSceham = new mongoose.Schema({
+  email: String,
+  foto: String,
+  mijnComentaar: String,
+  aantalLikes: Number,
+  aantalComentaars: Number,
+});
+
 const Account = mongoose.model("momentum_accounts", accountSchema);
 const GebruikerInfo = mongoose.model(
   "momentum_gebruikers_info",
   gebruikerInfoSchema,
 );
+const GberuikersPost = mongoose.model("momentum_gebruikers_posts", GberuikersPostSceham);
 
 // =========================
 // 📧 Nodemailer Gmail setup
@@ -354,13 +364,37 @@ app.get("/mijnInfo", authMiddleware, async (req, res) => {
       email: gebruikerInfo.email,
       leeftijd: gebruikerInfo.leeftijd,
       geslacht: gebruikerInfo.geslacht,
+      about: gebruikerInfo.about,
+      posten: gebruikerInfo.posten,
+      streaks: gebruikerInfo.streaks,
+      volgers: gebruikerInfo.volgers,
     });
   } catch (err) {
     res.status(500).send("Server error");
   }
 });
 
+app.get("/mijnPosts", authMiddleware, async (req, res) => {
+  try {
+    const gebruikerInfo = await GberuikersPost.findOne({
+      email: req.user.email,
+    });
 
+    if (!gebruikerInfo) {
+      return res.status(404).json({ error: "Geen info gevonden" });
+    }
+
+    res.json({
+      naam: gebruikerInfo.email,
+      foto: gebruikerInfo.foto,
+      mijnComentaar: gebruikerInfo.mijnComentaar,
+      aantalLikes: gebruikerInfo.aantalLikes,
+      aantalComentaars: gebruikerInfo.aantalComentaars,
+    });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
 
 // =========================
 // Uitloggen
