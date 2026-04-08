@@ -94,6 +94,17 @@ const GegevensFormulier = ({ email = "" }) => {
             </div>
 
             <div className="input-group">
+              <label htmlFor="naam">Over je zelf</label>
+              <input
+                type="text"
+                id="about"
+                name="about"
+                placeholder=""
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="input-group">
               <label htmlFor="leeftijd">Leeftijd</label>
               <input
                 type="number"

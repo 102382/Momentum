@@ -63,18 +63,36 @@ const MiddenProfile = () => {
           <div className="post">
             <img src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
             <div className="acties">
-              <button>Like</button>
-              <button>Bericht</button>
+              <button><i className="fa-solid fa-heart"></i> 550</button>
+              <button><i className="fa-solid fa-comment"></i>550</button>
+            </div>
+
+            <div className="myComentaar">
+              <img src="https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg" alt="" />
+              <div className="Myinfo">
+                <h2>{Naam}</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum distinctio earum fuga! Mollitia repellat odio consectetur odit, dolore ullam explicabo quasi modi velit rerum ex suscipit, aperiam fugit, eveniet praesentium?</p>
+              </div>
             </div>
           </div>
 
           <div className="post">
             <img src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
             <div className="acties">
-              <button>Like</button>
-              <button>Bericht</button>
+              <button><i className="fa-solid fa-heart"></i> 550</button>
+              <button><i className="fa-solid fa-comment"></i> 550</button>
+            </div>
+
+            <div className="myComentaar">
+              <img src="https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg" alt="" />
+              <div className="Myinfo">
+                <h2>{Naam}</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum distinctio earum fuga! Mollitia repellat odio consectetur odit, dolore ullam explicabo quasi modi velit rerum ex suscipit, aperiam fugit, eveniet praesentium?</p>
+              </div>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>

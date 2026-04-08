@@ -5,15 +5,15 @@
     flex-wrap: wrap;
 }
 .bgfoto{
-  width: 200px;
-  height: 200px;
+  width: 170px;
+  height: 170px;
   border-radius: 50%;
   object-fit: cover;
   background: url(https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg)
     no-repeat center center;
   margin: 40px auto;
   border: var(--primary-color) 4px solid;
-  box-shadow: 0 0 20px 3px var(--primary-color);
+  box-shadow: 0 0 10px 1px var(--primary-color);
 }
 
 .VolgerInfo{
@@ -30,7 +30,7 @@
     margin-left: -9%;
 }
 .gebruikerInfo > div:first-child p{
-    font-size: 1rem;
+    font-size: 0.8rem;
     text-align: left;
     margin-left: 40px;
 }
@@ -76,9 +76,54 @@
     justify-self: center;
     background-color: rgba(255, 255, 255, 0.121);
     padding: 10px 5px;
+    border-radius: 12px;
 }
 .post > img{
     display: block;
     margin: 10px auto;
     width: 90%;
+    border-radius: 12px;
+}
+.acties{
+    margin-left: 5%;
+}
+.acties button{
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.acties i{
+    margin-right: 5px;
+    transition: 0.3s;
+}
+
+
+.acties button:hover i {
+    transform: rotate(30deg);
+    color: red;
+}
+
+.acties button:last-child{
+    margin-left: 30px;
+}
+
+.myComentaar{
+    display: flex;
+    align-items: center;
+    margin: 30px 0 10px 10px;
+}
+.myComentaar > img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+}
+.Myinfo{
+    margin-left: 20px;
+    font-size: 0.5rem;
+}
+.Myinfo h2{
+    color: grey;
 }

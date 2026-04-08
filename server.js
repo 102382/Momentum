@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import { type } from "os";
 
 dotenv.config();
 
@@ -48,8 +49,12 @@ const accountSchema = new mongoose.Schema({
 const gebruikerInfoSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   naam: String,
+  about: String,
   leeftijd: Number,
   geslacht: String,
+  posten: Number,
+  streaks: Number,
+  volgers: Number
 });
 
 const Account = mongoose.model("momentum_accounts", accountSchema);
@@ -200,12 +205,13 @@ app.get("/pendingRegistration/:token", async (req, res) => {
 // =========================
 app.post("/gebruikerInfo", async (req, res) => {
   try {
-    const { email, naam, leeftijd, geslacht } = req.body;
+    const { email, about, naam, leeftijd, geslacht } = req.body;
 
     // Prevent NoSQL injection: all fields must be plain primitives, not objects
     if (
       typeof email !== "string" ||
       typeof naam !== "string" ||
+      typeof about !== "string" ||
       typeof geslacht !== "string" ||
       (typeof leeftijd !== "string" && typeof leeftijd !== "number")
     ) {
@@ -215,6 +221,7 @@ app.post("/gebruikerInfo", async (req, res) => {
     // Sanitize
     const cleanEmail = email.trim().toLowerCase();
     const cleanNaam = naam.trim();
+    const cleanAbout = about.trim();
     const cleanLeeftijd = Number(leeftijd);
     const cleanGeslacht = geslacht.trim();
 
@@ -237,8 +244,12 @@ app.post("/gebruikerInfo", async (req, res) => {
     const newUser = new GebruikerInfo({
       email: cleanEmail,
       naam: cleanNaam,
+      about: cleanAbout,
       leeftijd: cleanLeeftijd,
       geslacht: cleanGeslacht,
+      posten: 0,
+      streaks: 0,
+      volgers: 0
     });
     await newUser.save();
     res.send("Gegevens opgeslagen!");
