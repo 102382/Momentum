@@ -47,10 +47,33 @@ const MiddenProfile = () => {
             </h2>
           </div>
           <div className="VolgerInfoLine"></div>
-            <br /> <br /> <br /><b></b>
+          <br /> <br /> <br /><b></b>
           <div className="OpdrachtenBar">
             <h2>3 van de 5 opdrachten gemaakt</h2>
             <div className="Bar"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <div className="VolgerInfoLine Grijs"></div>
+
+      <div className="postContainer">
+        <div className="posten">
+          <div className="post">
+            <img src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
+            <div className="acties">
+              <button>Like</button>
+              <button>Bericht</button>
+            </div>
+          </div>
+
+          <div className="post">
+            <img src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
+            <div className="acties">
+              <button>Like</button>
+              <button>Bericht</button>
+            </div>
           </div>
         </div>
       </div>

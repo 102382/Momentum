@@ -1,12 +1,12 @@
 .gebruikerInfo{
     display: flex;
     justify-content: space-around;
-    height: 35vh;
     align-items: center;
+    flex-wrap: wrap;
 }
 .bgfoto{
-  width: 230px;
-  height: 230px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   object-fit: cover;
   background: url(https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg)
@@ -20,11 +20,10 @@
     display: flex;
     justify-content: space-evenly;
     text-align: center;
-    margin-top: 120px;
 }
 
 .gebruikerInfo > div:first-child{
-    margin-top: 13%;
+    margin-top: 3%;
     text-align: center;
     font-size: 1.5rem;
     width: 40%;
@@ -33,6 +32,7 @@
 .gebruikerInfo > div:first-child p{
     font-size: 1rem;
     text-align: left;
+    margin-left: 40px;
 }
 
 .VolgerInfoLine{
@@ -58,4 +58,27 @@
     left: -25%;
     background-color: var(--primary-color);
     border-radius: 16px;
+}
+.Grijs{
+    background-color: rgba(255, 255, 255, 0.176);
+    height: 3px;
+}
+.postContainer {
+    margin: 30px auto;
+}
+.posten{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+.post{
+    width: 90%;
+    justify-self: center;
+    background-color: rgba(255, 255, 255, 0.121);
+    padding: 10px 5px;
+}
+.post > img{
+    display: block;
+    margin: 10px auto;
+    width: 90%;
 }

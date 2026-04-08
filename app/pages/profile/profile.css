@@ -1,13 +1,15 @@
 .profileContainer{
     display: flex;
-    height: 100vh;
+    height: 98vh;
     gap: 20px;
     margin: 0 auto;
+    width: 98%;
+    margin-top: 1%;
 
 }
 .profileContainer > div{
     width: 90%;
-    height: 99vh;
+    height: 97vh;
     background-color: black;
     border: 2px solid rgba(255, 255, 255, 0.231);
     flex: 1;
@@ -18,8 +20,11 @@
     position: relative;
     border: 2px solid var(--primary-color);
     position: relative;
-    height: 98vh;
-    top: 1%;
+    height: 97vh;
+    overflow-y: scroll;
+}
+.profileContainer > div:nth-child(2)::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
 }
 
 .profileContainer > div:nth-child(2)::before{
