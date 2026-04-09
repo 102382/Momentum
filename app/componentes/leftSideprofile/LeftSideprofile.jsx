@@ -4,7 +4,7 @@ import "../leftSideprofile/leftsideprofile.css";
 
 const LeftSideprofile = () => {
   const [Naam, setNaam] = useState("");
-  const [About, setAbout] = useState("")
+  const [About, setAbout] = useState("");
   const [Posten, setPosten] = useState();
   const [Streaks, setStreaks] = useState();
   const [Volgers, setVolgers] = useState();
@@ -35,34 +35,41 @@ const LeftSideprofile = () => {
 
   return (
     <div className="LeftprofileContainer">
-      <div>
-        <h1>Mometum</h1>
+      <div className="logout-section">
+        <button className="logoutBtn" onClick={handleLogout}>
+          <i className="fa-solid fa-sign-out-alt"></i>
+          Uitloggen
+        </button>
+      </div>
+
+      <div className="logo-section">
+        <h1>Momentum</h1>
       </div>
 
       <div className="MijnSideProfile">
         <div className="bgFoto"></div>
-        <h2>{Naam}</h2>
-        <p>{About}</p>
+        <h2>{Naam || "Gebruiker"}</h2>
+        <p>{About || "Geen beschrijving"}</p>
       </div>
 
       <div className="underline"></div>
 
       <div className="SideNavbar">
         <button>
-          {" "}
-          <i className="fa-solid fa-house"></i>Home
+          <i className="fa-solid fa-house"></i>
+          Home
         </button>
         <button className="active">
-          {" "}
-          <i className="fa-solid fa-user"></i>Mijn profiel
+          <i className="fa-solid fa-user"></i>
+          Mijn profiel
         </button>
         <button>
-          {" "}
-          <i className="fa-solid fa-compass"></i>Explore
+          <i className="fa-solid fa-compass"></i>
+          Explore
         </button>
         <button>
-          {" "}
-          <i className="fa-solid fa-align-justify"></i>Opdrachten
+          <i className="fa-solid fa-tasks"></i>
+          Opdrachten
         </button>
       </div>
     </div>

@@ -1,129 +1,574 @@
-.gebruikerInfo{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
+.gebruikerInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 40px 30px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.1) 0%,
+    rgba(255, 149, 62, 0.05) 100%
+  );
+  border-radius: 12px;
+  margin: 20px;
 }
-.bgfoto{
-  width: 170px;
-  height: 170px;
+
+.bgfoto {
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   object-fit: cover;
   background: url(https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg)
     no-repeat center center;
-  margin: 40px auto;
-  border: var(--primary-color) 4px solid;
-  box-shadow: 0 0 10px 1px var(--primary-color);
+  margin: 0;
+  border: var(--primary-color) 5px solid;
+  box-shadow: 0 0 30px 2px rgba(255, 149, 62, 0.4);
+  transition: transform 0.3s ease;
 }
 
-.VolgerInfo{
-    display: flex;
-    justify-content: space-evenly;
-    text-align: center;
+.bgfoto:hover {
+  transform: scale(1.05);
 }
 
-.gebruikerInfo > div:first-child{
-    margin-top: 3%;
-    text-align: center;
-    font-size: 1.5rem;
-    width: 40%;
-    margin-left: -9%;
-}
-.gebruikerInfo > div:first-child p{
-    font-size: 0.8rem;
-    text-align: left;
-    margin-left: 40px;
+.VolgerInfo {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  gap: 50px;
+  flex: 1;
+  min-width: 300px;
 }
 
-.VolgerInfoLine{
-    height: 2px;
-    background-color: var(--primary-color);
+.VolgerInfo h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
 }
 
-.Bar{
-    width: 100%;
-    height: 20px;
-    background-color: rgba(255, 255, 255, 0.26);
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
+.VolgerInfo h2 br + text {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.Bar::before{
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: -25%;
-    background-color: var(--primary-color);
-    border-radius: 16px;
+.gebruikerInfo > div:first-child {
+  text-align: center;
 }
-.Grijs{
-    background-color: rgba(255, 255, 255, 0.176);
-    height: 3px;
+
+.gebruikerInfo > div:first-child h2 {
+  font-size: 2rem;
+  margin: 20px 0 10px 0;
+  font-weight: 700;
 }
+
+.gebruikerInfo > div:first-child p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 300px;
+  margin: 0;
+}
+
+.VolgerInfoLine {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary-color),
+    transparent
+  );
+  margin: 20px 0;
+}
+
+.Bar {
+  width: 100%;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 149, 62, 0.3);
+}
+
+.Bar::before {
+  content: "";
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    rgba(255, 149, 62, 0.6)
+  );
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.OpdrachtenBar {
+  margin-top: 30px;
+}
+
+.OpdrachtenBar h2 {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.9);
+}
+.Grijs {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  height: 1px;
+  margin: 20px 0;
+}
+
 .postContainer {
-    margin: 30px auto;
-}
-.posten{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-}
-.post{
-    width: 90%;
-    justify-self: center;
-    background-color: rgba(255, 255, 255, 0.121);
-    padding: 10px 5px;
-    border-radius: 12px;
-}
-.post > img{
-    display: block;
-    margin: 10px auto;
-    width: 90%;
-    border-radius: 12px;
-}
-.acties{
-    margin-left: 5%;
-}
-.acties button{
-    border: none;
-    background-color: transparent;
-    color: white;
-    font-size: 1rem;
-    transition: 0.3s;
+  margin: 30px auto;
+  padding: 0 20px;
 }
 
-.acties i{
-    margin-right: 5px;
-    transition: 0.3s;
+.posten {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 50px;
+  margin-bottom: 40px;
+  row-gap: 60px;
 }
 
+.post {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.08) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 15px;
+  backdrop-filter: blur(5px);
+}
+
+.post:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 32px rgba(255, 149, 62, 0.2);
+  transform: translateY(-5px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.15) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+.post > img {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  object-fit: cover;
+  height: 250px;
+  transition: transform 0.3s ease;
+}
+
+.post:hover > img {
+  transform: scale(1.02);
+}
+
+.acties {
+  display: flex;
+  gap: 15px;
+  margin: 15px 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.acties button {
+  border: none;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acties button:hover {
+  background-color: rgba(255, 149, 62, 0.1);
+  color: var(--primary-color);
+}
+
+.acties i {
+  transition: transform 0.3s ease;
+}
 
 .acties button:hover i {
-    transform: rotate(30deg);
-    color: red;
+  transform: scale(1.2);
+  animation: heartbeat 0.3s ease;
 }
 
-.acties button:last-child{
-    margin-left: 30px;
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.35);
+  }
 }
 
-.myComentaar{
-    display: flex;
+.acties button:last-child {
+  margin-left: 0;
+}
+
+.myComentaar {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+}
+
+.myComentaar > img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid var(--primary-color);
+}
+
+.Myinfo {
+  flex: 1;
+  font-size: 0.85rem;
+}
+
+.Myinfo h2 {
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.Myinfo p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.voegPost {
+  display: block;
+  margin: 30px auto;
+  padding: 14px 32px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.8) 100%
+  );
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 149, 62, 0.3);
+}
+
+.voegPost:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(255, 149, 62, 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.9) 0%,
+    var(--primary-color) 100%
+  );
+}
+
+.voegPost:active {
+  transform: translateY(-1px);
+}
+
+/* Stats Section Styling */
+.statsSection {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.VolgerInfo {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  gap: 30px;
+  align-items: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 149, 62, 0.1);
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  transition: all 0.3s ease;
+  cursor: default;
+  min-width: 90px;
+}
+
+.stat:hover {
+  background: rgba(255, 149, 62, 0.15);
+  border-color: rgba(255, 149, 62, 0.4);
+  transform: translateY(-3px);
+}
+
+.stat h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.stat span {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.followButtonContainer {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.followBtn {
+  padding: 12px 28px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.8) 100%
+  );
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(255, 149, 62, 0.3);
+}
+
+.followBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(255, 149, 62, 0.5);
+}
+
+.followBtn:active {
+  transform: translateY(-1px);
+}
+
+.followBtn.following {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.followBtn.following:hover {
+  background: rgba(255, 149, 62, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .posten {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .gebruikerInfo {
+    flex-direction: column;
     align-items: center;
-    margin: 30px 0 10px 10px;
+    text-align: center;
+  }
+
+  .statsSection {
+    width: 100%;
+  }
+
+  .VolgerInfo {
+    gap: 40px;
+  }
+
+  .posten {
+    grid-template-columns: 1fr;
+  }
+
+  .post {
+    width: 100%;
+  }
 }
-.myComentaar > img{
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
+
+.postFormulierContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 650px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  animation: slideIn 0.3s ease;
 }
-.Myinfo{
-    margin-left: 20px;
-    font-size: 0.5rem;
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
-.Myinfo h2{
-    color: grey;
+
+.postFormulierContainer h2 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 30px;
+  text-align: center;
+  margin-top: 0;
+}
+
+.postFormulierContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.postFormulierContainer textarea,
+.postFormulierContainer input[type="text"],
+.postFormulierContainer input[type="file"],
+.postFormulierContainer input[type="hidden"] {
+  padding: 12px 14px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  transition: 0.25s ease;
+  font-family: var(--font-primary);
+}
+
+.postFormulierContainer textarea {
+  resize: vertical;
+  min-height: 150px;
+  max-height: 300px;
+  font-size: 0.95rem;
+}
+
+.postFormulierContainer textarea::placeholder,
+.postFormulierContainer input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.postFormulierContainer textarea:focus,
+.postFormulierContainer input[type="text"]:focus,
+.postFormulierContainer input[type="file"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 149, 62, 0.2);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.postFormulierContainer input[type="file"] {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.postFormulierContainer input[type="file"]::file-selector-button {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.8) 100%
+  );
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-right: 10px;
+}
+
+.postFormulierContainer input[type="file"]::file-selector-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 149, 62, 0.3);
+}
+
+.postFormulierContainer form button[type="submit"] {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.8) 100%
+  );
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 149, 62, 0.3);
+}
+
+.postFormulierContainer form button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 149, 62, 0.4);
+}
+
+.postFormulierContainer form button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+.postFormulierContainer > button {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.postFormulierContainer > button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
 }

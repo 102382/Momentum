@@ -60,6 +60,7 @@ const gebruikerInfoSchema = new mongoose.Schema({
 // Gberuikers post schema
 const  GberuikersPostSceham = new mongoose.Schema({
   email: String,
+  naam: String,
   foto: String,
   mijnComentaar: String,
   aantalLikes: Number,
@@ -149,7 +150,7 @@ app.post("/makeAccount", async (req, res) => {
 });
 
 // =========================
-// ✅ VERIFY EMAIL
+//  VERIFY EMAIL
 // =========================
 app.get("/verify/:token", async (req, res) => {
   try {
@@ -274,7 +275,7 @@ app.post("/gebruikerInfo", async (req, res) => {
 });
 
 // =========================
-// 🔐 LOGIN
+// LOGIN
 // =========================
 app.post("/login", async (req, res) => {
   try {
@@ -376,25 +377,69 @@ app.get("/mijnInfo", authMiddleware, async (req, res) => {
 
 app.get("/mijnPosts", authMiddleware, async (req, res) => {
   try {
-    const gebruikerInfo = await GberuikersPost.findOne({
+    const gebruikerInfo = await GberuikersPost.find({
       email: req.user.email,
     });
 
-    if (!gebruikerInfo) {
+    if (gebruikerInfo.length === 0) {
       return res.status(404).json({ error: "Geen info gevonden" });
     }
 
-    res.json({
-      naam: gebruikerInfo.email,
-      foto: gebruikerInfo.foto,
-      mijnComentaar: gebruikerInfo.mijnComentaar,
-      aantalLikes: gebruikerInfo.aantalLikes,
-      aantalComentaars: gebruikerInfo.aantalComentaars,
-    });
+    res.json(gebruikerInfo);
   } catch (err) {
     res.status(500).send("Server error");
   }
 });
+
+
+
+
+
+
+
+app.post("/makePost", async (req, res) => {
+  try {
+    const { email, naam, comentaar, foto } = req.body;
+
+    if (
+      typeof email !== "string" ||
+      typeof naam !== "string" ||
+      typeof comentaar !== "string" ||
+      typeof foto !== "string"
+    ) {
+      return res.status(400).send("Ongeldige invoer");
+    }
+
+    // Sanitize
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanNaam = naam.trim();
+    const cleanComentaar = comentaar.trim();
+    const cleanFoto = foto.trim();
+
+    if (!cleanEmail || !cleanNaam || !cleanComentaar || !cleanFoto) {
+      return res.status(400).send("Vul alle velden in");
+    }
+
+    const newPost = new GberuikersPost({
+      email: cleanEmail,
+      naam: cleanNaam,
+      comentaar: cleanComentaar,
+      foto: cleanFoto,
+      aantalLikes: 0,
+      aantalComentaars: 0,
+    });
+    await newPost.save();
+    res.send("Gegevens opgeslagen!");
+  } catch (err) {
+    // Unique index violation — race condition safety net
+    if (err.code === 11000) {
+      return res.status(409).send("Gegevens zijn al opgeslagen");
+    }
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
 
 // =========================
 // Uitloggen
@@ -406,8 +451,8 @@ app.post("/logout", (req, res) => {
 });
 
 // =========================
-// 🚀 START SERVER
+// START SERVER
 // =========================
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on ${process.env.BACKEND_URL}`);
+  console.log(`Server running on ${process.env.BACKEND_URL}`);
 });

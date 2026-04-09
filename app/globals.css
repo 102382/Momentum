@@ -55,3 +55,7 @@ body {
     color: white;
     font-family: var(--font-primary) !important;
 }
+
+body p{
+    font-weight: 600;
+}
