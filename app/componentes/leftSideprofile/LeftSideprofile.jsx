@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import "../leftSideprofile/leftsideprofile.css";
 
 const LeftSideprofile = () => {
@@ -8,6 +10,7 @@ const LeftSideprofile = () => {
   const [Posten, setPosten] = useState();
   const [Streaks, setStreaks] = useState();
   const [Volgers, setVolgers] = useState();
+  const pathname = usePathname();
 
   useEffect(() => {
     fetch("http://localhost:3001/mijnInfo", {
@@ -55,22 +58,36 @@ const LeftSideprofile = () => {
       <div className="underline"></div>
 
       <div className="SideNavbar">
-        <button>
-          <i className="fa-solid fa-house"></i>
-          Home
-        </button>
-        <button className="active">
-          <i className="fa-solid fa-user"></i>
-          Mijn profiel
-        </button>
-        <button>
-          <i className="fa-solid fa-compass"></i>
-          Explore
-        </button>
-        <button>
-          <i className="fa-solid fa-tasks"></i>
-          Opdrachten
-        </button>
+        <Link href="/pages/Home">
+          <button className={pathname.includes("/Home") ? "active" : ""}>
+            <i className="fa-solid fa-house"></i>
+            Home
+          </button>
+        </Link>
+        <Link href="/pages/profile">
+          <button
+            className={
+              pathname.includes("/profile") && !pathname.includes("/opdrachten")
+                ? "active"
+                : ""
+            }
+          >
+            <i className="fa-solid fa-user"></i>
+            Mijn profiel
+          </button>
+        </Link>
+        <Link href="/pages/explore">
+          <button className={pathname.includes("/explore") ? "active" : ""}>
+            <i className="fa-solid fa-compass"></i>
+            Explore
+          </button>
+        </Link>
+        <Link href="/pages/opdrachten">
+          <button className={pathname.includes("/opdrachten") ? "active" : ""}>
+            <i className="fa-solid fa-tasks"></i>
+            Opdrachten
+          </button>
+        </Link>
       </div>
     </div>
   );

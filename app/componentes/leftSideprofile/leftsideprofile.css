@@ -102,7 +102,14 @@
   flex: 1;
 }
 
+.SideNavbar a {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
+
 .SideNavbar button {
+  width: 100%;
   padding: 14px 18px;
   margin: 0;
   border: none;

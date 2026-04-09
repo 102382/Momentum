@@ -1,0 +1,120 @@
+/* ================================
+   OPDRACHTEN FILTER STYLES
+   ================================ */
+
+.filterContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 32px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.08) 0%,
+    rgba(255, 149, 62, 0.02) 100%
+  );
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  border-radius: 16px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(10px);
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 300px;
+}
+
+.filterSection h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filterSection i {
+  color: #ff943e;
+}
+
+.filterButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filterBtn {
+  padding: 10px 20px;
+  background: rgba(255, 149, 62, 0.1);
+  border: 2px solid rgba(255, 149, 62, 0.2);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.filterBtn:hover {
+  background: rgba(255, 149, 62, 0.2);
+  border-color: rgba(255, 149, 62, 0.4);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.filterBtn.active {
+  background: linear-gradient(135deg, #ff943e 0%, #ffb84d 100%);
+  border-color: #ff943e;
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 149, 62, 0.3);
+}
+
+.filterBtn i {
+  font-size: 0.9rem;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 956px) {
+  .filterContainer {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .filterSection,
+  .sortSection {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .filterContainer {
+    padding: 24px 16px;
+    gap: 20px;
+  }
+
+  .filterSection h3,
+  .sortSection h3 {
+    font-size: 1rem;
+  }
+
+  .filterBtn,
+  .sortBtn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+  .filterButtons,
+  .sortButtons {
+    gap: 10px;
+  }
+}

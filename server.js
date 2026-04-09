@@ -67,6 +67,8 @@ const  GberuikersPostSceham = new mongoose.Schema({
   aantalComentaars: Number,
 });
 
+
+
 const Account = mongoose.model("momentum_accounts", accountSchema);
 const GebruikerInfo = mongoose.model(
   "momentum_gebruikers_info",
@@ -394,18 +396,33 @@ app.get("/mijnPosts", authMiddleware, async (req, res) => {
 
 
 
+app.get("/mijnOpdrachten", authMiddleware, async (req, res) => {
+  try {
+    const gebruikerInfo = await GberuikersPost.find({
+      email: req.user.email,
+    });
+
+    if (gebruikerInfo.length === 0) {
+      return res.status(404).json({ error: "Geen info gevonden" });
+    }
+
+    res.json(gebruikerInfo);
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
 
 
 
 app.post("/makePost", async (req, res) => {
   try {
-    const { email, naam, comentaar, foto } = req.body;
+    const { email, naam, mijnComentaar} = req.body;
+    console.log(req.body);
 
     if (
       typeof email !== "string" ||
       typeof naam !== "string" ||
-      typeof comentaar !== "string" ||
-      typeof foto !== "string"
+      typeof mijnComentaar !== "string"
     ) {
       return res.status(400).send("Ongeldige invoer");
     }
@@ -413,18 +430,17 @@ app.post("/makePost", async (req, res) => {
     // Sanitize
     const cleanEmail = email.trim().toLowerCase();
     const cleanNaam = naam.trim();
-    const cleanComentaar = comentaar.trim();
-    const cleanFoto = foto.trim();
+    const cleanMijnComentaar = mijnComentaar.trim();
 
-    if (!cleanEmail || !cleanNaam || !cleanComentaar || !cleanFoto) {
+    if (!cleanEmail || !cleanNaam || !cleanMijnComentaar) {
       return res.status(400).send("Vul alle velden in");
     }
 
     const newPost = new GberuikersPost({
       email: cleanEmail,
       naam: cleanNaam,
-      comentaar: cleanComentaar,
-      foto: cleanFoto,
+      mijnComentaar: cleanMijnComentaar,
+      foto: "", // Placeholder, foto upload nog niet geïmplementeerd
       aantalLikes: 0,
       aantalComentaars: 0,
     });
