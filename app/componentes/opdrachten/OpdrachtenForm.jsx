@@ -1,7 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./opdrachtenForm.css";
+import Message from "../message/Message.jsx";
 
 const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
+  const [message, setMessage] = useState("");
+  const [messageVisible, setMessageVisible] = useState(false);
+  const [messageType, setMessageType] = useState("success");
+
+    const showMessage = (text, type = "success") => {
+    setMessage(text);
+    setMessageType(type);
+    setMessageVisible(true);
+
+    setTimeout(() => {
+      setMessageVisible(false);
+    }, 3000);
+  };
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:3001/mijnInfo", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setEmail(data.email);
+      })
+      .catch(() => console.log("Niet ingelogd"));
+  }, []);
 
   const [formData, setFormData] = useState(
     editingOpdracht || {
@@ -11,7 +38,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
       prioriteit: "middel",
       status: "pending",
       deadline: "",
-      kategorie: "gezondheid",
+      categorie: "gezondheid",
       progress: 0,
     },
   );
@@ -33,7 +60,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, email }),
       });
 
       const data = await res.text();
@@ -45,9 +72,14 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
 
       showMessage("Post aangemaakt!", "success");
       setFormData({
-        mijnComentaar: "",
-        email: Email,
-        naam: Naam,
+        email: "",
+        titel: "",
+        beschrijving: "",
+        prioriteit: "",
+        status: "",
+        deadline: "",
+        categorie: "",
+        progress: 0,
       });
 
     } catch (err) {
@@ -66,6 +98,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
       </div>
 
       <form onSubmit={handleSubmit}>
+        <input type="text" name="email" value={email} readOnly />
         {/* Titel */}
         <div className="formGroup">
           <label htmlFor="titel">
@@ -109,8 +142,8 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
             </label>
             <select
               id="kategorie"
-              name="kategorie"
-              value={formData.kategorie}
+              name="categorie"
+              value={formData.categorie}
               onChange={handleChange}
             >
               <option value="gezondheid">Gezondheid</option>

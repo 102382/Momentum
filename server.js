@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
-import { title } from "process";
 
 dotenv.config();
 
@@ -414,9 +413,9 @@ app.get("/mijnPosts", authMiddleware, async (req, res) => {
 app.get("/mijnOpdrachten", authMiddleware, async (req, res) => {
   try {
     const GebruikerOpdrachten = await GebruikersOpdrachten.find({
-      email: "102382@glr.nl",
+      email: req.user.email,
     });
-    console.log("De leente van de opdrachten is " + GebruikerOpdrachten.length);
+  
 
     if (GebruikerOpdrachten.length === 0) {
       return res.status(404).json({ error: "Geen info gevonden" });
@@ -433,7 +432,6 @@ app.get("/mijnOpdrachten", authMiddleware, async (req, res) => {
 app.post("/makePost", async (req, res) => {
   try {
     const { email, naam, mijnComentaar} = req.body;
-    console.log(req.body);
 
     if (
       typeof email !== "string" ||
@@ -471,6 +469,64 @@ app.post("/makePost", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
+
+
+// =========================
+// Opdracht toevoegen
+// =========================
+
+app.post("/makeOpdracht", async (req, res) => {
+  try {
+    const { email, titel, beschrijving, prioriteit, status, deadline, categorie, progress } = req.body;
+
+    if (
+      typeof email !== "string" ||
+      typeof titel !== "string" ||
+      typeof beschrijving !== "string" ||
+      typeof prioriteit !== "string" ||
+      typeof status !== "string" ||
+      typeof categorie !== "string" ||
+      (typeof progress !== "number" || progress < 0 || progress > 100)
+    ) {
+      return res.status(400).send("Ongeldige invoer");
+    }
+
+    // Sanitize
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanTitel = titel.trim();
+    const cleanBeschrijving = beschrijving.trim();
+    const cleanPrioriteit = prioriteit.trim();
+    const cleanStatus = status.trim();
+    const cleanCategorie = categorie.trim();
+    const cleanDeadline = new Date(deadline);
+
+    if (!cleanEmail || !cleanTitel || !cleanBeschrijving || !cleanPrioriteit || !cleanStatus || !cleanCategorie || isNaN(cleanDeadline.getTime())) {
+      return res.status(400).send("Vul alle velden in");
+    }
+
+    const newOpdracht = new GebruikersOpdrachten({
+      _id: GebruikersOpdrachten.length + 1,
+      email: cleanEmail,
+      titel: cleanTitel,
+      beschrijving: cleanBeschrijving,
+      prioriteit: cleanPrioriteit,
+      status: cleanStatus,
+      deadline: cleanDeadline,
+      categorie: cleanCategorie,
+      progress: progress,
+    });
+    await newOpdracht.save();
+    res.send("Opdracht aangemaakt!");
+  } catch (err) {
+    // Unique index violation — race condition safety net
+    if (err.code === 11000) {
+      return res.status(409).send("Opdracht bestaat al");
+    }
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
 
 
 // =========================
