@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose, { set } from "mongoose";
+import mongoose, { mongo, set } from "mongoose";
 import cors from "cors";
 import crypto from "crypto";
 import dotenv from "dotenv";
@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import { title } from "process";
 
 dotenv.config();
 
@@ -67,14 +68,33 @@ const  GberuikersPostSceham = new mongoose.Schema({
   aantalComentaars: Number,
 });
 
+// Gberuikers Opdrachten schema
+const GebruikersOpdrachtenSchema = new mongoose.Schema({
+  _id: Number,
+  email: String,
+  titel: String,
+  beschrijving: String,
+  prioriteit: String,
+  status: String,
+  deadline: Date,
+  categorie: String,
+  progress: {
+    type: Number,
+    min: 0,
+    max: 100
+  },
+})
 
 
 const Account = mongoose.model("momentum_accounts", accountSchema);
-const GebruikerInfo = mongoose.model(
-  "momentum_gebruikers_info",
-  gebruikerInfoSchema,
-);
+const GebruikerInfo = mongoose.model("momentum_gebruikers_info",gebruikerInfoSchema,);
 const GberuikersPost = mongoose.model("momentum_gebruikers_posts", GberuikersPostSceham);
+const GebruikersOpdrachten = mongoose.model("momentum_gebruiker_opdrachten", GebruikersOpdrachtenSchema);
+
+GebruikersOpdrachten.find().exec()
+  .then(result => console.log(result))
+  .catch(error => console.error(error));
+
 
 // =========================
 // 📧 Nodemailer Gmail setup
@@ -398,15 +418,16 @@ app.get("/mijnPosts", authMiddleware, async (req, res) => {
 
 app.get("/mijnOpdrachten", authMiddleware, async (req, res) => {
   try {
-    const gebruikerInfo = await GberuikersPost.find({
-      email: req.user.email,
+    const GebruikerOpdrachten = await GebruikersOpdrachten.find({
+      email: "102382@glr.nl",
     });
+    console.log("De leente van de opdrachten is " + GebruikerOpdrachten.length);
 
-    if (gebruikerInfo.length === 0) {
+    if (GebruikerOpdrachten.length === 0) {
       return res.status(404).json({ error: "Geen info gevonden" });
     }
 
-    res.json(gebruikerInfo);
+    res.json(GebruikerOpdrachten);
   } catch (err) {
     res.status(500).send("Server error");
   }

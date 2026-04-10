@@ -61,7 +61,7 @@ const MiddenProfile = () => {
       .then((data) => {
         setPosts(Array.isArray(data) ? data : []);
         console.log(data);
-        setLoadingPosts(false);
+        setLoadingPosts(false); // h44efwgbsvdn uu4href/ hrwefbds / uu32rhvfwes
       })
       .catch(() => {
         setPosts([]);
