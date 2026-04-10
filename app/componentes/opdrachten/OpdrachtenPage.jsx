@@ -8,6 +8,17 @@ import OpdrachtenFilter from "../opdrachten/OpdrachtenFilter";
 const OpdrachtenPage = () => {
   const [opdrachten, setOpdrachten] = useState([]);
 
+
+  useEffect(() => {
+    fetch("http://localhost:3001/mijnOpdrachten", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setOpdrachten(data);
+      })
+      .catch(() => console.log("Niet ingelogd"));
+  }, []);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [filter, setFilter] = useState("all");
@@ -96,7 +107,7 @@ const OpdrachtenPage = () => {
           <div className="opdrachtenGrid">
             {filteredOpdrachten.map((opdracht) => (
               <OpdrachtenCard
-                key={opdracht.id}
+                key={opdracht._id}
                 opdracht={opdracht}
                 onEdit={handleEdit}
                 onDelete={handleDelete}

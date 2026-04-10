@@ -2,8 +2,10 @@ import { useState } from "react";
 import "./opdrachtenForm.css";
 
 const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
+
   const [formData, setFormData] = useState(
     editingOpdracht || {
+      email: "",
       titel: "",
       beschrijving: "",
       prioriteit: "middel",
@@ -22,13 +24,36 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.titel || !formData.deadline) {
-      alert("Vul alstublieft de titel en deadline in");
-      return;
+
+    try {
+      const res = await fetch("http://localhost:3001/makeOpdracht", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.text();
+
+      if (!res.ok) {
+        showMessage(data, "error");
+        return;
+      }
+
+      showMessage("Post aangemaakt!", "success");
+      setFormData({
+        mijnComentaar: "",
+        email: Email,
+        naam: Naam,
+      });
+
+    } catch (err) {
+      console.error(err);
+      showMessage("Server error", "error");
     }
-    onSubmit(formData);
   };
 
   return (

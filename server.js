@@ -89,12 +89,7 @@ const GebruikersOpdrachtenSchema = new mongoose.Schema({
 const Account = mongoose.model("momentum_accounts", accountSchema);
 const GebruikerInfo = mongoose.model("momentum_gebruikers_info",gebruikerInfoSchema,);
 const GberuikersPost = mongoose.model("momentum_gebruikers_posts", GberuikersPostSceham);
-const GebruikersOpdrachten = mongoose.model("momentum_gebruiker_opdrachten", GebruikersOpdrachtenSchema);
-
-GebruikersOpdrachten.find().exec()
-  .then(result => console.log(result))
-  .catch(error => console.error(error));
-
+const GebruikersOpdrachten = mongoose.model("momentum_gebruiker_opdrachten", GebruikersOpdrachtenSchema, "momentum_gebruiker_opdrachten");
 
 // =========================
 // 📧 Nodemailer Gmail setup
@@ -399,15 +394,15 @@ app.get("/mijnInfo", authMiddleware, async (req, res) => {
 
 app.get("/mijnPosts", authMiddleware, async (req, res) => {
   try {
-    const gebruikerInfo = await GberuikersPost.find({
+    const gebruikerPosts = await GberuikersPost.find({
       email: req.user.email,
     });
 
-    if (gebruikerInfo.length === 0) {
+    if (gebruikerPosts.length === 0) {
       return res.status(404).json({ error: "Geen info gevonden" });
     }
 
-    res.json(gebruikerInfo);
+    res.json(gebruikerPosts);
   } catch (err) {
     res.status(500).send("Server error");
   }
