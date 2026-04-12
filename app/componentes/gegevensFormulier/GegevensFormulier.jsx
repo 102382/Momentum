@@ -46,7 +46,7 @@ const GegevensFormulier = ({ email = "" }) => {
 
     setSubmitting(true);
     try {
-      const res = await fetch("http://localhost:3001/gebruikerInfo", {
+      const res = await fetch("http://localhost:3001/send/gebruikerInfo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

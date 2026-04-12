@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "server": "node NieuweServer.js",
+    "server:dev": "node NieuweServer.js",
     "lint": "eslint"
   },
   "dependencies": {

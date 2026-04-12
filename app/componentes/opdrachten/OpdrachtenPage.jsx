@@ -10,7 +10,7 @@ const OpdrachtenPage = () => {
 
 
   useEffect(() => {
-    fetch("http://localhost:3001/mijnOpdrachten", {
+    fetch("http://localhost:3001/receive/mijnOpdrachten", {
       credentials: "include",
     })
       .then((res) => res.json())

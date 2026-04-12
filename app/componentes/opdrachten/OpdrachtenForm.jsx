@@ -20,7 +20,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/mijnInfo", {
+    fetch("http://localhost:3001/receive/mijnInfo", {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -55,7 +55,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3001/makeOpdracht", {
+      const res = await fetch("http://localhost:3001/send/makeOpdracht", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

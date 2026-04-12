@@ -31,7 +31,7 @@ const MiddenProfile = () => {
   const [showPostFormulier, setShowPostFormulier] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3001/mijnInfo", {
+    fetch("http://localhost:3001/receive/mijnInfo", {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -54,7 +54,7 @@ const MiddenProfile = () => {
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/mijnPosts", {
+    fetch("http://localhost:3001/receive/mijnPosts", {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -98,7 +98,7 @@ const MiddenProfile = () => {
     setLoadingSubmit(true);
 
     try {
-      const res = await fetch("http://localhost:3001/makePost", {
+      const res = await fetch("http://localhost:3001/send/makePost", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

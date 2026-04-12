@@ -13,7 +13,7 @@ const LeftSideprofile = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    fetch("http://localhost:3001/mijnInfo", {
+    fetch("http://localhost:3001/receive/mijnInfo", {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -28,7 +28,7 @@ const LeftSideprofile = () => {
   }, []);
 
   const handleLogout = async () => {
-    await fetch("http://localhost:3001/logout", {
+    await fetch("http://localhost:3001/send/logout", {
       method: "POST",
       credentials: "include",
     });

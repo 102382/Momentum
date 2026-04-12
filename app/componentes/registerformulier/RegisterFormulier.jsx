@@ -52,7 +52,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    const res = await fetch("http://localhost:3001/makeAccount", {
+    const res = await fetch("http://localhost:3001/send/makeAccount", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

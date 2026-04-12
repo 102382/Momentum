@@ -49,7 +49,7 @@ const Login = ({ onToggle, isRegistering, showMessage }) => {
     formData.email = formData.email.trim().toLowerCase();
 
     try {
-      const res = await fetch("http://localhost:3001/login", {
+      const res = await fetch("http://localhost:3001/send/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
