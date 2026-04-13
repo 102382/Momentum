@@ -98,7 +98,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <input type="text" name="email" value={email} readOnly />
+        <input type="hidden" name="email" value={email} readOnly />
         {/* Titel */}
         <div className="formGroup">
           <label htmlFor="titel">
