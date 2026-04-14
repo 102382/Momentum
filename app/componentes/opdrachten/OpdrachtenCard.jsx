@@ -63,34 +63,8 @@ const OpdrachtenCard = ({ opdracht, onComplete }) => {
 
 
   const bewerkOpdracht = () => {
-    showMessage("Bewerk opdracht functie nog niet geïmplementeerd", "error");
+    showMessage("Bewerk opdracht functie nog niet geïmplementeerd", "info");
   }
-
-  {/* Hier Behandel ik de bewerking actie van de opdracht */ }
-  const handleBewerkSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const res = await fetch("http://localhost:3001/send/bewerkOpdracht", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: _id }),
-      });
-
-      const data = await res.text();
-      if (!res.ok) {
-        showMessage(data, "error");
-        return;
-      }
-
-      showMessage("Opdracht bijgewerkt!", "success");
-    } catch (err) {
-      console.error(err);
-      showMessage("Server error", "error");
-    }
-  };
 
 
   {/* Hier Behandel ik de Delete actie van de opdracht */ }

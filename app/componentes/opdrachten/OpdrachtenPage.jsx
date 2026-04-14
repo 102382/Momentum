@@ -4,7 +4,6 @@ import "./opdrachten.css";
 import OpdrachtenCard from "../opdrachten/OpdrachtenCard";
 import OpdrachtenForm from "../opdrachten/OpdrachtenForm";
 import OpdrachtenFilter from "../opdrachten/OpdrachtenFilter";
-import Message from "../message/Message.jsx";
 
 const OpdrachtenPage = () => {
   const [opdrachten, setOpdrachten] = useState([]);

@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
 import setupVerstuurRoutes from "./VerstuurServer.js";
-import setupOphaalRoutes from "./ophaalserver.js";
+import setupOphaalRoutes from "./OphaalServer.js";
 
 dotenv.config();
 

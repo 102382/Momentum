@@ -3,13 +3,9 @@
    ================================ */
 
 .opdrachtenPageContainer {
-  min-height: 100%;
   background: transparent;
   padding: 40px 20px;
-}
-
-.opdrachtenPageContainer.middenSection {
-  height: 10px;
+  height: 90vh !important;
 }
 
 /* ================================
