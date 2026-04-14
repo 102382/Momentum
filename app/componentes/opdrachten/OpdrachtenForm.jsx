@@ -32,7 +32,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
 
   const [formData, setFormData] = useState(
     editingOpdracht || {
-      email: "",
+      email: email,
       titel: "",
       beschrijving: "",
       prioriteit: "middel",

@@ -238,7 +238,6 @@ const setupVerstuurRoutes = ({
       }
 
       const newOpdracht = new GebruikersOpdrachten({
-        _id: GebruikersOpdrachten.length + 1,
         email: cleanEmail,
         titel: cleanTitel,
         beschrijving: cleanBeschrijving,
@@ -254,6 +253,72 @@ const setupVerstuurRoutes = ({
       if (err.code === 11000) {
         return res.status(409).send("Opdracht bestaat al");
       }
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // =========================
+  // DELETE OPDRACHT
+  // =========================
+  router.post("/deleteOpdracht", async (req, res) => {
+    try {
+      const { id } = req.body;
+
+      if (!id) {
+        return res.status(400).send("ID is vereist");
+      }
+
+      const deleted = await GebruikersOpdrachten.findByIdAndDelete(id);
+      if (!deleted) {
+        return res.status(404).send("Opdracht niet gevonden");
+      }
+
+      res.send("Opdracht verwijderd!");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // =========================
+  // BEWERK OPDRACHT
+  // =========================
+  router.post("/bewerkOpdracht", async (req, res) => {
+    try {
+      const { id, titel, beschrijving, prioriteit, status, deadline, categorie, progress } = req.body;
+
+      if (!id) {
+        return res.status(400).send("ID is vereist");
+      }
+
+      const updateData = {};
+      if (titel) updateData.titel = titel.trim();
+      if (beschrijving) updateData.beschrijving = beschrijving.trim();
+      if (prioriteit) updateData.prioriteit = prioriteit.trim();
+      if (status) updateData.status = status.trim();
+      if (categorie) updateData.categorie = categorie.trim();
+      if (deadline) {
+        const cleanDeadline = new Date(deadline);
+        if (isNaN(cleanDeadline.getTime())) {
+          return res.status(400).send("Ongeldige deadline");
+        }
+        updateData.deadline = cleanDeadline;
+      }
+      if (typeof progress === "number") {
+        if (progress < 0 || progress > 100) {
+          return res.status(400).send("Progress moet tussen 0 en 100 zijn");
+        }
+        updateData.progress = progress;
+      }
+
+      const updated = await GebruikersOpdrachten.findByIdAndUpdate(id, updateData, { new: true });
+      if (!updated) {
+        return res.status(404).send("Opdracht niet gevonden");
+      }
+
+      res.send("Opdracht bijgewerkt!");
+    } catch (err) {
       console.error(err);
       res.status(500).send("Server error");
     }

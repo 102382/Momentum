@@ -74,7 +74,6 @@ const GberuikersPostSceham = new mongoose.Schema({
 });
 
 const GebruikersOpdrachtenSchema = new mongoose.Schema({
-  _id: Number,
   email: String,
   titel: String,
   beschrijving: String,
@@ -96,6 +95,8 @@ const Account = mongoose.model("momentum_accounts", accountSchema);
 const GebruikerInfo = mongoose.model("momentum_gebruikers_info", gebruikerInfoSchema);
 const GberuikersPost = mongoose.model("momentum_gebruikers_posts", GberuikersPostSceham);
 const GebruikersOpdrachten = mongoose.model("momentum_gebruiker_opdrachten", GebruikersOpdrachtenSchema, "momentum_gebruiker_opdrachten");
+const count = await GebruikersOpdrachten.countDocuments();
+console.log(count);
 
 // =========================
 // 📧 Nodemailer Gmail Setup

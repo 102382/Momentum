@@ -4,6 +4,7 @@ import "./opdrachten.css";
 import OpdrachtenCard from "../opdrachten/OpdrachtenCard";
 import OpdrachtenForm from "../opdrachten/OpdrachtenForm";
 import OpdrachtenFilter from "../opdrachten/OpdrachtenFilter";
+import Message from "../message/Message.jsx";
 
 const OpdrachtenPage = () => {
   const [opdrachten, setOpdrachten] = useState([]);
@@ -50,23 +51,6 @@ const OpdrachtenPage = () => {
     setShowForm(false);
   };
 
-  const handleDelete = (id) => {
-    setOpdrachten(opdrachten.filter((o) => o.id !== id));
-  };
-
-  const handleEdit = (id) => {
-    setEditingId(id);
-    setShowForm(true);
-  };
-
-  const handleCompleteOpdracht = (id) => {
-    setOpdrachten(
-      opdrachten.map((o) =>
-        o.id === id ? { ...o, status: "completed", progress: 100 } : o,
-      ),
-    );
-  };
-
   const filteredOpdrachten = getFilteredOpdrachten();
 
   return (
@@ -109,9 +93,6 @@ const OpdrachtenPage = () => {
               <OpdrachtenCard
                 key={opdracht._id}
                 opdracht={opdracht}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onComplete={handleCompleteOpdracht}
               />
             ))}
           </div>
