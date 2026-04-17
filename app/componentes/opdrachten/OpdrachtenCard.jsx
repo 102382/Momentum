@@ -142,7 +142,9 @@ const OpdrachtenCard = ({ opdracht_id }) => {
     <div>
         {showForm && (
           <div className="modalOverlay" onClick={() => setShowForm(false)}>
-            <OpdrachtUpdateForm/>
+            <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+              <OpdrachtUpdateForm id={_id} onCancel={() => setShowForm(false)} />
+            </div>
           </div>
         )}
       <div>
@@ -165,10 +167,6 @@ const OpdrachtenCard = ({ opdracht_id }) => {
                   title="Bewerk opdracht"
                   onClick={() => {
                     console.log("Bewerk opdracht:", _id);
-                    fetch(`http://localhost:3001/receive/updatedOpdracht/${_id}`)
-                      .then(res => res.json())
-                      .then(data => console.log(data));
-                  
                     setShowForm(true);
                   }}
                 >

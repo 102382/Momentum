@@ -61,7 +61,8 @@ const gebruikerInfoSchema = new mongoose.Schema({
   geslacht: String,
   posten: Number,
   streaks: Number,
-  volgers: Number
+  volgers: Number,
+  followers: [String] // Array of email addresses of users who follow this user
 });
 
 const GberuikersPostSceham = new mongoose.Schema({
@@ -71,6 +72,7 @@ const GberuikersPostSceham = new mongoose.Schema({
   mijnComentaar: String,
   aantalLikes: Number,
   aantalComentaars: Number,
+  likes: [String], // Array of email addresses of users who liked this post
 });
 
 const GebruikersOpdrachtenSchema = new mongoose.Schema({

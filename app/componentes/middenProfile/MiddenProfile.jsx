@@ -61,7 +61,7 @@ const MiddenProfile = () => {
       .then((data) => {
         setPosts(Array.isArray(data) ? data : []);
         console.log(data);
-        setLoadingPosts(false); // h44efwgbsvdn uu4href/ hrwefbds / uu32rhvfwes
+        setLoadingPosts(false);
       })
       .catch(() => {
         setPosts([]);
@@ -121,11 +121,110 @@ const MiddenProfile = () => {
         naam: Naam,
       });
       setShowPostFormulier(false);
+      setPosten((prev) => (prev || 0) + 1);
+      
+      // Refresh posts
+      fetch("http://localhost:3001/receive/mijnPosts", {
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPosts(Array.isArray(data) ? data : []);
+        })
+        .catch(() => {
+          console.log("Fout bij het laden van posts");
+        });
+      
       setLoadingSubmit(false);
     } catch (err) {
       console.error(err);
       showMessage("Server error", "error");
       setLoadingSubmit(false);
+    }
+  };
+
+  const handleLike = async (postIndex) => {
+    try {
+      const post = posts[postIndex];
+      
+      const res = await fetch("http://localhost:3001/send/likePost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId: post._id, email: Email }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        showMessage("Fout bij het liken van de post", "error");
+        return;
+      }
+
+      const data = await res.json();
+      const updatedPosts = [...posts];
+      updatedPosts[postIndex] = {
+        ...post,
+        aantalLikes: data.aantalLikes,
+        likes: data.liked ? [...(post.likes || []), Email] : (post.likes || []).filter(e => e !== Email),
+      };
+      setPosts(updatedPosts);
+    } catch (err) {
+      console.error(err);
+      showMessage("Server error", "error");
+    }
+  };
+
+  const handleFollow = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/send/followUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ targetUserEmail: Email, followerEmail: Email }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const errorMsg = await res.text();
+        showMessage(errorMsg || "Fout bij het volgen van deze gebruiker", "error");
+        return;
+      }
+
+      const data = await res.json();
+      setIsFollowing(data.following);
+      setVolgers(data.volgers);
+    } catch (err) {
+      console.error(err);
+      showMessage("Server error", "error");
+    }
+  };
+
+  const handleDeletePost = async (postId, postIndex) => {
+    try {
+      const res = await fetch("http://localhost:3001/send/deletePost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId, email: Email }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const errorMsg = await res.text();
+        showMessage(errorMsg || "Fout bij het verwijderen van de post", "error");
+        return;
+      }
+
+      showMessage("Post verwijderd!", "success");
+      const updatedPosts = posts.filter((_, index) => index !== postIndex);
+      setPosts(updatedPosts);
+      setPosten((prev) => Math.max(0, (prev || 0) - 1));
+    } catch (err) {
+      console.error(err);
+      showMessage("Server error", "error");
     }
   };
 
@@ -181,7 +280,7 @@ const MiddenProfile = () => {
                 <span>Streaks</span>
               </div>
               <div className="stat">
-                <h2>{isFollowing ? Volgers + 1 : Volgers || "0"}</h2>
+                <h2>{Volgers || "0"}</h2>
                 <span>Volgers</span>
               </div>
             </div>
@@ -189,22 +288,12 @@ const MiddenProfile = () => {
             <div className="followButtonContainer">
               <button
                 className={`followBtn ${isFollowing ? "following" : ""}`}
-                onClick={() => setIsFollowing(!isFollowing)}
+                onClick={handleFollow}
               >
                 <i
                   className={`fa-solid ${isFollowing ? "fa-user-check" : "fa-user-plus"}`}
                 ></i>
                 {isFollowing ? "Volgend" : "Volgen"}
-              </button>
-              <button
-                className="followBtn"
-                style={{
-                  background: "rgba(255, 255, 255, 0.1)",
-                  border: "2px solid rgba(255, 255, 255, 0.3)",
-                }}
-              >
-                <i className="fa-solid fa-message"></i>
-                Bericht
               </button>
             </div>
             <div className="OpdrachtenBar">
@@ -234,12 +323,24 @@ const MiddenProfile = () => {
                     <img src={post.foto} alt={`Post ${index + 1}`} />
                   )}
                   <div className="acties">
-                    <button>
+                    <button 
+                      onClick={() => handleLike(index)}
+                      style={{
+                        color: post.likes && post.likes.includes(Email) ? "#FF6B6B" : "inherit"
+                      }}
+                    >
                       <i className="fa-solid fa-heart"></i> {post.aantalLikes}
                     </button>
                     <button>
                       <i className="fa-solid fa-comment"></i>{" "}
                       {post.aantalComentaars}
+                    </button>
+                    <button
+                      onClick={() => handleDeletePost(post._id, index)}
+                      title="Verwijder post"
+                      style={{ color: "#FF6B6B" }}
+                    >
+                      <i className="fa-solid fa-trash"></i>
                     </button>
                   </div>
                   <div className="myComentaar">

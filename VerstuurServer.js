@@ -194,8 +194,16 @@ const setupVerstuurRoutes = ({
         foto: "",
         aantalLikes: 0,
         aantalComentaars: 0,
+        likes: [],
       });
       await newPost.save();
+
+      // Update the post count for the user
+      await GebruikerInfo.findOneAndUpdate(
+        { email: cleanEmail },
+        { $inc: { posten: 1 } }
+      );
+
       res.send("Gegevens opgeslagen!");
     } catch (err) {
       if (err.code === 11000) {
@@ -281,6 +289,161 @@ const setupVerstuurRoutes = ({
     }
   });
 
+  // =========================
+  // UPDATE OPDRACHT
+  // =========================
+  router.post("/updateOpdracht", async (req, res) => {
+    try {
+      const { id, titel, beschrijving, prioriteit, status, deadline, categorie, progress } = req.body;
+
+      if (!id) {
+        return res.status(400).send("ID is vereist");
+      }
+
+      const updatedOpdracht = await GebruikersOpdrachten.findByIdAndUpdate(
+        id,
+        {
+          titel,
+          beschrijving,
+          prioriteit,
+          status,
+          deadline,
+          categorie,
+          progress
+        },
+        { new: true }
+      );
+
+      if (!updatedOpdracht) {
+        return res.status(404).send("Opdracht niet gevonden");
+      }
+
+      res.send("Opdracht geüpdatet!");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // =========================
+  // Like POST
+  // =========================
+  router.post("/likePost", async (req, res) => {
+    try {
+      const { postId, email } = req.body;
+      if (!postId || !email) {
+        return res.status(400).send("Post ID en email zijn vereist");
+      }
+      const post = await GberuikersPost.findById(postId);
+      if (!post) {
+        return res.status(404).send("Post niet gevonden");
+      }
+
+      const cleanEmail = email.trim().toLowerCase();
+      const hasLiked = post.likes && post.likes.includes(cleanEmail);
+
+      if (hasLiked) {
+        // Remove like (toggle)
+        post.likes = post.likes.filter(e => e !== cleanEmail);
+        post.aantalLikes = Math.max(0, post.aantalLikes - 1);
+      } else {
+        // Add like
+        if (!post.likes) {
+          post.likes = [];
+        }
+        post.likes.push(cleanEmail);
+        post.aantalLikes += 1;
+      }
+
+      await post.save();
+      res.json({ liked: !hasLiked, aantalLikes: post.aantalLikes });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // =========================
+  // DELETE POST
+  // =========================
+  router.post("/deletePost", async (req, res) => {
+    try {
+      const { postId, email } = req.body;
+      
+      if (!postId || !email) {
+        return res.status(400).send("Post ID en email zijn vereist");
+      }
+
+      const post = await GberuikersPost.findById(postId);
+      
+      if (!post) {
+        return res.status(404).send("Post niet gevonden");
+      }
+
+      // Check if the email matches the post creator
+      if (post.email.toLowerCase() !== email.trim().toLowerCase()) {
+        return res.status(403).send("Je kan alleen je eigen posts verwijderen");
+      }
+
+      // Delete the post
+      await GberuikersPost.findByIdAndDelete(postId);
+
+      // Update the post count for the user
+      await GebruikerInfo.findOneAndUpdate(
+        { email: email.trim().toLowerCase() },
+        { $inc: { posten: -1 } }
+      );
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // =========================
+  // FOLLOW USER
+  // =========================
+  router.post("/followUser", async (req, res) => {
+    try {
+      const { targetUserEmail, followerEmail } = req.body;
+      
+      if (!targetUserEmail || !followerEmail) {
+        return res.status(400).send("Email vereist");
+      }
+
+      const cleanTargetEmail = targetUserEmail.trim().toLowerCase();
+      const cleanFollowerEmail = followerEmail.trim().toLowerCase();
+
+      const targetUser = await GebruikerInfo.findOne({ email: cleanTargetEmail });
+      
+      if (!targetUser) {
+        return res.status(404).send("Gebruiker niet gevonden");
+      }
+
+      if (!targetUser.followers) {
+        targetUser.followers = [];
+      }
+
+      const isFollowing = targetUser.followers.includes(cleanFollowerEmail);
+
+      if (isFollowing) {
+        // Unfollow
+        targetUser.followers = targetUser.followers.filter(e => e !== cleanFollowerEmail);
+        targetUser.volgers = Math.max(0, targetUser.volgers - 1);
+      } else {
+        // Follow
+        targetUser.followers.push(cleanFollowerEmail);
+        targetUser.volgers = (targetUser.volgers || 0) + 1;
+      }
+
+      await targetUser.save();
+      res.json({ following: !isFollowing, volgers: targetUser.volgers });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
 
   // =========================
   // LOGOUT
