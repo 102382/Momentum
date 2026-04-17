@@ -163,10 +163,17 @@ const setupOphaalRoutes = ({
 
   router.get("/updatedOpdracht/:id", (req, res) => {
     const id = req.params.id;
-    console.log("Ontvangen ID:", id);
-  
-    // hier kun je je database query doen
-    res.json({ message: "ID ontvangen", id });
+    GebruikersOpdrachten.findById(id)
+      .then((opdracht) => {
+        if (!opdracht) {
+          return res.status(404).json({ error: "Opdracht niet gevonden" });
+        }
+        res.json(opdracht);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+      });
   });
 
   return router;

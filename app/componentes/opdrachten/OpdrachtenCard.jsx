@@ -3,6 +3,7 @@ import "./opdrachtenCard.css";
 import { useState, useEffect } from "react";
 import Message from "../message/Message.jsx";
 import OpdrachtenForm from "./OpdrachtenForm.jsx";
+import OpdrachtUpdateForm from "./OpdrachtUpdateForm.jsx";
 
 const OpdrachtenCard = ({ opdracht_id }) => {
   const [message, setMessage] = useState("");
@@ -141,15 +142,7 @@ const OpdrachtenCard = ({ opdracht_id }) => {
     <div>
         {showForm && (
           <div className="modalOverlay" onClick={() => setShowForm(false)}>
-            <OpdrachtenForm
-              opdracht={opdracht}
-              onCancel={() => setShowForm(false)}
-              onSuccess={(msg) => {
-                showMessage(msg);
-                setShowForm(false);
-                // Optioneel: herlaad de opdracht data hier
-              }}
-            />
+            <OpdrachtUpdateForm/>
           </div>
         )}
       <div>
@@ -172,7 +165,7 @@ const OpdrachtenCard = ({ opdracht_id }) => {
                   title="Bewerk opdracht"
                   onClick={() => {
                     console.log("Bewerk opdracht:", _id);
-                    fetch(`/receive/opdracht/${_id}`)
+                    fetch(`http://localhost:3001/receive/updatedOpdracht/${_id}`)
                       .then(res => res.json())
                       .then(data => console.log(data));
                   
