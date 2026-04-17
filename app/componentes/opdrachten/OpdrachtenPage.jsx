@@ -4,10 +4,11 @@ import "./opdrachten.css";
 import OpdrachtenCard from "../opdrachten/OpdrachtenCard";
 import OpdrachtenForm from "../opdrachten/OpdrachtenForm";
 import OpdrachtenFilter from "../opdrachten/OpdrachtenFilter";
+import Loading from "../loading/Loading.jsx";
 
 const OpdrachtenPage = () => {
   const [opdrachten, setOpdrachten] = useState([]);
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("http://localhost:3001/receive/mijnOpdrachten", {
@@ -15,12 +16,16 @@ const OpdrachtenPage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setOpdrachten(data);
+        setOpdrachten(Array.isArray(data) ? data : []);
+        setLoading(false);
       })
-      .catch(() => console.log("Niet ingelogd"));
+      .catch(() => {
+        console.log("Niet ingelogd");
+        setLoading(false);
+      });
   }, []);
+
   const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState(null);
   const [filter, setFilter] = useState("all");
 
   const getFilteredOpdrachten = () => {
@@ -33,34 +38,15 @@ const OpdrachtenPage = () => {
     return filtered;
   };
 
-  const handleAddOpdracht = (formData) => {
-    if (editingId) {
-      setOpdrachten(
-        opdrachten.map((o) => (o.id === editingId ? { ...o, ...formData } : o)),
-      );
-      setEditingId(null);
-    } else {
-      const newOpdracht = {
-        id: Math.max(...opdrachten.map((o) => o.id), 0) + 1,
-        ...formData,
-        progress: 0,
-      };
-      setOpdrachten([...opdrachten, newOpdracht]);
-    }
-    setShowForm(false);
-  };
-
   const filteredOpdrachten = getFilteredOpdrachten();
 
   return (
     <div className="opdrachtenPageContainer middenSection">
-      {/* Header */}
       <div className="opdrachtenHeader">
         <h1>Mijn Opdrachten</h1>
         <button
           className="btnCreateOpdracht"
           onClick={() => {
-            setEditingId(null);
             setShowForm(true);
           }}
         >
@@ -68,30 +54,25 @@ const OpdrachtenPage = () => {
         </button>
       </div>
 
-      {/* Form Modal */}
       {showForm && (
         <div className="modalOverlay" onClick={() => setShowForm(false)}>
           <OpdrachtenForm
-            onSubmit={handleAddOpdracht}
             onCancel={() => setShowForm(false)}
-            editingOpdracht={
-              editingId ? opdrachten.find((o) => o.id === editingId) : null
-            }
           />
         </div>
       )}
 
-      {/* Filter */}
       <OpdrachtenFilter filter={filter} setFilter={setFilter} />
 
-      {/* Opdrachten Grid */}
       <div className="opdrachtenGridContainer">
-        {filteredOpdrachten.length > 0 ? (
+        {loading ? (
+          <Loading text="Opdrachten laden..." />
+        ) : filteredOpdrachten.length > 0 ? (
           <div className="opdrachtenGrid">
             {filteredOpdrachten.map((opdracht) => (
               <OpdrachtenCard
                 key={opdracht._id}
-                opdracht={opdracht}
+                opdracht_id={opdracht._id}
               />
             ))}
           </div>

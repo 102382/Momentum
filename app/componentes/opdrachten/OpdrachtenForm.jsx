@@ -1,13 +1,14 @@
+"use client";
 import { useEffect, useState } from "react";
 import "./opdrachtenForm.css";
 import Message from "../message/Message.jsx";
 
-const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
+const OpdrachtenForm = ({ onCancel }) => {
   const [message, setMessage] = useState("");
   const [messageVisible, setMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState("success");
 
-    const showMessage = (text, type = "success") => {
+  const showMessage = (text, type = "success") => {
     setMessage(text);
     setMessageType(type);
     setMessageVisible(true);
@@ -30,18 +31,25 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
       .catch(() => console.log("Niet ingelogd"));
   }, []);
 
-  const [formData, setFormData] = useState(
-    editingOpdracht || {
+  const [formData, setFormData] = useState({
+    email: email,
+    titel: "",
+    beschrijving: "",
+    prioriteit: "middel",
+    status: "pending",
+    deadline: "",
+    categorie: "gezondheid",
+    progress: 0,
+  });
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
       email: email,
-      titel: "",
-      beschrijving: "",
-      prioriteit: "middel",
-      status: "pending",
-      deadline: "",
-      categorie: "gezondheid",
-      progress: 0,
-    },
-  );
+    }));
+  }, [email]);
+
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +61,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoadingSubmit(true);
 
     try {
       const res = await fetch("http://localhost:3001/send/makeOpdracht", {
@@ -67,31 +76,35 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
 
       if (!res.ok) {
         showMessage(data, "error");
+        setLoadingSubmit(false);
         return;
       }
 
-      showMessage("Post aangemaakt!", "success");
+      showMessage("Opdracht aangemaakt!", "success");
       setFormData({
-        email: "",
+        email: email,
         titel: "",
         beschrijving: "",
-        prioriteit: "",
-        status: "",
+        prioriteit: "middel",
+        status: "pending",
         deadline: "",
-        categorie: "",
+        categorie: "gezondheid",
         progress: 0,
       });
-
+      setLoadingSubmit(false);
+      onCancel();
     } catch (err) {
       console.error(err);
       showMessage("Server error", "error");
+      setLoadingSubmit(false);
     }
   };
 
   return (
     <div className="opdrachtenForm" onClick={(e) => e.stopPropagation()}>
+      <Message text={message} type={messageType} visible={messageVisible} />
       <div className="formHeader">
-        <h2>{editingOpdracht ? "Bewerk Opdracht" : "Nieuwe Opdracht"}</h2>
+        <h2>Nieuwe Opdracht</h2>
         <button className="btnClose" onClick={onCancel}>
           <i className="fa-solid fa-times"></i>
         </button>
@@ -99,7 +112,6 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
 
       <form onSubmit={handleSubmit}>
         <input type="hidden" name="email" value={email} readOnly />
-        {/* Titel */}
         <div className="formGroup">
           <label htmlFor="titel">
             <i className="fa-solid fa-heading"></i> Titel
@@ -116,7 +128,6 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
           <small>{formData.titel.length}/50</small>
         </div>
 
-        {/* Beschrijving */}
         <div className="formGroup">
           <label htmlFor="beschrijving">
             <i className="fa-solid fa-align-left"></i> Beschrijving
@@ -133,9 +144,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
           <small>{formData.beschrijving.length}/200</small>
         </div>
 
-        {/* Twee Kolommen */}
         <div className="formRow">
-          {/* Categorié */}
           <div className="formGroup">
             <label htmlFor="kategorie">
               <i className="fa-solid fa-tag"></i> Categorie
@@ -155,7 +164,6 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
             </select>
           </div>
 
-          {/* Prioriteit */}
           <div className="formGroup">
             <label htmlFor="prioriteit">
               <i className="fa-solid fa-arrow-up"></i> Prioriteit
@@ -173,9 +181,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
           </div>
         </div>
 
-        {/* Deadline en Status */}
         <div className="formRow">
-          {/* Deadline */}
           <div className="formGroup">
             <label htmlFor="deadline">
               <i className="fa-solid fa-calendar"></i> Deadline
@@ -190,7 +196,6 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
             />
           </div>
 
-          {/* Status */}
           <div className="formGroup">
             <label htmlFor="status">
               <i className="fa-solid fa-check"></i> Status
@@ -208,9 +213,7 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
           </div>
         </div>
 
-        {/* Progress en Beloningen */}
         <div className="formRow">
-          {/* Progress */}
           <div className="formGroup">
             <label htmlFor="progress">
               <i className="fa-solid fa-chart-simple"></i> Voortgang
@@ -230,13 +233,12 @@ const OpdrachtenForm = ({ onSubmit, onCancel, editingOpdracht }) => {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="formActions">
           <button type="button" className="btnCancel" onClick={onCancel}>
             Annuleren
           </button>
-          <button type="submit" className="btnSubmit">
-            {editingOpdracht ? "Opslaan" : "Opdracht maken"}
+          <button type="submit" className="btnSubmit" disabled={loadingSubmit}>
+            {loadingSubmit ? "Bezig..." : "Opdracht maken"}
           </button>
         </div>
       </form>

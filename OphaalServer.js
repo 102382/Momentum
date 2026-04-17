@@ -157,6 +157,18 @@ const setupOphaalRoutes = ({
     }
   });
 
+  // =========================
+  // GET UPDATED OPDRACH
+  // =========================
+
+  router.get("/updatedOpdracht/:id", (req, res) => {
+    const id = req.params.id;
+    console.log("Ontvangen ID:", id);
+  
+    // hier kun je je database query doen
+    res.json({ message: "ID ontvangen", id });
+  });
+
   return router;
 };
 
