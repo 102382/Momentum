@@ -62,7 +62,8 @@ const gebruikerInfoSchema = new mongoose.Schema({
   posten: Number,
   streaks: Number,
   volgers: Number,
-  followers: [String] // Array of email addresses of users who follow this user
+  followers: [String], // Array of email addresses of users who follow this user
+  lastCompletedAt: Date, // Track last completed task for streak reset logic
 });
 
 const GberuikersPostSceham = new mongoose.Schema({
@@ -86,17 +87,27 @@ const GebruikersOpdrachtenSchema = new mongoose.Schema({
   progress: {
     type: Number,
     min: 0,
-    max: 100
+    max: 100,
   },
-})
+});
 
 // =========================
 // Models
 // =========================
 const Account = mongoose.model("momentum_accounts", accountSchema);
-const GebruikerInfo = mongoose.model("momentum_gebruikers_info", gebruikerInfoSchema);
-const GberuikersPost = mongoose.model("momentum_gebruikers_posts", GberuikersPostSceham);
-const GebruikersOpdrachten = mongoose.model("momentum_gebruiker_opdrachten", GebruikersOpdrachtenSchema, "momentum_gebruiker_opdrachten");
+const GebruikerInfo = mongoose.model(
+  "momentum_gebruikers_info",
+  gebruikerInfoSchema,
+);
+const GberuikersPost = mongoose.model(
+  "momentum_gebruikers_posts",
+  GberuikersPostSceham,
+);
+const GebruikersOpdrachten = mongoose.model(
+  "momentum_gebruiker_opdrachten",
+  GebruikersOpdrachtenSchema,
+  "momentum_gebruiker_opdrachten",
+);
 
 // =========================
 // 📧 Nodemailer Gmail Setup

@@ -1,0 +1,558 @@
+.userProfileViewContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  flex: 1;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.3s ease;
+  overflow-y: scroll !important;
+    height: 94vh !important;
+}
+
+.userProfileViewContainer:hover {
+  border-color: var(--primary-color);
+}
+
+.userProfileViewContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.userProfileViewContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.userProfileViewContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 149, 62, 0.3);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.userProfileViewContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+.backButton {
+  position: static;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.7) 100%
+  );
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-bottom: 10px;
+}
+
+.backButton:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 5px 20px rgba(255, 149, 62, 0.3);
+}
+
+.userProfileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.userInfoSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  padding: 40px 30px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.1) 0%,
+    rgba(255, 149, 62, 0.05) 100%
+  );
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 62, 0.2);
+}
+
+.userInfoCard {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.bgfoto {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: url(https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg)
+    no-repeat center center;
+  background-size: cover;
+  border: 5px solid var(--primary-color);
+  box-shadow: 0 0 30px 2px rgba(255, 149, 62, 0.4);
+  transition: transform 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.userInfoCard:hover .bgfoto {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px 3px rgba(255, 149, 62, 0.6);
+}
+
+.userStatsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.userNameSection {
+  width: 100%;
+}
+
+.userNameSection h2 {
+  font-size: 1.8rem;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  color: white;
+}
+
+.userNameSection p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.statsInfo {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.statsInfo .stat {
+  flex: 0 0 auto;
+  min-width: 80px;
+}
+
+.statsInfo .stat h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.statsInfo .stat span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+}
+
+.followLine {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary-color),
+    transparent
+  );
+  margin: 10px 0;
+  width: 100%;
+  max-width: 200px;
+}
+
+.followBtn {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.7) 100%
+  );
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.followBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(255, 149, 62, 0.4);
+}
+
+.followBtn.following {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.5) 0%,
+    rgba(255, 149, 62, 0.3) 100%
+  );
+  border: 2px solid var(--primary-color);
+}
+
+.postSection,
+.opdrachtenSection {
+  padding: 30px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8),
+    rgba(255, 149, 62, 0.05)
+  );
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  border-radius: 12px;
+}
+
+.postSection h2,
+.opdrachtenSection h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.7) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.postsList,
+.opdrachtenList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.postItem {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.postItem:hover {
+  border-color: rgba(255, 149, 62, 0.4);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.postHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.postAuthor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.authorAvatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: url(https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg)
+    no-repeat center center;
+  background-size: cover;
+  border: 2px solid var(--primary-color);
+}
+
+.postAuthor h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.postDate {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.postContent {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin: 0 0 15px 0;
+}
+
+.postActions {
+  display: flex;
+  gap: 15px;
+}
+
+.likeBtn {
+  background: rgba(255, 149, 62, 0.1);
+  border: 1px solid rgba(255, 149, 62, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.likeBtn:hover {
+  background: rgba(255, 149, 62, 0.2);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.likeBtn.liked {
+  background: rgba(255, 149, 62, 0.3);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.opdrachtItem {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.opdrachtItem:hover {
+  border-color: rgba(255, 149, 62, 0.4);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.opdrachtHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+
+.opdrachtHeader h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  flex: 1;
+}
+
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(255, 149, 62, 0.2);
+  color: var(--primary-color);
+  border: 1px solid rgba(255, 149, 62, 0.3);
+}
+
+.statusBadge.todo {
+  background: rgba(255, 100, 100, 0.2);
+  color: #ff6464;
+  border-color: rgba(255, 100, 100, 0.3);
+}
+
+.statusBadge.in-progress,
+.statusBadge.inprogress {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border-color: rgba(255, 193, 7, 0.3);
+}
+
+.statusBadge.done,
+.statusBadge.completed {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.opdrachtDescription {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+  margin: 0 0 15px 0;
+}
+
+.opdrachtMeta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.priority {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(255, 149, 62, 0.15);
+  color: var(--primary-color);
+  border: 1px solid rgba(255, 149, 62, 0.3);
+}
+
+.priority[data-priority="hoog"],
+.priority[data-priority="high"] {
+  background: rgba(255, 100, 100, 0.15);
+  color: #ff6464;
+  border-color: rgba(255, 100, 100, 0.3);
+}
+
+.priority[data-priority="gemiddeld"],
+.priority[data-priority="medium"] {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+  border-color: rgba(255, 193, 7, 0.3);
+}
+
+.priority[data-priority="laag"],
+.priority[data-priority="low"] {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.progressBar {
+  flex: 1;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.5) 100%
+  );
+  transition: width 0.3s ease;
+  border-radius: 20px;
+}
+
+.progressText {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  min-width: 40px;
+}
+
+.noContent {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 30px 0;
+  font-style: italic;
+}
+
+@media (max-width: 1024px) {
+  .userInfoSection {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .statsInfo {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .userProfileViewContainer {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .backButton {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+
+  .userProfileContent {
+    gap: 20px;
+  }
+
+  .userInfoSection {
+    padding: 30px 15px;
+  }
+
+  .bgfoto {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 15px;
+  }
+
+  .userNameSection h2 {
+    font-size: 1.4rem;
+  }
+
+  .postSection,
+  .opdrachtenSection {
+    padding: 20px 15px;
+  }
+
+  .opdrachtHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .opdrachtMeta {
+    flex-wrap: wrap;
+  }
+
+  .statsInfo {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsInfo {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .postSection h2,
+  .opdrachtenSection h2 {
+    font-size: 1.1rem;
+  }
+
+  .userNameSection h2 {
+    font-size: 1.2rem;
+  }
+
+  .bgfoto {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+}

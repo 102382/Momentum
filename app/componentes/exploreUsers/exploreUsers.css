@@ -1,0 +1,320 @@
+.exploreUsersContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  flex: 1;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.3s ease;
+  overflow-y: scroll !important;
+  height: 94vh !important;
+}
+
+.exploreUsersContainer:hover {
+  border-color: var(--primary-color);
+}
+
+.exploreUsersContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.exploreUsersContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.exploreUsersContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 149, 62, 0.3);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.exploreUsersContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+.exploreSearchSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.exploreSearchInput {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 149, 62, 0.3);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.exploreSearchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.exploreSearchInput:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 149, 62, 0.1);
+  box-shadow: 0 0 20px rgba(255, 149, 62, 0.3);
+}
+
+.exploreHeader {
+  text-align: center;
+  padding: 20px 0;
+  border-bottom: 2px solid rgba(255, 149, 62, 0.2);
+  margin-bottom: 20px;
+}
+
+.exploreHeader h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.7) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 10px 0;
+  letter-spacing: 1px;
+}
+
+.exploreHeader p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.usersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 0;
+}
+
+.userCard {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8),
+    rgba(255, 149, 62, 0.05)
+  );
+  border: 2px solid rgba(255, 149, 62, 0.3);
+  border-radius: 16px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 380px;
+}
+
+.userCard:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255, 149, 62, 0.2);
+}
+
+.userCardImage {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.profileImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: url(https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg)
+    no-repeat center center;
+  background-size: cover;
+  border: 4px solid var(--primary-color);
+  box-shadow: 0 0 25px rgba(255, 149, 62, 0.4);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.userCard:hover .profileImage {
+  transform: scale(1.08);
+  box-shadow: 0 0 30px rgba(255, 149, 62, 0.6);
+}
+
+.userCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.userCardContent h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userAbout {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.userStats {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.userStats .stat {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  background: rgba(255, 149, 62, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  transition: all 0.3s ease;
+  min-width: 0;
+}
+
+.userCard:hover .userStats .stat {
+  background: rgba(255, 149, 62, 0.15);
+  border-color: rgba(255, 149, 62, 0.4);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statValue {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+
+.statLabel {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.cardHoverOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 14px;
+}
+
+.cardHoverOverlay.active {
+  opacity: 1;
+}
+
+.viewProfileBtn {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.7) 100%
+  );
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.viewProfileBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(255, 149, 62, 0.4);
+}
+
+.noUsers {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 1024px) {
+  .usersGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .usersGrid {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 12px;
+  }
+
+  .userCard {
+    padding: 12px;
+    max-height: 340px;
+  }
+
+  .exploreHeader h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .usersGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .userCard {
+    padding: 10px;
+    max-height: 300px;
+  }
+
+  .profileImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .userCardContent h3 {
+    font-size: 0.95rem;
+  }
+}

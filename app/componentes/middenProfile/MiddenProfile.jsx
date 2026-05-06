@@ -53,6 +53,9 @@ const MiddenProfile = () => {
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
+  const [opdrachten, setOpdrachten] = useState([]);
+  const [loadingOpdrachten, setLoadingOpdrachten] = useState(true);
+
   useEffect(() => {
     fetch("http://localhost:3001/receive/mijnPosts", {
       credentials: "include",
@@ -67,6 +70,22 @@ const MiddenProfile = () => {
         setPosts([]);
         console.log("Niet ingelogd");
         setLoadingPosts(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/receive/mijnOpdrachten", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setOpdrachten(Array.isArray(data) ? data : []);
+        setLoadingOpdrachten(false);
+      })
+      .catch(() => {
+        setOpdrachten([]);
+        console.log("Niet ingelogd");
+        setLoadingOpdrachten(false);
       });
   }, []);
 
@@ -122,7 +141,7 @@ const MiddenProfile = () => {
       });
       setShowPostFormulier(false);
       setPosten((prev) => (prev || 0) + 1);
-      
+
       // Refresh posts
       fetch("http://localhost:3001/receive/mijnPosts", {
         credentials: "include",
@@ -134,7 +153,7 @@ const MiddenProfile = () => {
         .catch(() => {
           console.log("Fout bij het laden van posts");
         });
-      
+
       setLoadingSubmit(false);
     } catch (err) {
       console.error(err);
@@ -146,7 +165,7 @@ const MiddenProfile = () => {
   const handleLike = async (postIndex) => {
     try {
       const post = posts[postIndex];
-      
+
       const res = await fetch("http://localhost:3001/send/likePost", {
         method: "POST",
         headers: {
@@ -166,7 +185,9 @@ const MiddenProfile = () => {
       updatedPosts[postIndex] = {
         ...post,
         aantalLikes: data.aantalLikes,
-        likes: data.liked ? [...(post.likes || []), Email] : (post.likes || []).filter(e => e !== Email),
+        likes: data.liked
+          ? [...(post.likes || []), Email]
+          : (post.likes || []).filter((e) => e !== Email),
       };
       setPosts(updatedPosts);
     } catch (err) {
@@ -188,7 +209,10 @@ const MiddenProfile = () => {
 
       if (!res.ok) {
         const errorMsg = await res.text();
-        showMessage(errorMsg || "Fout bij het volgen van deze gebruiker", "error");
+        showMessage(
+          errorMsg || "Fout bij het volgen van deze gebruiker",
+          "error",
+        );
         return;
       }
 
@@ -214,7 +238,10 @@ const MiddenProfile = () => {
 
       if (!res.ok) {
         const errorMsg = await res.text();
-        showMessage(errorMsg || "Fout bij het verwijderen van de post", "error");
+        showMessage(
+          errorMsg || "Fout bij het verwijderen van de post",
+          "error",
+        );
         return;
       }
 
@@ -297,8 +324,23 @@ const MiddenProfile = () => {
               </button>
             </div>
             <div className="OpdrachtenBar">
-              <h2>3 van de 5 opdrachten gemaakt</h2>
-              <div className="Bar"></div>
+              <h2>
+                {opdrachten.filter((o) => o.status === "completed").length} van
+                de {opdrachten.length} opdrachten gemaakt
+              </h2>
+              <div
+                className="Bar"
+                style={{
+                  "--progress": `${
+                    opdrachten.length > 0
+                      ? (opdrachten.filter((o) => o.status === "completed")
+                          .length /
+                          opdrachten.length) *
+                        100
+                      : 0
+                  }%`,
+                }}
+              ></div>
             </div>
           </div>
         </div>
@@ -323,10 +365,13 @@ const MiddenProfile = () => {
                     <img src={post.foto} alt={`Post ${index + 1}`} />
                   )}
                   <div className="acties">
-                    <button 
+                    <button
                       onClick={() => handleLike(index)}
                       style={{
-                        color: post.likes && post.likes.includes(Email) ? "#FF6B6B" : "inherit"
+                        color:
+                          post.likes && post.likes.includes(Email)
+                            ? "#FF6B6B"
+                            : "inherit",
                       }}
                     >
                       <i className="fa-solid fa-heart"></i> {post.aantalLikes}

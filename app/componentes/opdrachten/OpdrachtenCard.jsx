@@ -85,7 +85,6 @@ const OpdrachtenCard = ({ opdracht_id }) => {
   const isCompleted = status === "completed";
   const isOverdue = new Date(deadline) < new Date() && status !== "completed";
 
-
   const handleDeleteSubmit = async (e) => {
     e.preventDefault();
 
@@ -119,34 +118,34 @@ const OpdrachtenCard = ({ opdracht_id }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ id: _id }),
       });
 
-      const data = await res.text();
+      const data = await res.json();
 
       if (!res.ok) {
-        showMessage(data, "error");
+        showMessage(data.message || "Error", "error");
         return;
       }
 
       showMessage("Opdracht afgerond!", "success");
-      setOpdracht({ ...opdracht, status: "completed" });
+      setOpdracht({ ...opdracht, status: "completed", progress: 100 });
     } catch (err) {
       console.error(err);
       showMessage("Server error", "error");
     }
   };
 
-
   return (
     <div>
-        {showForm && (
-          <div className="modalOverlay" onClick={() => setShowForm(false)}>
-            <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-              <OpdrachtUpdateForm id={_id} onCancel={() => setShowForm(false)} />
-            </div>
+      {showForm && (
+        <div className="modalOverlay" onClick={() => setShowForm(false)}>
+          <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+            <OpdrachtUpdateForm id={_id} onCancel={() => setShowForm(false)} />
           </div>
-        )}
+        </div>
+      )}
       <div>
         <Message text={message} type={messageType} visible={messageVisible} />
 
@@ -208,7 +207,9 @@ const OpdrachtenCard = ({ opdracht_id }) => {
               <div className="footerInfo">
                 <div
                   className="deadlineInfo"
-                  style={{ color: isOverdue ? "#FF6B6B" : "rgba(255,255,255,0.8)" }}
+                  style={{
+                    color: isOverdue ? "#FF6B6B" : "rgba(255,255,255,0.8)",
+                  }}
                 >
                   <i
                     className={`fa-solid ${isOverdue ? "fa-exclamation-triangle" : "fa-calendar"}`}

@@ -14,7 +14,9 @@ const setupOphaalRoutes = ({
   // =========================
   router.get("/verify/:token", async (req, res) => {
     try {
-      const user = await Account.findOne({ verificationToken: req.params.token });
+      const user = await Account.findOne({
+        verificationToken: req.params.token,
+      });
       if (!user) {
         return res.status(400).send("Ongeldige link");
       }
@@ -54,7 +56,9 @@ const setupOphaalRoutes = ({
   // =========================
   router.get("/pendingRegistration/:token", async (req, res) => {
     try {
-      const user = await Account.findOne({ registrationToken: req.params.token });
+      const user = await Account.findOne({
+        registrationToken: req.params.token,
+      });
       if (!user || user.registrationTokenExpires < Date.now()) {
         return res.status(400).json({ error: "Ongeldige of verlopen link" });
       }
@@ -174,6 +178,98 @@ const setupOphaalRoutes = ({
         console.error(err);
         res.status(500).json({ error: "Server error" });
       });
+  });
+
+  // =========================
+  // ALL USERS FOR EXPLORE
+  // =========================
+  router.get("/allUsers", authMiddleware, async (req, res) => {
+    try {
+      const users = await GebruikerInfo.find({
+        email: { $ne: req.user.email }, // Exclude current user
+      }).select("email naam about volgers posten streaks followers");
+
+      res.json(users);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
+
+  // =========================
+  // USER INFO BY EMAIL
+  // =========================
+  router.get("/userInfo/:email", authMiddleware, async (req, res) => {
+    try {
+      const userEmail = req.params.email;
+
+      const userInfo = await GebruikerInfo.findOne({ email: userEmail });
+
+      if (!userInfo) {
+        return res.status(404).json({ error: "Gebruiker niet gevonden" });
+      }
+
+      // Check if current user is following this user
+      const isFollowing =
+        userInfo.followers && userInfo.followers.includes(req.user.email);
+
+      res.json({
+        email: userInfo.email,
+        naam: userInfo.naam,
+        about: userInfo.about,
+        leeftijd: userInfo.leeftijd,
+        geslacht: userInfo.geslacht,
+        posten: userInfo.posten,
+        streaks: userInfo.streaks,
+        volgers: userInfo.volgers,
+        isFollowing: isFollowing,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
+
+  // =========================
+  // USER POSTS BY EMAIL
+  // =========================
+  router.get("/userPosts/:email", authMiddleware, async (req, res) => {
+    try {
+      const userEmail = req.params.email;
+
+      const userPosts = await GberuikersPost.find({ email: userEmail });
+
+      if (userPosts.length === 0) {
+        return res.json([]);
+      }
+
+      res.json(userPosts);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
+
+  // =========================
+  // USER OPDRACHTEN BY EMAIL
+  // =========================
+  router.get("/userOpdrachten/:email", authMiddleware, async (req, res) => {
+    try {
+      const userEmail = req.params.email;
+
+      const userOpdrachten = await GebruikersOpdrachten.find({
+        email: userEmail,
+      });
+
+      if (userOpdrachten.length === 0) {
+        return res.json([]);
+      }
+
+      res.json(userOpdrachten);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
   });
 
   return router;

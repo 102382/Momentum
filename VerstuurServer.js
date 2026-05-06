@@ -101,7 +101,11 @@ const setupVerstuurRoutes = ({
       if (!["man", "vrouw"].includes(cleanGeslacht)) {
         return res.status(400).send("Ongeldig geslacht");
       }
-      if (!Number.isInteger(cleanLeeftijd) || cleanLeeftijd < 1 || cleanLeeftijd > 120) {
+      if (
+        !Number.isInteger(cleanLeeftijd) ||
+        cleanLeeftijd < 1 ||
+        cleanLeeftijd > 120
+      ) {
         return res.status(400).send("Ongeldige leeftijd");
       }
 
@@ -118,7 +122,7 @@ const setupVerstuurRoutes = ({
         geslacht: cleanGeslacht,
         posten: 0,
         streaks: 0,
-        volgers: 0
+        volgers: 0,
       });
       await newUser.save();
       res.send("Gegevens opgeslagen!");
@@ -140,7 +144,8 @@ const setupVerstuurRoutes = ({
 
       const user = await Account.findOne({ email });
       if (!user) return res.status(400).send("Gebruiker bestaat niet");
-      if (!user.verified) return res.status(400).send("Verifieer eerst je email");
+      if (!user.verified)
+        return res.status(400).send("Verifieer eerst je email");
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return res.status(400).send("Wachtwoord klopt niet");
@@ -148,7 +153,7 @@ const setupVerstuurRoutes = ({
       const token = jwt.sign(
         { id: user._id, email: user.email },
         process.env.JWT_SECRET,
-        { expiresIn: "7d" }
+        { expiresIn: "7d" },
       );
 
       res.cookie("token", token, {
@@ -201,7 +206,7 @@ const setupVerstuurRoutes = ({
       // Update the post count for the user
       await GebruikerInfo.findOneAndUpdate(
         { email: cleanEmail },
-        { $inc: { posten: 1 } }
+        { $inc: { posten: 1 } },
       );
 
       res.send("Gegevens opgeslagen!");
@@ -219,7 +224,16 @@ const setupVerstuurRoutes = ({
   // =========================
   router.post("/makeOpdracht", async (req, res) => {
     try {
-      const { email, titel, beschrijving, prioriteit, status, deadline, categorie, progress } = req.body;
+      const {
+        email,
+        titel,
+        beschrijving,
+        prioriteit,
+        status,
+        deadline,
+        categorie,
+        progress,
+      } = req.body;
 
       if (
         typeof email !== "string" ||
@@ -228,7 +242,9 @@ const setupVerstuurRoutes = ({
         typeof prioriteit !== "string" ||
         typeof status !== "string" ||
         typeof categorie !== "string" ||
-        (typeof progress !== "number" || progress < 0 || progress > 100)
+        typeof progress !== "number" ||
+        progress < 0 ||
+        progress > 100
       ) {
         return res.status(400).send("Ongeldige invoer");
       }
@@ -241,7 +257,15 @@ const setupVerstuurRoutes = ({
       const cleanCategorie = categorie.trim();
       const cleanDeadline = new Date(deadline);
 
-      if (!cleanEmail || !cleanTitel || !cleanBeschrijving || !cleanPrioriteit || !cleanStatus || !cleanCategorie || isNaN(cleanDeadline.getTime())) {
+      if (
+        !cleanEmail ||
+        !cleanTitel ||
+        !cleanBeschrijving ||
+        !cleanPrioriteit ||
+        !cleanStatus ||
+        !cleanCategorie ||
+        isNaN(cleanDeadline.getTime())
+      ) {
         return res.status(400).send("Vul alle velden in");
       }
 
@@ -294,7 +318,16 @@ const setupVerstuurRoutes = ({
   // =========================
   router.post("/updateOpdracht", async (req, res) => {
     try {
-      const { id, titel, beschrijving, prioriteit, status, deadline, categorie, progress } = req.body;
+      const {
+        id,
+        titel,
+        beschrijving,
+        prioriteit,
+        status,
+        deadline,
+        categorie,
+        progress,
+      } = req.body;
 
       if (!id) {
         return res.status(400).send("ID is vereist");
@@ -309,9 +342,9 @@ const setupVerstuurRoutes = ({
           status,
           deadline,
           categorie,
-          progress
+          progress,
         },
-        { new: true }
+        { new: true },
       );
 
       if (!updatedOpdracht) {
@@ -344,7 +377,7 @@ const setupVerstuurRoutes = ({
 
       if (hasLiked) {
         // Remove like (toggle)
-        post.likes = post.likes.filter(e => e !== cleanEmail);
+        post.likes = post.likes.filter((e) => e !== cleanEmail);
         post.aantalLikes = Math.max(0, post.aantalLikes - 1);
       } else {
         // Add like
@@ -369,13 +402,13 @@ const setupVerstuurRoutes = ({
   router.post("/deletePost", async (req, res) => {
     try {
       const { postId, email } = req.body;
-      
+
       if (!postId || !email) {
         return res.status(400).send("Post ID en email zijn vereist");
       }
 
       const post = await GberuikersPost.findById(postId);
-      
+
       if (!post) {
         return res.status(404).send("Post niet gevonden");
       }
@@ -391,7 +424,7 @@ const setupVerstuurRoutes = ({
       // Update the post count for the user
       await GebruikerInfo.findOneAndUpdate(
         { email: email.trim().toLowerCase() },
-        { $inc: { posten: -1 } }
+        { $inc: { posten: -1 } },
       );
 
       res.json({ success: true });
@@ -407,7 +440,7 @@ const setupVerstuurRoutes = ({
   router.post("/followUser", async (req, res) => {
     try {
       const { targetUserEmail, followerEmail } = req.body;
-      
+
       if (!targetUserEmail || !followerEmail) {
         return res.status(400).send("Email vereist");
       }
@@ -415,8 +448,10 @@ const setupVerstuurRoutes = ({
       const cleanTargetEmail = targetUserEmail.trim().toLowerCase();
       const cleanFollowerEmail = followerEmail.trim().toLowerCase();
 
-      const targetUser = await GebruikerInfo.findOne({ email: cleanTargetEmail });
-      
+      const targetUser = await GebruikerInfo.findOne({
+        email: cleanTargetEmail,
+      });
+
       if (!targetUser) {
         return res.status(404).send("Gebruiker niet gevonden");
       }
@@ -429,7 +464,9 @@ const setupVerstuurRoutes = ({
 
       if (isFollowing) {
         // Unfollow
-        targetUser.followers = targetUser.followers.filter(e => e !== cleanFollowerEmail);
+        targetUser.followers = targetUser.followers.filter(
+          (e) => e !== cleanFollowerEmail,
+        );
         targetUser.volgers = Math.max(0, targetUser.volgers - 1);
       } else {
         // Follow
@@ -439,6 +476,90 @@ const setupVerstuurRoutes = ({
 
       await targetUser.save();
       res.json({ following: !isFollowing, volgers: targetUser.volgers });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // =========================
+  // COMPLETE OPDRACHT
+  // =========================
+  router.post("/completeOpdracht", async (req, res) => {
+    try {
+      const { id } = req.body;
+      const token = req.cookies.token;
+
+      if (!id || !token) {
+        return res
+          .status(400)
+          .json({ message: "ID en authenticatie zijn vereist" });
+      }
+
+      // Get user email from token
+      let userEmail;
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        userEmail = decoded.email.toLowerCase();
+      } catch (err) {
+        return res.status(401).json({ message: "Ongeldige token" });
+      }
+
+      // Update opdracht status to completed and set progress to 100
+      const updatedOpdracht = await GebruikersOpdrachten.findByIdAndUpdate(
+        id,
+        {
+          status: "completed",
+          progress: 100,
+          completedAt: new Date(),
+        },
+        { new: true },
+      );
+
+      if (!updatedOpdracht) {
+        return res.status(404).json({ message: "Opdracht niet gevonden" });
+      }
+
+      // Get user info to check streak status
+      const user = await GebruikerInfo.findOne({ email: userEmail });
+      if (!user) {
+        return res.status(404).json({ message: "Gebruiker niet gevonden" });
+      }
+
+      // Check if 24 hours have passed since last completed task
+      let currentStreaks = user.streaks || 0;
+      if (user.lastCompletedAt) {
+        const lastCompleted = new Date(user.lastCompletedAt);
+        const now = new Date();
+        const hoursDifference = (now - lastCompleted) / (1000 * 60 * 60);
+
+        // If more than 24 hours have passed, reset streaks to 1
+        if (hoursDifference > 24) {
+          currentStreaks = 1;
+        } else {
+          // Otherwise, increment streaks
+          currentStreaks += 1;
+        }
+      } else {
+        // First task completion
+        currentStreaks = 1;
+      }
+
+      // Update user streaks and lastCompletedAt
+      await GebruikerInfo.findOneAndUpdate(
+        { email: userEmail },
+        {
+          streaks: currentStreaks,
+          lastCompletedAt: new Date(),
+        },
+      );
+
+      res.json({
+        success: true,
+        message: "Opdracht afgerond!",
+        updatedOpdracht,
+        streaks: currentStreaks,
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send("Server error");
