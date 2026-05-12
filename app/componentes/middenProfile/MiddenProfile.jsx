@@ -93,8 +93,10 @@ const MiddenProfile = () => {
     mijnComentaar: "",
     email: "",
     naam: "",
+    fotoFile: null,
   });
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [uploadingFoto, setUploadingFoto] = useState(false);
 
   // Update formData wanneer Email en Naam beschikbaar zijn
   useEffect(() => {
@@ -102,14 +104,23 @@ const MiddenProfile = () => {
       mijnComentaar: "",
       email: Email,
       naam: Naam,
+      fotoFile: null,
     });
   }, [Email, Naam]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, files } = e.target;
+    if (name === "foto" && files && files.length > 0) {
+      setFormData({
+        ...formData,
+        fotoFile: files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -117,12 +128,44 @@ const MiddenProfile = () => {
     setLoadingSubmit(true);
 
     try {
+      let fotoURL = null;
+
+      // Upload foto naar Cloudflare als die bestaat
+      if (formData.fotoFile) {
+        setUploadingFoto(true);
+        const fotoFormData = new FormData();
+        fotoFormData.append("file", formData.fotoFile);
+
+        const fotoRes = await fetch("http://localhost:3001/send/uploadFoto", {
+          method: "POST",
+          body: fotoFormData,
+          credentials: "include",
+        });
+
+        if (!fotoRes.ok) {
+          const errorMsg = await fotoRes.text();
+          showMessage(errorMsg || "Fout bij het uploaden van de foto", "error");
+          setLoadingSubmit(false);
+          setUploadingFoto(false);
+          return;
+        }
+
+        const fotoData = await fotoRes.json();
+        fotoURL = fotoData.url;
+        setUploadingFoto(false);
+      }
+
       const res = await fetch("http://localhost:3001/send/makePost", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          mijnComentaar: formData.mijnComentaar,
+          email: Email,
+          naam: Naam,
+          fotoURL: fotoURL,
+        }),
       });
 
       const data = await res.text();
@@ -138,6 +181,7 @@ const MiddenProfile = () => {
         mijnComentaar: "",
         email: Email,
         naam: Naam,
+        fotoFile: null,
       });
       setShowPostFormulier(false);
       setPosten((prev) => (prev || 0) + 1);
@@ -269,18 +313,32 @@ const MiddenProfile = () => {
           <textarea
             placeholder="Wat wil je delen?"
             name="mijnComentaar"
+            value={formData.mijnComentaar}
             onChange={handleChange}
           ></textarea>
-          {/* Dit komt later wel, maar voor nu is het makkelijker om alleen tekst te posten
-          <input
-            type="file"
-            accept="image/*"
-            name="foto"
-            onChange={handleChange}
-          />
-          */}
-          <button type="submit" disabled={loadingSubmit}>
-            {loadingSubmit ? "Posten..." : "Post publiceren"}
+          <div className="fotoUploadContainer">
+            <label htmlFor="foto">
+              <i className="fa-solid fa-image"></i> Foto toevoegen
+            </label>
+            <input
+              type="file"
+              id="foto"
+              accept="image/*"
+              name="foto"
+              onChange={handleChange}
+            />
+            {formData.fotoFile && (
+              <p className="fotoSelected">
+                <i className="fa-solid fa-check"></i> {formData.fotoFile.name}
+              </p>
+            )}
+          </div>
+          <button type="submit" disabled={loadingSubmit || uploadingFoto}>
+            {uploadingFoto
+              ? "Foto uploaden..."
+              : loadingSubmit
+                ? "Posten..."
+                : "Post publiceren"}
           </button>
         </form>
         <button onClick={() => setShowPostFormulier(false)}>Annuleren</button>
@@ -312,17 +370,6 @@ const MiddenProfile = () => {
               </div>
             </div>
             <div className="VolgerInfoLine"></div>
-            <div className="followButtonContainer">
-              <button
-                className={`followBtn ${isFollowing ? "following" : ""}`}
-                onClick={handleFollow}
-              >
-                <i
-                  className={`fa-solid ${isFollowing ? "fa-user-check" : "fa-user-plus"}`}
-                ></i>
-                {isFollowing ? "Volgend" : "Volgen"}
-              </button>
-            </div>
             <div className="OpdrachtenBar">
               <h2>
                 {opdrachten.filter((o) => o.status === "completed").length} van

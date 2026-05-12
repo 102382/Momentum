@@ -24,6 +24,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Statische files serveren (voor foto's)
+app.use(express.static("public"));
+
 // =========================
 // MongoDB Connectie
 // =========================
@@ -74,6 +77,14 @@ const GberuikersPostSceham = new mongoose.Schema({
   aantalLikes: Number,
   aantalComentaars: Number,
   likes: [String], // Array of email addresses of users who liked this post
+  comments: [
+    {
+      email: String,
+      naam: String,
+      text: String,
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 const GebruikersOpdrachtenSchema = new mongoose.Schema({
@@ -151,6 +162,7 @@ const verstuurRoutes = setupVerstuurRoutes({
   bcrypt,
   crypto,
   jwt,
+  authMiddleware,
 });
 
 const ophaalRoutes = setupOphaalRoutes({

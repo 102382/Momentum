@@ -170,8 +170,10 @@
   width: 100%;
   border-radius: 12px;
   margin-bottom: 15px;
-  object-fit: cover;
-  height: 250px;
+  object-fit: contain;
+  object-position: center;
+  height: 400px;
+  background: rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
 }
 
@@ -342,14 +344,6 @@
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
-}
-
-.followButtonContainer {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 .followBtn {
@@ -571,4 +565,47 @@
   background: rgba(255, 255, 255, 0.15);
   color: white;
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Foto Upload Styling */
+.fotoUploadContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.fotoUploadContainer label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: 10px;
+  border: 2px dashed rgba(255, 149, 62, 0.3);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.fotoUploadContainer label:hover {
+  background: rgba(255, 149, 62, 0.1);
+  border-color: var(--primary-color);
+}
+
+.fotoUploadContainer input[type="file"] {
+  display: none;
+}
+
+.fotoSelected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: rgba(76, 175, 80, 1);
+  padding: 8px 12px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  margin: 0;
 }

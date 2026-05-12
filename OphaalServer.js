@@ -272,6 +272,59 @@ const setupOphaalRoutes = ({
     }
   });
 
+  // =========================
+  // FOLLOWING USERS
+  // =========================
+  router.get("/followingUsers/:email", authMiddleware, async (req, res) => {
+    try {
+      const currentUserEmail = req.params.email;
+
+      // Find all users that the current user is following
+      // (where the current user's email is in their followers array)
+      const followingUsers = await GebruikerInfo.find({
+        followers: currentUserEmail,
+      }).select("email naam streaks profileImage");
+
+      if (followingUsers.length === 0) {
+        return res.json([]);
+      }
+
+      res.json(followingUsers);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
+
+  // =========================
+  // GET POST COMMENTS
+  // =========================
+  router.get("/postComments/:postId", authMiddleware, async (req, res) => {
+    try {
+      const post = await GberuikersPost.findById(req.params.postId);
+      if (!post) {
+        return res.json([]);
+      }
+      res.json(post.comments || []);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
+
+  // =========================
+  // GET ALL POSTS
+  // =========================
+  router.get("/allPosts", async (req, res) => {
+    try {
+      const posts = await GberuikersPost.find().sort({ _id: -1 });
+      res.json(posts || []);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
+
   return router;
 };
 

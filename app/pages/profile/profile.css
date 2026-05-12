@@ -8,13 +8,13 @@
 }
 
 .profileContainer > div {
-  width: 90%;
   background-color: rgba(0, 0, 0, 0.7);
   border: 2px solid rgba(255, 255, 255, 0.1);
   flex: 1;
   border-radius: 16px;
   backdrop-filter: blur(10px);
   transition: border-color 0.3s ease;
+  min-width: 0;
 }
 
 .profileContainer > div:nth-child(1),

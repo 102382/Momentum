@@ -16,6 +16,14 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
   const [messageType, setMessageType] = useState("success");
   const [isFollowing, setIsFollowing] = useState(false);
 
+  // Commentaar states
+  const [showCommentsPostId, setShowCommentsPostId] = useState(null);
+  const [showCommentFormPostId, setShowCommentFormPostId] = useState(null);
+  const [comments, setComments] = useState({});
+  const [newComment, setNewComment] = useState("");
+  const [loadingComments, setLoadingComments] = useState(false);
+  const [loadingAddComment, setLoadingAddComment] = useState(false);
+
   const showLocalMessage = (text, type = "success") => {
     if (showMessage) {
       showMessage(text, type);
@@ -166,8 +174,97 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
     }
   };
 
+  const toggleCommentsView = async (postId) => {
+    if (showCommentsPostId === postId) {
+      setShowCommentsPostId(null);
+    } else {
+      setShowCommentsPostId(postId);
+      if (!comments[postId]) {
+        await fetchPostComments(postId);
+      }
+    }
+  };
+
+  const fetchPostComments = async (postId) => {
+    setLoadingComments(true);
+    try {
+      const res = await fetch(
+        `http://localhost:3001/receive/postComments/${postId}`,
+        {
+          credentials: "include",
+        },
+      );
+
+      if (!res.ok) {
+        setComments({ ...comments, [postId]: [] });
+        setLoadingComments(false);
+        return;
+      }
+
+      const data = await res.json();
+      setComments({ ...comments, [postId]: Array.isArray(data) ? data : [] });
+    } catch (err) {
+      console.error(err);
+      setComments({ ...comments, [postId]: [] });
+    }
+    setLoadingComments(false);
+  };
+
+  const handleAddComment = async (postId) => {
+    if (!newComment.trim()) {
+      showLocalMessage("Schrijf een commentaar", "error");
+      return;
+    }
+
+    setLoadingAddComment(true);
+    try {
+      const res = await fetch("http://localhost:3001/send/addComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postId,
+          email: currentUserEmail,
+          text: newComment,
+        }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        showLocalMessage("Fout bij het toevoegen van commentaar", "error");
+        setLoadingAddComment(false);
+        return;
+      }
+
+      const newCommentData = await res.json();
+      setComments({
+        ...comments,
+        [postId]: [...(comments[postId] || []), newCommentData.comment],
+      });
+
+      const updatedPosts = posts.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              aantalComentaars: (post.aantalComentaars || 0) + 1,
+            }
+          : post,
+      );
+      setPosts(updatedPosts);
+
+      setNewComment("");
+      setShowCommentFormPostId(null);
+      showLocalMessage("Commentaar toegevoegd!", "success");
+    } catch (err) {
+      console.error(err);
+      showLocalMessage("Server error", "error");
+    }
+    setLoadingAddComment(false);
+  };
+
   return (
-    <div className="MiddenContainer userProfileViewContainer">
+    <div className="MiddenContainer">
       {!showMessage && (
         <Message text={message} type={messageType} visible={messageVisible} />
       )}
@@ -181,34 +278,33 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
       {loadingInfo ? (
         <Loading text="Profiel laden..." />
       ) : (
-        <div className="userProfileContent">
+        <>
           {/* User Info Section */}
-          <div className="userInfoSection">
-            <div className="userInfoCard">
+          <div className="gebruikerInfo">
+            <div className="profilePhotoSection">
               <div className="bgfoto"></div>
-            </div>
-
-            <div className="userStatsSection">
-              <div className="userNameSection">
+              <div className="userNameDescription">
                 <h2>{userInfo?.naam || "Gebruiker"}</h2>
                 <p>{userInfo?.about || "Geen beschrijving"}</p>
               </div>
+            </div>
 
-              <div className="statsInfo">
+            <div className="statsSection">
+              <div className="VolgerInfo">
                 <div className="stat">
-                  <h3>{userInfo?.posten || "0"}</h3>
+                  <h2>{userInfo?.posten || "0"}</h2>
                   <span>Posten</span>
                 </div>
                 <div className="stat">
-                  <h3>{userInfo?.streaks || "0"}</h3>
+                  <h2>{userInfo?.streaks || "0"}</h2>
                   <span>Streaks</span>
                 </div>
                 <div className="stat">
-                  <h3>{userInfo?.volgers || "0"}</h3>
+                  <h2>{userInfo?.volgers || "0"}</h2>
                   <span>Volgers</span>
                 </div>
               </div>
-              <div className="followLine"></div>
+              <div className="VolgerInfoLine"></div>
               <button
                 className={`followBtn ${isFollowing ? "following" : ""}`}
                 onClick={handleFollow}
@@ -224,27 +320,26 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
           </div>
 
           {/* Posts Section */}
-          <div className="postSection">
-            <h2>Posts van {userInfo?.naam}</h2>
-            {loadingPosts ? (
-              <Loading text="Posts laden..." />
-            ) : posts.length > 0 ? (
-              <div className="postsList">
-                {posts.map((post, index) => (
-                  <div key={post._id} className="postItem">
-                    <div className="postHeader">
-                      <div className="postAuthor">
-                        <div className="authorAvatar"></div>
-                        <div>
-                          <h4>{post.naam}</h4>
-                          <span className="postDate">Recent</span>
-                        </div>
+          <div className="postContainer">
+            <div className="posten">
+              {loadingPosts ? (
+                <Loading text="Posts laden..." />
+              ) : posts.length > 0 ? (
+                posts.map((post, index) => (
+                  <div key={post._id} className="post">
+                    <div className="myComentaar">
+                      <img
+                        src="https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg"
+                        alt=""
+                      />
+                      <div className="Myinfo">
+                        <h2>{post.naam}</h2>
+                        <p>{post.mijnComentaar}</p>
                       </div>
                     </div>
-                    <p className="postContent">{post.mijnComentaar}</p>
-                    <div className="postActions">
+                    <div className="acties">
                       <button
-                        className={`likeBtn ${
+                        className={`${
                           post.likes && post.likes.includes(currentUserEmail)
                             ? "liked"
                             : ""
@@ -254,60 +349,109 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
                         <i className="fa-solid fa-heart"></i>
                         <span>{post.aantalLikes || 0} Likes</span>
                       </button>
+                      <button
+                        className="commentBtn"
+                        onClick={() => toggleCommentsView(post._id)}
+                      >
+                        <i className="fa-solid fa-comment"></i>
+                        <span>{post.aantalComentaars || 0} Reageer</span>
+                      </button>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="noContent">Geen posts beschikbaar</p>
-            )}
-          </div>
 
-          {/* Opdrachten Section */}
-          <div className="opdrachtenSection">
-            <h2>Opdrachten van {userInfo?.naam}</h2>
-            {loadingOpdrachten ? (
-              <Loading text="Opdrachten laden..." />
-            ) : opdrachten.length > 0 ? (
-              <div className="opdrachtenList">
-                {opdrachten.map((opdracht) => (
-                  <div key={opdracht._id} className="opdrachtItem">
-                    <div className="opdrachtHeader">
-                      <h4>{opdracht.titel}</h4>
-                      <span
-                        className={`statusBadge ${opdracht.status?.toLowerCase()}`}
-                      >
-                        {opdracht.status}
-                      </span>
-                    </div>
-                    <p className="opdrachtDescription">
-                      {opdracht.beschrijving}
-                    </p>
-                    <div className="opdrachtMeta">
-                      <span
-                        className="priority"
-                        data-priority={opdracht.prioriteit?.toLowerCase()}
-                      >
-                        {opdracht.prioriteit}
-                      </span>
-                      <div className="progressBar">
-                        <div
-                          className="progressFill"
-                          style={{ width: `${opdracht.progress || 0}%` }}
-                        ></div>
+                    {/* Comments Modal */}
+                    {showCommentsPostId === post._id && (
+                      <div className="commentsModal">
+                        <div className="commentsHeader">
+                          <h3>Commentaren</h3>
+                          <button
+                            className="closeCommentsBtn"
+                            onClick={() => setShowCommentsPostId(null)}
+                          >
+                            <i className="fa-solid fa-times"></i>
+                          </button>
+                        </div>
+
+                        {showCommentFormPostId === post._id ? (
+                          // Show form instead of comments
+                          <div className="commentFormContainer">
+                            <textarea
+                              value={newComment}
+                              onChange={(e) => setNewComment(e.target.value)}
+                              placeholder="Schrijf je commentaar..."
+                              className="commentInput"
+                              autoFocus
+                            />
+                            <div className="commentFormButtons">
+                              <button
+                                className="submitCommentBtn"
+                                onClick={() => handleAddComment(post._id)}
+                                disabled={loadingAddComment}
+                              >
+                                {loadingAddComment
+                                  ? "Verzenden..."
+                                  : "Verzenden"}
+                              </button>
+                              <button
+                                className="cancelCommentBtn"
+                                onClick={() => {
+                                  setShowCommentFormPostId(null);
+                                  setNewComment("");
+                                }}
+                              >
+                                Annuleren
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          // Show comments list
+                          <>
+                            {loadingComments ? (
+                              <Loading text="Commentaren laden..." />
+                            ) : (
+                              <div className="commentsList">
+                                {comments[post._id] &&
+                                comments[post._id].length > 0 ? (
+                                  comments[post._id].map((comment, idx) => (
+                                    <div key={idx} className="commentItem">
+                                      <div className="commentAuthor">
+                                        <img
+                                          src="https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg"
+                                          alt=""
+                                        />
+                                        <div>
+                                          <h4>{comment.naam}</h4>
+                                          <p>{comment.text}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="noComments">
+                                    Nog geen commentaren
+                                  </p>
+                                )}
+                              </div>
+                            )}
+
+                            <button
+                              className="addCommentBtn"
+                              onClick={() => setShowCommentFormPostId(post._id)}
+                            >
+                              <i className="fa-solid fa-plus"></i> Commentaar
+                              toevoegen
+                            </button>
+                          </>
+                        )}
                       </div>
-                      <span className="progressText">
-                        {opdracht.progress || 0}%
-                      </span>
-                    </div>
+                    )}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="noContent">Geen opdrachten beschikbaar</p>
-            )}
+                ))
+              ) : (
+                <p className="noContent">Geen posts beschikbaar</p>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
