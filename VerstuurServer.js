@@ -420,7 +420,7 @@ const setupVerstuurRoutes = ({
         return res.status(404).send("Post niet gevonden");
       }
 
-      // Check if the email matches the post creator
+
       if (post.email.toLowerCase() !== email.trim().toLowerCase()) {
         return res.status(403).send("Je kan alleen je eigen posts verwijderen");
       }
@@ -503,7 +503,7 @@ const setupVerstuurRoutes = ({
           .json({ message: "ID en authenticatie zijn vereist" });
       }
 
-      // Get user email from token
+
       let userEmail;
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -540,9 +540,9 @@ const setupVerstuurRoutes = ({
         const now = new Date();
         const hoursDifference = (now - lastCompleted) / (1000 * 60 * 60);
 
-        // If more than 24 hours have passed, reset streaks to 1
+        // If more than 24 hours have passed, reset streaks to 0
         if (hoursDifference > 24) {
-          currentStreaks = 1;
+          currentStreaks = 0;
         } else {
           // Otherwise, increment streaks
           currentStreaks += 1;
