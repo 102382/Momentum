@@ -16,7 +16,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
   const [currentUserEmail, setCurrentUserEmail] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
-  const [viewMode, setViewMode] = useState("users"); // "users" or "posts"
+  const [viewMode, setViewMode] = useState("users");
   const [allPosts, setAllPosts] = useState([]);
 
   const showMessage = (text, type = "success") => {
@@ -34,7 +34,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
     const filtered = users.filter((user) =>
       user.naam.toLowerCase().includes(value.toLowerCase()),
     );
-    // Sort filtered users so followed users come first
+
     const sorted = filtered.sort((a, b) => {
       const aIsFollowed = a.followers && a.followers.includes(currentUserEmail);
       const bIsFollowed = b.followers && b.followers.includes(currentUserEmail);
