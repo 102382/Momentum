@@ -578,3 +578,53 @@
   margin: 0;
   font-style: italic;
 }
+
+/* ========== Button Complete Styling ========== */
+.btnComplete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    rgba(255, 149, 62, 0.7) 100%
+  );
+  border: 1px solid rgba(255, 149, 62, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.btnComplete:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(255, 149, 62, 0.4);
+  border-color: rgba(255, 149, 62, 0.6);
+}
+
+.btnComplete:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.btnComplete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.3) 0%,
+    rgba(255, 149, 62, 0.1) 100%
+  );
+}
+
+.btnComplete i {
+  transition: transform 0.3s ease;
+}
+
+.btnComplete:hover:not(:disabled) i {
+  transform: rotate(180deg);
+}

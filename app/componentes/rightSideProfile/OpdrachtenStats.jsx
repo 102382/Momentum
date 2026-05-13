@@ -41,6 +41,40 @@ const OpdrachtenStats = () => {
     );
   }
 
+  const handleCompleteOpdracht = async (opdracht) => {
+    try {
+      const res = await fetch("http://localhost:3001/send/completeOpdracht", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ id: opdracht._id }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data.message || "Error");
+        return;
+      }
+
+      // Update the opdrachten list
+      setOpdrachten(opdrachten.map(o =>
+        o._id === opdracht._id ? { ...o, status: "completed", progress: 100 } : o
+      ));
+
+      // Update stats
+      setStats(prev => ({
+        ...prev,
+        completed: prev.completed + 1,
+        pending: prev.pending - 1
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="opdrachtenStatsContainer">
       <div
@@ -69,11 +103,22 @@ const OpdrachtenStats = () => {
               <div key={opdracht._id} className="opdrachtenListItem">
                 <div className="opdrachtenItemContent">
                   <h4 className="opdrachtenItemTitle">{opdracht.titel}</h4>
-                  <p className="opdrachtenItemStatus">
-                    {opdracht.status === "completed"
-                      ? "✓ Voltooid"
-                      : "○ In progress"}
-                  </p>
+                  <div className="opdrachtenstatusContainer">
+                    <p className="opdrachtenItemStatus">
+                      {opdracht.status === "completed"
+                        ? "✓ Voltooid"
+                        : "○ In progress"}
+                    </p>
+                    {opdracht.status !== "completed" ?
+                      <button
+                        className="btnComplete"
+                        title="Voltooi opdracht"
+                        onClick={() => handleCompleteOpdracht(opdracht)}
+                        disabled={opdracht.status === "completed"}
+                      >
+                        <i className="fa-solid fa-spinner"></i>
+                      </button> : null}
+                  </div>
                 </div>
               </div>
             ))}
