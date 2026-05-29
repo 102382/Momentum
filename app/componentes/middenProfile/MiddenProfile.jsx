@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "../middenProfile/middensideProfile.css";
 import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
+import { API_URL } from "../../config";
 
 const MiddenProfile = () => {
   const [message, setMessage] = useState("");
@@ -26,12 +27,13 @@ const MiddenProfile = () => {
   const [Streaks, setStreaks] = useState();
   const [Volgers, setVolgers] = useState();
   const [isFollowing, setIsFollowing] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
   const [loadingInfo, setLoadingInfo] = useState(true);
 
   const [showPostFormulier, setShowPostFormulier] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnInfo", {
+    fetch(`${API_URL}/receive/mijnInfo`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -42,6 +44,7 @@ const MiddenProfile = () => {
         setPosten(data.posten);
         setStreaks(data.streaks);
         setVolgers(data.volgers);
+        setProfileImage(data.profileImage || "");
         setLoadingInfo(false);
       })
       .catch(() => {
@@ -57,7 +60,7 @@ const MiddenProfile = () => {
   const [loadingOpdrachten, setLoadingOpdrachten] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnPosts", {
+    fetch(`${API_URL}/receive/mijnPosts`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -74,7 +77,7 @@ const MiddenProfile = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnOpdrachten", {
+    fetch(`${API_URL}/receive/mijnOpdrachten`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -136,7 +139,7 @@ const MiddenProfile = () => {
         const fotoFormData = new FormData();
         fotoFormData.append("file", formData.fotoFile);
 
-        const fotoRes = await fetch("http://localhost:3001/send/uploadFoto", {
+        const fotoRes = await fetch(`${API_URL}/send/uploadFoto`, {
           method: "POST",
           body: fotoFormData,
           credentials: "include",
@@ -155,7 +158,7 @@ const MiddenProfile = () => {
         setUploadingFoto(false);
       }
 
-      const res = await fetch("http://localhost:3001/send/makePost", {
+      const res = await fetch(`${API_URL}/send/makePost`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +190,7 @@ const MiddenProfile = () => {
       setPosten((prev) => (prev || 0) + 1);
 
       // Refresh posts
-      fetch("http://localhost:3001/receive/mijnPosts", {
+      fetch(`${API_URL}/receive/mijnPosts`, {
         credentials: "include",
       })
         .then((res) => res.json())
@@ -210,7 +213,7 @@ const MiddenProfile = () => {
     try {
       const post = posts[postIndex];
 
-      const res = await fetch("http://localhost:3001/send/likePost", {
+      const res = await fetch(`${API_URL}/send/likePost`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -242,7 +245,7 @@ const MiddenProfile = () => {
 
   const handleFollow = async () => {
     try {
-      const res = await fetch("http://localhost:3001/send/followUser", {
+      const res = await fetch(`${API_URL}/send/followUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -271,7 +274,7 @@ const MiddenProfile = () => {
 
   const handleDeletePost = async (postId, postIndex) => {
     try {
-      const res = await fetch("http://localhost:3001/send/deletePost", {
+      const res = await fetch(`${API_URL}/send/deletePost`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -300,7 +303,7 @@ const MiddenProfile = () => {
   };
 
   return (
-    <div className="MiddenContainer">
+    <div className="MiddenContainer MijnProfielView">
       <Message text={message} type={messageType} visible={messageVisible} />
       <div
         className="postFormulierContainer"
@@ -349,7 +352,14 @@ const MiddenProfile = () => {
       ) : (
         <div className="gebruikerInfo">
           <div>
-            <div className="bgfoto"></div>
+            <div
+              className="bgfoto"
+              style={
+                profileImage
+                  ? { backgroundImage: `url("${encodeURI(profileImage)}")` }
+                  : undefined
+              }
+            ></div>
             <h2>{Naam || "Gebruiker"}</h2>
             <p>{About || "Geen beschrijving"}</p>
           </div>
@@ -437,7 +447,11 @@ const MiddenProfile = () => {
                   </div>
                   <div className="myComentaar">
                     <img
-                      src="https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg"
+                      src={
+                        profileImage
+                          ? encodeURI(profileImage)
+                          : "/images/BackgroundAvatar.jpg"
+                      }
                       alt=""
                     />
                     <div className="Myinfo">

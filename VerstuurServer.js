@@ -143,6 +143,84 @@ const setupVerstuurRoutes = ({
   });
 
   // =========================
+  // GEBRUIKER INFO BIJWERKEN
+  // =========================
+  router.post("/updateInfo", authMiddleware, async (req, res) => {
+    try {
+      const { naam, about, leeftijd, geslacht, profileImage } = req.body;
+
+      const update = {};
+
+      if (naam !== undefined) {
+        if (typeof naam !== "string" || !naam.trim()) {
+          return res.status(400).send("Ongeldige naam");
+        }
+        update.naam = naam.trim();
+      }
+
+      if (about !== undefined) {
+        if (typeof about !== "string") {
+          return res.status(400).send("Ongeldige beschrijving");
+        }
+        update.about = about.trim();
+      }
+
+      if (leeftijd !== undefined && leeftijd !== "") {
+        const cleanLeeftijd = Number(leeftijd);
+        if (
+          !Number.isInteger(cleanLeeftijd) ||
+          cleanLeeftijd < 1 ||
+          cleanLeeftijd > 120
+        ) {
+          return res.status(400).send("Ongeldige leeftijd");
+        }
+        update.leeftijd = cleanLeeftijd;
+      }
+
+      if (geslacht !== undefined) {
+        const cleanGeslacht = String(geslacht).trim();
+        if (!["man", "vrouw"].includes(cleanGeslacht)) {
+          return res.status(400).send("Ongeldig geslacht");
+        }
+        update.geslacht = cleanGeslacht;
+      }
+
+      if (profileImage !== undefined) {
+        if (typeof profileImage !== "string") {
+          return res.status(400).send("Ongeldige profielfoto");
+        }
+        update.profileImage = profileImage;
+      }
+
+      if (Object.keys(update).length === 0) {
+        return res.status(400).send("Niets om bij te werken");
+      }
+
+      const updated = await GebruikerInfo.findOneAndUpdate(
+        { email: req.user.email },
+        update,
+        { new: true },
+      );
+
+      if (!updated) {
+        return res.status(404).send("Gebruiker niet gevonden");
+      }
+
+      res.json({
+        message: "Gegevens bijgewerkt!",
+        naam: updated.naam,
+        about: updated.about,
+        leeftijd: updated.leeftijd,
+        geslacht: updated.geslacht,
+        profileImage: updated.profileImage || "",
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    }
+  });
+
+  // =========================
   // LOGIN
   // =========================
   router.post("/login", async (req, res) => {
@@ -626,12 +704,14 @@ const setupVerstuurRoutes = ({
       cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
+      // Maak de originele bestandsnaam veilig voor gebruik in een URL:
+      // spaties en speciale tekens vervangen door een streepje.
+      const safeOriginal = file.originalname
+        .normalize("NFKD")
+        .replace(/[^\w.\-]+/g, "-")
+        .replace(/-+/g, "-");
       const uniqueName =
-        Date.now() +
-        "-" +
-        Math.round(Math.random() * 1e9) +
-        "-" +
-        file.originalname;
+        Date.now() + "-" + Math.round(Math.random() * 1e9) + "-" + safeOriginal;
       cb(null, uniqueName);
     },
   });

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./rightSideProfile.css";
+import { API_URL } from "../../config";
 
 const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
   const [followingUsers, setFollowingUsers] = useState([]);
@@ -9,7 +10,7 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
 
   useEffect(() => {
     // Fetch current user info
-    fetch("http://localhost:3001/receive/mijnInfo", {
+    fetch(`${API_URL}/receive/mijnInfo`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -26,7 +27,7 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
     if (!currentUserEmail) return;
 
     // Fetch following users
-    fetch(`http://localhost:3001/receive/followingUsers/${currentUserEmail}`, {
+    fetch(`${API_URL}/receive/followingUsers/${currentUserEmail}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -72,7 +73,11 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
             >
               <div className="followingUserInfo">
                 <img
-                  src="https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg"
+                  src={
+                    user.profileImage
+                      ? encodeURI(user.profileImage)
+                      : "/images/BackgroundAvatar.jpg"
+                  }
                   alt={user.naam}
                   className="followingUserImage"
                 />

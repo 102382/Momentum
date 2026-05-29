@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "../userProfile/userProfile.css";
 import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
+import { API_URL } from "../../config";
 
 const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -40,7 +41,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
 
   useEffect(() => {
     // Fetch user info
-    fetch(`http://localhost:3001/receive/userInfo/${user.email}`, {
+    fetch(`${API_URL}/receive/userInfo/${user.email}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -59,7 +60,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
       });
 
     // Fetch user posts
-    fetch(`http://localhost:3001/receive/userPosts/${user.email}`, {
+    fetch(`${API_URL}/receive/userPosts/${user.email}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -77,7 +78,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
       });
 
     // Fetch user opdrachten
-    fetch(`http://localhost:3001/receive/userOpdrachten/${user.email}`, {
+    fetch(`${API_URL}/receive/userOpdrachten/${user.email}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -97,7 +98,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
 
   const handleFollow = async () => {
     try {
-      const res = await fetch("http://localhost:3001/send/followUser", {
+      const res = await fetch(`${API_URL}/send/followUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +145,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
     try {
       const post = posts[postIndex];
 
-      const res = await fetch("http://localhost:3001/send/likePost", {
+      const res = await fetch(`${API_URL}/send/likePost`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -189,7 +190,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
     setLoadingComments(true);
     try {
       const res = await fetch(
-        `http://localhost:3001/receive/postComments/${postId}`,
+        `${API_URL}/receive/postComments/${postId}`,
         {
           credentials: "include",
         },
@@ -218,7 +219,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
 
     setLoadingAddComment(true);
     try {
-      const res = await fetch("http://localhost:3001/send/addComment", {
+      const res = await fetch(`${API_URL}/send/addComment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -282,7 +283,18 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
           {/* User Info Section */}
           <div className="gebruikerInfo">
             <div className="profilePhotoSection">
-              <div className="bgfoto"></div>
+              <div
+                className="bgfoto"
+                style={
+                  userInfo?.profileImage
+                    ? {
+                        backgroundImage: `url("${encodeURI(
+                          userInfo.profileImage,
+                        )}")`,
+                      }
+                    : undefined
+                }
+              ></div>
               <div className="userNameDescription">
                 <h2>{userInfo?.naam || "Gebruiker"}</h2>
                 <p>{userInfo?.about || "Geen beschrijving"}</p>
@@ -329,7 +341,11 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
                   <div key={post._id} className="post">
                     <div className="myComentaar">
                       <img
-                        src="https://www.shutterstock.com/image-photo/close-headshot-portrait-smiling-young-260nw-1916406272.jpg"
+                        src={
+                          userInfo?.profileImage
+                            ? encodeURI(userInfo.profileImage)
+                            : "/images/BackgroundAvatar.jpg"
+                        }
                         alt=""
                       />
                       <div className="Myinfo">

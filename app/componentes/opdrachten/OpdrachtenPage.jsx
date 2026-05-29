@@ -5,13 +5,14 @@ import OpdrachtenCard from "../opdrachten/OpdrachtenCard";
 import OpdrachtenForm from "../opdrachten/OpdrachtenForm";
 import OpdrachtenFilter from "../opdrachten/OpdrachtenFilter";
 import Loading from "../loading/Loading.jsx";
+import { API_URL } from "../../config";
 
 const OpdrachtenPage = () => {
   const [opdrachten, setOpdrachten] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnOpdrachten", {
+    fetch(`${API_URL}/receive/mijnOpdrachten`, {
       credentials: "include",
     })
       .then((res) => res.json())

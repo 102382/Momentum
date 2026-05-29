@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import "../registerformulier/registerFormulier.css";
+import { API_URL } from "../../config";
 const RegisterFormulier = ({ onToggle, isRegistering, showMessage  }) => {
   const [isHidden, setIsHidden] = useState(!isRegistering);
 
@@ -52,7 +53,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    const res = await fetch("http://localhost:3001/send/makeAccount", {
+    const res = await fetch(`${API_URL}/send/makeAccount`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

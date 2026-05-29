@@ -3,6 +3,7 @@ import "../gegevensFormulier/gegevensFormulier.css";
 import { useState, useEffect } from "react";
 import Message from "../message/Message.jsx";
 import { useRouter, useSearchParams } from "next/navigation";
+import { API_URL } from "../../config";
 
 const GegevensFormulier = () => {
   const router = useRouter();
@@ -44,7 +45,7 @@ const GegevensFormulier = () => {
   const getEmail = async (token) => {
     try {
       const res = await fetch(
-        `http://localhost:3001/receive/pendingRegistration/${token}`
+        `${API_URL}/receive/pendingRegistration/${token}`
       );
 
       if (!res.ok) {
@@ -93,7 +94,7 @@ const GegevensFormulier = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:3001/send/gebruikerInfo",
+        `${API_URL}/send/gebruikerInfo`,
         {
           method: "POST",
           headers: {

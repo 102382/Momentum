@@ -172,49 +172,6 @@
   color: var(--primary-color);
 }
 
-.logout-section {
-  padding-top: 15px;
-  margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.logoutBtn {
-  width: 100%;
-  padding: 12px 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 149, 62, 0.2) 0%,
-    rgba(255, 149, 62, 0.1) 100%
-  );
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 149, 62, 0.3);
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.logoutBtn:hover {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    rgba(255, 149, 62, 0.8) 100%
-  );
-  color: white;
-  border-color: var(--primary-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 149, 62, 0.3);
-}
-
-.logoutBtn:active {
-  transform: translateY(0);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .LeftprofileContainer {

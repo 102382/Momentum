@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "../leftSideprofile/leftsideprofile.css";
+import { API_URL } from "../../config";
 
 const LeftSideprofile = () => {
   const [Naam, setNaam] = useState("");
@@ -10,10 +11,11 @@ const LeftSideprofile = () => {
   const [Posten, setPosten] = useState();
   const [Streaks, setStreaks] = useState();
   const [Volgers, setVolgers] = useState();
+  const [profileImage, setProfileImage] = useState("");
   const pathname = usePathname();
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnInfo", {
+    fetch(`${API_URL}/receive/mijnInfo`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -23,34 +25,26 @@ const LeftSideprofile = () => {
         setPosten(data.posten);
         setStreaks(data.streaks);
         setVolgers(data.volgers);
+        setProfileImage(data.profileImage || "");
       })
       .catch(() => console.log("Niet ingelogd"));
   }, []);
 
-  const handleLogout = async () => {
-    await fetch("http://localhost:3001/send/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    window.location.href = "/";
-  };
-
   return (
     <div className="LeftprofileContainer">
-      <div className="logout-section">
-        <button className="logoutBtn" onClick={handleLogout}>
-          <i className="fa-solid fa-sign-out-alt"></i>
-          Uitloggen
-        </button>
-      </div>
-
       <div className="logo-section">
         <h1>Momentum</h1>
       </div>
 
       <div className="MijnSideProfile">
-        <div className="bgFoto"></div>
+        <div
+          className="bgFoto"
+          style={
+            profileImage
+              ? { backgroundImage: `url("${encodeURI(profileImage)}")` }
+              : undefined
+          }
+        ></div>
         <h2>{Naam || "Gebruiker"}</h2>
         <p>{About || "Geen beschrijving"}</p>
       </div>
@@ -58,12 +52,6 @@ const LeftSideprofile = () => {
       <div className="underline"></div>
 
       <div className="SideNavbar">
-        <Link href="/pages/Home">
-          <button className={pathname.includes("/Home") ? "active" : ""}>
-            <i className="fa-solid fa-house"></i>
-            Home
-          </button>
-        </Link>
         <Link href="/pages/profile">
           <button
             className={
@@ -86,6 +74,12 @@ const LeftSideprofile = () => {
           <button className={pathname.includes("/opdrachten") ? "active" : ""}>
             <i className="fa-solid fa-tasks"></i>
             Opdrachten
+          </button>
+        </Link>
+        <Link href="/pages/settings">
+          <button className={pathname.includes("/settings") ? "active" : ""}>
+            <i className="fa-solid fa-gear"></i>
+            Instellingen
           </button>
         </Link>
       </div>

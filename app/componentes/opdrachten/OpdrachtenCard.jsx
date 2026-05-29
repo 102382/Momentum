@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Message from "../message/Message.jsx";
 import OpdrachtenForm from "./OpdrachtenForm.jsx";
 import OpdrachtUpdateForm from "./OpdrachtUpdateForm.jsx";
+import { API_URL } from "../../config";
 
 const OpdrachtenCard = ({ opdracht_id }) => {
   const [message, setMessage] = useState("");
@@ -26,7 +27,7 @@ const OpdrachtenCard = ({ opdracht_id }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnOpdrachten", {
+    fetch(`${API_URL}/receive/mijnOpdrachten`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -89,7 +90,7 @@ const OpdrachtenCard = ({ opdracht_id }) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3001/send/deleteOpdracht", {
+      const res = await fetch(`${API_URL}/send/deleteOpdracht`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +114,7 @@ const OpdrachtenCard = ({ opdracht_id }) => {
 
   const handleCompleteOpdracht = async () => {
     try {
-      const res = await fetch("http://localhost:3001/send/completeOpdracht", {
+      const res = await fetch(`${API_URL}/send/completeOpdracht`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

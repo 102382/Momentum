@@ -2,6 +2,7 @@
 import GegevensFormulier from "../../componentes/gegevensFormulier/GegevensFormulier";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { API_URL } from "../../config";
 
 function ExtraInfoPageContent() {
   const searchParams = useSearchParams();
@@ -10,7 +11,7 @@ function ExtraInfoPageContent() {
 
   useEffect(() => {
     if (!token) return;
-    fetch(`http://localhost:3001/pendingRegistration/${token}`)
+    fetch(`${API_URL}/pendingRegistration/${token}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.email) setEmail(data.email);

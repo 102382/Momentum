@@ -117,6 +117,7 @@ const setupOphaalRoutes = ({
         posten: gebruikerInfo.posten,
         streaks: gebruikerInfo.streaks,
         volgers: gebruikerInfo.volgers,
+        profileImage: gebruikerInfo.profileImage || "",
       });
     } catch (err) {
       res.status(500).send("Server error");
@@ -187,7 +188,9 @@ const setupOphaalRoutes = ({
     try {
       const users = await GebruikerInfo.find({
         email: { $ne: req.user.email }, // Exclude current user
-      }).select("email naam about volgers posten streaks followers");
+      }).select(
+        "email naam about volgers posten streaks followers profileImage",
+      );
 
       res.json(users);
     } catch (err) {
@@ -222,6 +225,7 @@ const setupOphaalRoutes = ({
         posten: userInfo.posten,
         streaks: userInfo.streaks,
         volgers: userInfo.volgers,
+        profileImage: userInfo.profileImage || "",
         isFollowing: isFollowing,
       });
     } catch (err) {

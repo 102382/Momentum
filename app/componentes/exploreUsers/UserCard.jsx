@@ -13,7 +13,14 @@ const UserCard = ({ user, onClick }) => {
       onMouseLeave={() => setIsHovering(false)}
     >
       <div className="userCardImage">
-        <div className="profileImage"></div>
+        <div
+          className="profileImage"
+          style={
+            user.profileImage
+              ? { backgroundImage: `url("${encodeURI(user.profileImage)}")` }
+              : undefined
+          }
+        ></div>
       </div>
       <div className="userCardContent">
         <h3>{user.naam}</h3>

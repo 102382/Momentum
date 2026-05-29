@@ -19,7 +19,9 @@ const PORT = process.env.PORT || 3001;
 // =========================
 // Middleware
 // =========================
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+// origin: true weerkaatst het aanvragende origin, zodat de app ook werkt
+// wanneer iemand hem via je IP-adres opent (niet alleen via localhost).
+app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -65,6 +67,7 @@ const gebruikerInfoSchema = new mongoose.Schema({
   posten: Number,
   streaks: Number,
   volgers: Number,
+  profileImage: String, // URL naar de profielfoto van de gebruiker
   followers: [String], // Array of email addresses of users who follow this user
   lastCompletedAt: Date, // Track last completed task for streak reset logic
 });

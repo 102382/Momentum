@@ -5,6 +5,7 @@ import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
 import UserCard from "../exploreUsers/UserCard.jsx";
 import UserProfileView from "../userProfile/UserProfileView.jsx";
+import { API_URL } from "../../config";
 
 const ExploreUsers = ({ onUserSelect = null }) => {
   const [users, setUsers] = useState([]);
@@ -18,6 +19,14 @@ const ExploreUsers = ({ onUserSelect = null }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [viewMode, setViewMode] = useState("users");
   const [allPosts, setAllPosts] = useState([]);
+
+  // Commentaar states
+  const [showCommentsPostId, setShowCommentsPostId] = useState(null);
+  const [showCommentFormPostId, setShowCommentFormPostId] = useState(null);
+  const [comments, setComments] = useState({});
+  const [newComment, setNewComment] = useState("");
+  const [loadingComments, setLoadingComments] = useState(false);
+  const [loadingAddComment, setLoadingAddComment] = useState(false);
 
   const showMessage = (text, type = "success") => {
     setMessage(text);
@@ -46,7 +55,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnInfo", {
+    fetch(`${API_URL}/receive/mijnInfo`, {
       credentials: "include",
     })
       .then((res) => {
@@ -60,7 +69,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/allUsers", {
+    fetch(`${API_URL}/receive/allUsers`, {
       credentials: "include",
     })
       .then((res) => {
@@ -93,7 +102,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
   useEffect(() => {
     // Fetch all posts when entering posts view mode
     if (viewMode === "posts" && allPosts.length === 0) {
-      fetch("http://localhost:3001/receive/allPosts", {
+      fetch(`${API_URL}/receive/allPosts`, {
         credentials: "include",
       })
         .then((res) => {
@@ -123,6 +132,137 @@ const ExploreUsers = ({ onUserSelect = null }) => {
     if (onUserSelect) {
       onUserSelect(null);
     }
+  };
+
+  const handleLikePost = async (postId) => {
+    try {
+      const res = await fetch(`${API_URL}/send/likePost`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId, email: currentUserEmail }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        showMessage("Fout bij het liken van de post", "error");
+        return;
+      }
+
+      const data = await res.json();
+      setAllPosts((prev) =>
+        prev.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                aantalLikes: data.aantalLikes,
+                likes: data.liked
+                  ? [...(post.likes || []), currentUserEmail]
+                  : (post.likes || []).filter((e) => e !== currentUserEmail),
+              }
+            : post,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+      showMessage("Server error", "error");
+    }
+  };
+
+  const toggleCommentsView = async (postId) => {
+    if (showCommentsPostId === postId) {
+      setShowCommentsPostId(null);
+      setShowCommentFormPostId(null);
+    } else {
+      setShowCommentsPostId(postId);
+      setShowCommentFormPostId(null);
+      if (!comments[postId]) {
+        await fetchPostComments(postId);
+      }
+    }
+  };
+
+  const fetchPostComments = async (postId) => {
+    setLoadingComments(true);
+    try {
+      const res = await fetch(
+        `${API_URL}/receive/postComments/${postId}`,
+        {
+          credentials: "include",
+        },
+      );
+
+      if (!res.ok) {
+        setComments((prev) => ({ ...prev, [postId]: [] }));
+        setLoadingComments(false);
+        return;
+      }
+
+      const data = await res.json();
+      setComments((prev) => ({
+        ...prev,
+        [postId]: Array.isArray(data) ? data : [],
+      }));
+    } catch (err) {
+      console.error(err);
+      setComments((prev) => ({ ...prev, [postId]: [] }));
+    }
+    setLoadingComments(false);
+  };
+
+  const handleAddComment = async (postId) => {
+    if (!newComment.trim()) {
+      showMessage("Schrijf een commentaar", "error");
+      return;
+    }
+
+    setLoadingAddComment(true);
+    try {
+      const res = await fetch(`${API_URL}/send/addComment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postId,
+          email: currentUserEmail,
+          text: newComment,
+        }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        showMessage("Fout bij het toevoegen van commentaar", "error");
+        setLoadingAddComment(false);
+        return;
+      }
+
+      const newCommentData = await res.json();
+      setComments((prev) => ({
+        ...prev,
+        [postId]: [...(prev[postId] || []), newCommentData.comment],
+      }));
+
+      setAllPosts((prev) =>
+        prev.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                aantalComentaars: (post.aantalComentaars || 0) + 1,
+              }
+            : post,
+        ),
+      );
+
+      setNewComment("");
+      setShowCommentFormPostId(null);
+      showMessage("Commentaar toegevoegd!", "success");
+    } catch (err) {
+      console.error(err);
+      showMessage("Server error", "error");
+    }
+    setLoadingAddComment(false);
   };
 
   if (loading) {
@@ -200,20 +340,112 @@ const ExploreUsers = ({ onUserSelect = null }) => {
                 {post.foto && (
                   <img src={post.foto} alt={`Post by ${post.naam}`} />
                 )}
-                <div className="acties">
-                  <button>
-                    <i className="fa-solid fa-heart"></i> {post.aantalLikes || 0}
-                  </button>
-                  <button>
-                    <i className="fa-solid fa-comment"></i> {post.aantalComentaars || 0}
-                  </button>
-                </div>
                 <div className="myComentaar">
                   <div className="Myinfo">
                     <h2>{post.naam}</h2>
                     <p>{post.mijnComentaar}</p>
                   </div>
                 </div>
+                <div className="acties">
+                  <button
+                    className={
+                      post.likes && post.likes.includes(currentUserEmail)
+                        ? "liked"
+                        : ""
+                    }
+                    onClick={() => handleLikePost(post._id)}
+                  >
+                    <i className="fa-solid fa-heart"></i>
+                    <span>{post.aantalLikes || 0} Likes</span>
+                  </button>
+                  <button
+                    className="commentBtn"
+                    onClick={() => toggleCommentsView(post._id)}
+                  >
+                    <i className="fa-solid fa-comment"></i>
+                    <span>{post.aantalComentaars || 0} Reageer</span>
+                  </button>
+                </div>
+
+                {/* Comments Modal */}
+                {showCommentsPostId === post._id && (
+                  <div className="commentsModal">
+                    <div className="commentsHeader">
+                      <h3>Commentaren</h3>
+                      <button
+                        className="closeCommentsBtn"
+                        onClick={() => {
+                          setShowCommentsPostId(null);
+                          setShowCommentFormPostId(null);
+                        }}
+                      >
+                        <i className="fa-solid fa-times"></i>
+                      </button>
+                    </div>
+
+                    {showCommentFormPostId === post._id ? (
+                      <div className="commentFormContainer">
+                        <textarea
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          placeholder="Schrijf je commentaar..."
+                          className="commentInput"
+                          autoFocus
+                        />
+                        <div className="commentFormButtons">
+                          <button
+                            className="submitCommentBtn"
+                            onClick={() => handleAddComment(post._id)}
+                            disabled={loadingAddComment}
+                          >
+                            {loadingAddComment ? "Verzenden..." : "Verzenden"}
+                          </button>
+                          <button
+                            className="cancelCommentBtn"
+                            onClick={() => {
+                              setShowCommentFormPostId(null);
+                              setNewComment("");
+                            }}
+                          >
+                            Annuleren
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {loadingComments ? (
+                          <Loading text="Commentaren laden..." />
+                        ) : (
+                          <div className="commentsList">
+                            {comments[post._id] &&
+                            comments[post._id].length > 0 ? (
+                              comments[post._id].map((comment, idx) => (
+                                <div key={idx} className="commentItem">
+                                  <div className="commentAuthor">
+                                    <div>
+                                      <h4>{comment.naam}</h4>
+                                      <p>{comment.text}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <p className="noComments">Nog geen commentaren</p>
+                            )}
+                          </div>
+                        )}
+
+                        <button
+                          className="addCommentBtn"
+                          onClick={() => setShowCommentFormPostId(post._id)}
+                        >
+                          <i className="fa-solid fa-plus"></i> Commentaar
+                          toevoegen
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             ))
           ) : (

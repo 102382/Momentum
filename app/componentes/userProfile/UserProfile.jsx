@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "../userProfile/userProfile.css";
 import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
+import { API_URL } from "../../config";
 
 const UserProfile = ({ user, onBack, currentUserEmail }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -28,7 +29,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
 
   useEffect(() => {
     // Fetch user info
-    fetch(`http://localhost:3001/receive/userInfo/${user.email}`, {
+    fetch(`${API_URL}/receive/userInfo/${user.email}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -44,7 +45,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
       });
 
     // Fetch user posts
-    fetch(`http://localhost:3001/receive/userPosts/${user.email}`, {
+    fetch(`${API_URL}/receive/userPosts/${user.email}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -59,7 +60,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
       });
 
     // Fetch user opdrachten
-    fetch(`http://localhost:3001/receive/userOpdrachten/${user.email}`, {
+    fetch(`${API_URL}/receive/userOpdrachten/${user.email}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -76,7 +77,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
 
   const handleFollow = async () => {
     try {
-      const res = await fetch("http://localhost:3001/send/followUser", {
+      const res = await fetch(`${API_URL}/send/followUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +120,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
     try {
       const post = posts[postIndex];
 
-      const res = await fetch("http://localhost:3001/send/likePost", {
+      const res = await fetch(`${API_URL}/send/likePost`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

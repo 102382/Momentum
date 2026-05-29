@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import "../loginformulier/Login.css";
 import { useRouter } from "next/navigation";
+import { API_URL } from "../../config";
 
 const Login = ({ onToggle, isRegistering, showMessage }) => {
   const [isHidden, setIsHidden] = useState(isRegistering);
@@ -49,7 +50,7 @@ const Login = ({ onToggle, isRegistering, showMessage }) => {
     formData.email = formData.email.trim().toLowerCase();
 
     try {
-      const res = await fetch("http://localhost:3001/send/login", {
+      const res = await fetch(`${API_URL}/send/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

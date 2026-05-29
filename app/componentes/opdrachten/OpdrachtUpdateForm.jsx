@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./opdrachtenForm.css";
+import { API_URL } from "../../config";
 const OpdrachtUpdateForm = ({ id, onCancel }) => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
@@ -16,7 +17,7 @@ const OpdrachtUpdateForm = ({ id, onCancel }) => {
 
   const getOpdrachtDetails = async (opdId) => {
     try {
-      const res = await fetch(`http://localhost:3001/receive/updatedOpdracht/${opdId}`);
+      const res = await fetch(`${API_URL}/receive/updatedOpdracht/${opdId}`);
       const data = await res.json();
       setFormData(data);
       setLoadingData(false);
@@ -44,7 +45,7 @@ const OpdrachtUpdateForm = ({ id, onCancel }) => {
     setLoadingSubmit(true);
 
     try {
-      const res = await fetch(`http://localhost:3001/send/updateOpdracht`, {
+      const res = await fetch(`${API_URL}/send/updateOpdracht`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

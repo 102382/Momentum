@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import "./opdrachtenForm.css";
 import Message from "../message/Message.jsx";
+import { API_URL } from "../../config";
 
 const OpdrachtenForm = ({ onCancel }) => {
   const [message, setMessage] = useState("");
@@ -21,7 +22,7 @@ const OpdrachtenForm = ({ onCancel }) => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnInfo", {
+    fetch(`${API_URL}/receive/mijnInfo`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -64,7 +65,7 @@ const OpdrachtenForm = ({ onCancel }) => {
     setLoadingSubmit(true);
 
     try {
-      const res = await fetch("http://localhost:3001/send/makeOpdracht", {
+      const res = await fetch(`${API_URL}/send/makeOpdracht`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

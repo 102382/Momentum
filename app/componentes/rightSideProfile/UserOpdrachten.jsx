@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./rightSideProfile.css";
+import { API_URL } from "../../config";
 
 const UserOpdrachten = ({ user, onBack }) => {
   const [opdrachten, setOpdrachten] = useState([]);
@@ -9,7 +10,7 @@ const UserOpdrachten = ({ user, onBack }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/receive/userOpdrachten/${user.email}`, {
+    fetch(`${API_URL}/receive/userOpdrachten/${user.email}`, {
       credentials: "include",
     })
       .then((res) => res.json())

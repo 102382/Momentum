@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./rightSideProfile.css";
+import { API_URL } from "../../config";
 
 const OpdrachtenStats = () => {
   const [opdrachten, setOpdrachten] = useState([]);
@@ -9,7 +10,7 @@ const OpdrachtenStats = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3001/receive/mijnOpdrachten", {
+    fetch(`${API_URL}/receive/mijnOpdrachten`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -43,7 +44,7 @@ const OpdrachtenStats = () => {
 
   const handleCompleteOpdracht = async (opdracht) => {
     try {
-      const res = await fetch("http://localhost:3001/send/completeOpdracht", {
+      const res = await fetch(`${API_URL}/send/completeOpdracht`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
