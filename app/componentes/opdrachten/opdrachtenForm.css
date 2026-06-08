@@ -21,6 +21,31 @@
   animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .opdrachtenForm {
+    max-width: 95%;
+    width: 95vw;
+    max-height: calc(100vh - 150px);
+    padding: 25px 20px;
+    border-radius: 16px;
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+  }
+}
+
+@media (max-width: 480px) {
+  .opdrachtenForm {
+    max-width: 98%;
+    width: 98vw;
+    max-height: calc(100vh - 120px);
+    padding: 20px 15px;
+  }
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;

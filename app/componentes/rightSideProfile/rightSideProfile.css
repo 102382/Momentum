@@ -353,8 +353,19 @@
   margin: 0;
 }
 
-/* Responsive design */
+/* Mobile - Hide Following and Opdrachten containers */
 @media (max-width: 768px) {
+  .followingContainer {
+    display: none;
+  }
+
+  .opdrachtenStatsBox {
+    display: none;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
   .followingContainer {
     min-height: 250px;
   }
@@ -374,6 +385,268 @@
 
   .statValue {
     font-size: 1.2rem;
+  }
+
+  .userOpdrachtenBox {
+    max-height: auto;
+  }
+
+  .userStatsSummary {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .userStatItem {
+    padding: 8px 12px;
+  }
+}
+
+/* Tablet Responsive */
+@media (max-width: 768px) {
+  .rightSideContainer {
+    gap: 15px;
+    padding: 0;
+  }
+
+  .followingContainer {
+    min-height: 200px;
+  }
+
+  .followingList {
+    max-height: 200px;
+    gap: 8px;
+  }
+
+  .followingHeader {
+    padding: 15px;
+  }
+
+  .followingTitle {
+    font-size: 1.1rem;
+  }
+
+  .followingUserCard {
+    padding: 10px 12px;
+  }
+
+  .followingUserImage {
+    width: 35px;
+    height: 35px;
+  }
+
+  .followingUserName {
+    font-size: 0.9rem;
+  }
+
+  .statsSummary {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .statItem {
+    padding: 8px 10px;
+    flex: 1;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+
+  .statValue {
+    font-size: 1.1rem;
+  }
+
+  .opdrachtenStatsBox {
+    padding: 15px;
+    max-height: 100px;
+  }
+
+  .opdrachtenStatsBox:hover {
+    max-height: 400px;
+  }
+
+  .statsTitle {
+    font-size: 1.1rem;
+  }
+
+  .opdrachtenList {
+    max-height: 250px;
+  }
+
+  .userOpdrachtenBox {
+    padding: 15px;
+    max-height: 500px;
+  }
+
+  .userOpdrachtenTitle {
+    font-size: 1.1rem;
+  }
+
+  .userStatsSummary {
+    gap: 10px;
+  }
+
+  .userStatItem {
+    padding: 8px 10px;
+  }
+
+  .userOpdrachtenList {
+    max-height: 300px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .rightSideContainer {
+    gap: 10px;
+  }
+
+  .followingContainer {
+    min-height: 150px;
+  }
+
+  .followingList {
+    max-height: 150px;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .followingHeader {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .followingTitle {
+    font-size: 1rem;
+  }
+
+  .followingUserCard {
+    padding: 8px 10px;
+  }
+
+  .followingUserImage {
+    width: 32px;
+    height: 32px;
+  }
+
+  .followingUserName {
+    font-size: 0.85rem;
+  }
+
+  .followingUserStreaks {
+    padding: 2px 8px;
+  }
+
+  .streakValue,
+  .streakLabel {
+    font-size: 0.8rem;
+  }
+
+  .statsSummary {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .statItem {
+    padding: 6px 8px;
+    flex: 1;
+  }
+
+  .statLabel {
+    font-size: 0.7rem;
+  }
+
+  .statValue {
+    font-size: 1rem;
+  }
+
+  .opdrachtenStatsBox {
+    padding: 12px;
+    max-height: 80px;
+  }
+
+  .opdrachtenStatsBox:hover {
+    max-height: 350px;
+  }
+
+  .statsTitle {
+    font-size: 1rem;
+  }
+
+  .statsHeader {
+    gap: 10px;
+  }
+
+  .opdrachtenList {
+    max-height: 200px;
+    gap: 8px;
+  }
+
+  .opdrachtenListItem {
+    padding: 8px 10px;
+  }
+
+  .opdrachtenItemTitle {
+    font-size: 0.85rem;
+  }
+
+  .opdrachtenItemStatus {
+    font-size: 0.75rem;
+  }
+
+  .userOpdrachtenContainer {
+    gap: 10px;
+  }
+
+  .backButton {
+    margin: 0;
+    padding: 8px 15px;
+    font-size: 0.85rem;
+  }
+
+  .userOpdrachtenBox {
+    padding: 12px;
+    max-height: 400px;
+    gap: 10px;
+  }
+
+  .userOpdrachtenHeader {
+    gap: 10px;
+  }
+
+  .userOpdrachtenTitle {
+    font-size: 1rem;
+  }
+
+  .userStatsSummary {
+    gap: 8px;
+  }
+
+  .userStatItem {
+    padding: 6px 8px;
+  }
+
+  .userOpdrachtenList {
+    max-height: 250px;
+    gap: 8px;
+  }
+
+  .userOpdrachtenItem {
+    padding: 8px 10px;
+  }
+
+  .userOpdrachtenItemTitle {
+    font-size: 0.85rem;
+  }
+
+  .userOpdrachtenItemStatus {
+    font-size: 0.75rem;
+  }
+
+  .btnComplete {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
   }
 }
 

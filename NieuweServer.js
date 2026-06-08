@@ -7,6 +7,8 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 import setupVerstuurRoutes from "./VerstuurServer.js";
 import setupOphaalRoutes from "./OphaalServer.js";
@@ -14,6 +16,10 @@ import setupOphaalRoutes from "./OphaalServer.js";
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: { origin: true, credentials: true },
+});
 const PORT = process.env.PORT || 3001;
 
 // =========================
@@ -166,6 +172,7 @@ const verstuurRoutes = setupVerstuurRoutes({
   crypto,
   jwt,
   authMiddleware,
+  io, // Pass Socket.io instance
 });
 
 const ophaalRoutes = setupOphaalRoutes({
@@ -180,8 +187,19 @@ app.use("/receive", ophaalRoutes);
 app.use("/send", verstuurRoutes);
 
 // =========================
+// Socket.io Connection Handler
+// =========================
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("disconnect", () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
+});
+
+// =========================
 // Start Server
 // =========================
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server running on ${process.env.BACKEND_URL}`);
 });

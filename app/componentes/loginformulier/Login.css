@@ -1,87 +1,177 @@
-.loginForm{
-    text-align: center;
-    margin-right: 8%;
-    width: 28%;
-    display: flex;
-    align-items: center;
+.loginForm {
+  text-align: center;
+  margin-right: 8%;
+  width: 28%;
+  display: flex;
+  align-items: center;
 }
-.loginForm h2{
-    font-size: 2.5rem;
+.loginForm h2 {
+  font-size: 2.5rem;
 }
-.loginForm label{
-    display: block;
-    font-size: 2rem;
-    margin-top: 20px;
-    color: white;
+.loginForm label {
+  display: block;
+  font-size: 2rem;
+  margin-top: 20px;
+  color: white;
 }
-.loginForm input{
-    width: 100%;
-    height: 30px;
-    padding: 10px;
-    border-radius: 100px;
-    margin: 20px auto;
-    background-color: rgba(49, 47, 47, 0.192);
-    border: #ff953e83 2px solid;
-    font-size: large;
-    color: white;
-    transition: 0.3s;
+.loginForm input {
+  width: 100%;
+  height: 30px;
+  padding: 10px;
+  border-radius: 100px;
+  margin: 20px auto;
+  background-color: rgba(49, 47, 47, 0.192);
+  border: #ff953e83 2px solid;
+  font-size: large;
+  color: white;
+  transition: 0.3s;
 }
-.loginForm input:active, .loginForm input:focus{
-    outline: none;
-    border: #ff953e 2px solid;
+.loginForm input:active,
+.loginForm input:focus {
+  outline: none;
+  border: #ff953e 2px solid;
 }
-.loginForm button{
-    width: 70%;
-    padding: 10px;
-    border-radius: 100px;
-    margin: 20px;
-    background-color: #ff953e;
-    border: none;
-    height: 45px;
-    font-size: large;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 1.5rem;
-    position: relative;
-    overflow: hidden;
+.loginForm button {
+  width: 70%;
+  padding: 10px;
+  border-radius: 100px;
+  margin: 20px;
+  background-color: #ff953e;
+  border: none;
+  height: 45px;
+  font-size: large;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 1.5rem;
+  position: relative;
+  overflow: hidden;
 }
-.loginForm button::before{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -110%;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.3);
-    transform: skewX(-45deg);
-    transition: 0.5s;
+.loginForm button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -110%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: skewX(-45deg);
+  transition: 0.5s;
 }
-.loginForm button:hover::before{
-    left: 200%;
+.loginForm button:hover::before {
+  left: 200%;
 }
-.loginForm button:hover{
-    scale: 1.05;
+.loginForm button:hover {
+  scale: 1.05;
 }
 
 #registreren {
-    background-color: rgba(255, 255, 255, 0.11);
-    height: 50px;
-    position: relative;
-    width: 90%;
-    z-index: 2;
-    border: 2px solid #FF943E;
+  background-color: rgba(255, 255, 255, 0.11);
+  height: 50px;
+  position: relative;
+  width: 90%;
+  z-index: 2;
+  border: 2px solid #ff943e;
 }
 
 #registreren::before {
-    content: "";
-    position: absolute;
-    all: unset;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 2px solid #FF943E;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  all: unset;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #ff943e;
+  pointer-events: none;
 }
 
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .loginForm {
+    width: 40%;
+    margin-right: 5%;
+  }
+
+  .loginForm h2 {
+    font-size: 2rem;
+  }
+
+  .loginForm label {
+    font-size: 1.5rem;
+  }
+
+  .loginForm button {
+    font-size: 1.2rem;
+    height: 40px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .loginForm {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .loginForm h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .loginForm label {
+    font-size: 1.2rem;
+    margin-top: 15px;
+  }
+
+  .loginForm input {
+    height: 45px;
+    padding: 12px;
+    margin: 15px auto;
+    font-size: 1rem;
+  }
+
+  .loginForm button {
+    width: 100%;
+    height: 50px;
+    font-size: 1.1rem;
+    margin: 20px 0;
+  }
+
+  #registreren {
+    width: 100%;
+    height: 50px;
+  }
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+  .loginForm {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .loginForm h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .loginForm label {
+    font-size: 1rem;
+    margin-top: 12px;
+  }
+
+  .loginForm input {
+    height: 40px;
+    padding: 10px;
+    margin: 10px auto;
+    font-size: 1rem;
+  }
+
+  .loginForm button {
+    height: 45px;
+    font-size: 1rem;
+    margin: 15px 0;
+  }
+}

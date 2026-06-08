@@ -16,6 +16,7 @@ const setupVerstuurRoutes = ({
   crypto,
   jwt,
   authMiddleware,
+  io, // Socket.io instance for real-time updates
 }) => {
   const router = express.Router();
 
@@ -294,6 +295,20 @@ const setupVerstuurRoutes = ({
         { $inc: { posten: 1 } },
       );
 
+      // 🔴 EMIT: Broadcast new post to all connected clients
+      if (io) {
+        io.emit("new_post", {
+          _id: newPost._id,
+          email: cleanEmail,
+          naam: cleanNaam,
+          mijnComentaar: cleanMijnComentaar,
+          foto: fotoURL || "",
+          aantalLikes: 0,
+          aantalComentaars: 0,
+          likes: [],
+        });
+      }
+
       res.send("Gegevens opgeslagen!");
     } catch (err) {
       if (err.code === 11000) {
@@ -365,6 +380,22 @@ const setupVerstuurRoutes = ({
         progress: progress,
       });
       await newOpdracht.save();
+
+      // 🔴 EMIT: Broadcast new opdracht to all connected clients
+      if (io) {
+        io.emit("new_opdracht", {
+          _id: newOpdracht._id,
+          email: cleanEmail,
+          titel: cleanTitel,
+          beschrijving: cleanBeschrijving,
+          prioriteit: cleanPrioriteit,
+          status: cleanStatus,
+          deadline: cleanDeadline,
+          categorie: cleanCategorie,
+          progress: progress,
+        });
+      }
+
       res.send("Opdracht aangemaakt!");
     } catch (err) {
       if (err.code === 11000) {
@@ -436,6 +467,21 @@ const setupVerstuurRoutes = ({
         return res.status(404).send("Opdracht niet gevonden");
       }
 
+      // 🔴 EMIT: Broadcast opdracht update to all connected clients
+      if (io) {
+        io.emit("opdracht_updated", {
+          _id: updatedOpdracht._id,
+          email: updatedOpdracht.email,
+          titel: updatedOpdracht.titel,
+          beschrijving: updatedOpdracht.beschrijving,
+          prioriteit: updatedOpdracht.prioriteit,
+          status: updatedOpdracht.status,
+          deadline: updatedOpdracht.deadline,
+          categorie: updatedOpdracht.categorie,
+          progress: updatedOpdracht.progress,
+        });
+      }
+
       res.send("Opdracht geüpdatet!");
     } catch (err) {
       console.error(err);
@@ -474,6 +520,17 @@ const setupVerstuurRoutes = ({
       }
 
       await post.save();
+
+      // 🔴 EMIT: Broadcast like status change to all connected clients
+      if (io) {
+        io.emit("post_like_changed", {
+          postId: postId,
+          email: cleanEmail,
+          liked: !hasLiked,
+          aantalLikes: post.aantalLikes,
+        });
+      }
+
       res.json({ liked: !hasLiked, aantalLikes: post.aantalLikes });
     } catch (err) {
       console.error(err);
@@ -560,6 +617,17 @@ const setupVerstuurRoutes = ({
       }
 
       await targetUser.save();
+
+      // 🔴 EMIT: Broadcast follow/unfollow event to all connected clients
+      if (io) {
+        io.emit("follow_status_changed", {
+          targetUserEmail: cleanTargetEmail,
+          followerEmail: cleanFollowerEmail,
+          following: !isFollowing,
+          volgers: targetUser.volgers,
+        });
+      }
+
       res.json({ following: !isFollowing, volgers: targetUser.volgers });
     } catch (err) {
       console.error(err);
@@ -639,6 +707,17 @@ const setupVerstuurRoutes = ({
         },
       );
 
+      // 🔴 EMIT: Broadcast opdracht completion to all connected clients
+      if (io) {
+        io.emit("opdracht_completed", {
+          _id: updatedOpdracht._id,
+          email: userEmail,
+          status: "completed",
+          progress: 100,
+          streaks: currentStreaks,
+        });
+      }
+
       res.json({
         success: true,
         message: "Opdracht afgerond!",
@@ -684,6 +763,15 @@ const setupVerstuurRoutes = ({
       post.aantalComentaars = (post.aantalComentaars || 0) + 1;
 
       await post.save();
+
+      // 🔴 EMIT: Broadcast new comment to all connected clients
+      if (io) {
+        io.emit("post_comment_added", {
+          postId: postId,
+          comment: newComment,
+          aantalComentaars: post.aantalComentaars,
+        });
+      }
 
       res.json({
         success: true,

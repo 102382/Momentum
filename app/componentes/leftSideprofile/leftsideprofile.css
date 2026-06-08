@@ -52,8 +52,7 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: url(/images/BackgroundAvatar.jpg)
-    no-repeat center center / cover;
+  background: url(/images/BackgroundAvatar.jpg) no-repeat center center / cover;
   margin: 0 auto 15px;
   border: 4px solid white;
   box-shadow: 0 0 25px rgba(255, 149, 62, 0.3);
@@ -172,8 +171,8 @@
   color: var(--primary-color);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Tablet and Desktop Responsive */
+@media (max-width: 1024px) {
   .LeftprofileContainer {
     padding: 15px;
     gap: 15px;
@@ -195,5 +194,114 @@
 
   .MijnSideProfile h2 {
     font-size: 1.2rem;
+  }
+}
+
+/* Mobile Responsive - Transform navbar to bottom */
+@media (max-width: 768px) {
+
+  /* Create bottom navbar */
+  .LeftprofileContainer {
+    display: flex !important;
+    min-height: 120px !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 30px !important;
+    padding: 4px 0 4px 0;
+    gap: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background-color: rgba(19, 19, 20, 0.95);
+    border-top: 2px solid rgba(255, 149, 62, 0.3);
+    border-radius: 0;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+  }
+
+  /* Hide all elements except navbar */
+  .logo-section,
+  .MijnSideProfile,
+  .underline {
+    display: none;
+  }
+
+  /* Make navbar horizontal */
+  .SideNavbar {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    flex: 1;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+  }
+
+  .SideNavbar a {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .SideNavbar button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.7rem;
+    border-left: none;
+    border-top: 3px solid transparent;
+    border-radius: 0;
+    flex-direction: column;
+    gap: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .SideNavbar button::before {
+    display: none;
+  }
+
+  .SideNavbar button > i {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+  }
+
+  .SideNavbar button:hover {
+    background-color: rgba(255, 149, 62, 0.1);
+    color: white;
+    transform: none;
+    border-top-color: var(--primary-color);
+  }
+
+  .SideNavbar button:hover > i {
+    color: var(--primary-color);
+    transform: scale(1.15);
+  }
+
+  .SideNavbar button.active {
+    color: white;
+    background-color: rgba(255, 149, 62, 0.15);
+    border-top-color: var(--primary-color);
+    border-left: none;
+  }
+
+  .SideNavbar button.active > i {
+    color: var(--primary-color);
   }
 }

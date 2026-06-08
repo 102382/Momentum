@@ -67,7 +67,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1500;
   padding: 20px;
   animation: fadeIn 0.3s ease;
 }
@@ -152,19 +152,49 @@
    RESPONSIVE
    ================================ */
 
+@media (max-width: 1024px) {
+  .opdrachtenPageContainer {
+    padding: 30px 15px;
+  }
+
+  .opdrachtenHeader h1 {
+    font-size: 2rem;
+  }
+
+  .opdrachtenGrid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    row-gap: 60px;
+  }
+}
+
 @media (max-width: 768px) {
+  .opdrachtenPageContainer {
+    padding: 25px 15px;
+    height: auto;
+    margin-bottom: 70px;
+  }
+
   .headerContent {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .headerText h1 {
-    font-size: 2.5rem;
+  .opdrachtenHeader {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .opdrachtenHeader h1 {
+    font-size: 1.8rem;
   }
 
   .btnCreateOpdracht {
     width: 100%;
     justify-content: center;
+    padding: 12px 20px;
+    font-size: 0.9rem;
   }
 
   .statsGrid {
@@ -173,6 +203,8 @@
 
   .opdrachtenGrid {
     grid-template-columns: 1fr;
+    gap: 20px;
+    row-gap: 50px;
   }
 
   .emptyState {
@@ -191,14 +223,31 @@
 @media (max-width: 480px) {
   .opdrachtenPageContainer {
     padding: 20px 10px;
+    margin-bottom: 70px;
+  }
+
+  .opdrachtenHeader {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .opdrachtenHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .btnCreateOpdracht {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 0.85rem;
   }
 
   .headerText h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .headerText p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .statsGrid {
@@ -213,5 +262,28 @@
     width: 50px;
     height: 50px;
     font-size: 1.4rem;
+  }
+
+  .opdrachtenGrid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    row-gap: 40px;
+  }
+
+  .emptyState {
+    padding: 40px 20px;
+  }
+
+  .emptyState i {
+    font-size: 2.5rem;
+  }
+
+  .emptyState h2 {
+    font-size: 1.3rem;
+  }
+
+  .btnCreateSmall {
+    padding: 10px 20px;
+    font-size: 0.9rem;
   }
 }

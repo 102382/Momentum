@@ -317,24 +317,97 @@
 }
 
 /* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .SettingsContainer {
+    padding: 20px 20px;
+  }
+
+  .settings-banner {
+    gap: 15px;
+    padding: 14px 18px;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+  }
+
+  .banner-info h2 {
+    font-size: 1.15rem;
+  }
+
+  .settings-section {
+    padding: 14px 18px;
+  }
+
+  .setting-row {
+    gap: 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .SettingsContainer {
-    padding: 25px 16px 40px;
+    padding: 20px 15px 100px 15px;
+    overflow-y: auto;
+    height: auto;
+    align-items: flex-start;
+  }
+
+  .settings-page {
+    gap: 12px;
+  }
+
+  .settings-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .settings-header p {
+    font-size: 0.9rem;
   }
 
   .settings-banner {
     flex-direction: column;
     text-align: center;
-    gap: 16px;
+    gap: 14px;
+    padding: 12px 16px;
+  }
+
+  .avatar-wrap {
+    flex-shrink: 1;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .avatar-edit {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+    border-width: 2px;
+  }
+
+  .banner-info h2 {
+    font-size: 1.1rem;
+  }
+
+  .banner-email {
+    font-size: 0.85rem;
+  }
+
+  .section-head h3 {
+    font-size: 1.1rem;
   }
 
   .settings-section {
-    padding: 22px;
+    padding: 14px 16px;
   }
 
   .setting-row {
     flex-direction: column;
     gap: 8px;
+    padding: 8px 0;
   }
 
   .setting-label {
@@ -342,12 +415,115 @@
     padding-top: 0;
   }
 
+  .setting-control input,
+  .setting-control select,
+  .setting-control textarea {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+
   .settings-actions {
     justify-content: stretch;
+    margin-top: 12px;
   }
 
   .saveBtn {
     width: 100%;
     justify-content: center;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+
+  .logoutBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .SettingsContainer {
+    padding: 15px 10px 100px 10px;
+  }
+
+  .settings-page {
+    gap: 10px;
+  }
+
+  .settings-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .settings-header p {
+    font-size: 0.85rem;
+  }
+
+  .settings-banner {
+    gap: 12px;
+    padding: 10px 12px;
+  }
+
+  .avatar {
+    width: 55px;
+    height: 55px;
+    border-width: 3px;
+  }
+
+  .avatar-edit {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+
+  .banner-info h2 {
+    font-size: 1rem;
+  }
+
+  .banner-email {
+    font-size: 0.8rem;
+  }
+
+  .settings-header {
+    gap: 15px;
+  }
+
+  .section-head h3 {
+    font-size: 1rem;
+  }
+
+  .section-head p {
+    font-size: 0.8rem;
+  }
+
+  .settings-section {
+    padding: 12px 12px;
+  }
+
+  .setting-row {
+    padding: 6px 0;
+  }
+
+  .setting-label label {
+    font-size: 0.95rem;
+  }
+
+  .setting-hint {
+    font-size: 0.75rem;
+  }
+
+  .setting-control input,
+  .setting-control select,
+  .setting-control textarea {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .saveBtn {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  .logoutBtn {
+    padding: 10px 18px;
+    font-size: 0.9rem;
   }
 }

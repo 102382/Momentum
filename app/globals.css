@@ -6,7 +6,7 @@
 
 :root {
   /* Kleuren */
-  --primary-color: #FF943E;
+  --primary-color: #ff943e;
   --secondary-color: #995924;
   --text-color: white;
   --dark-color: black;
@@ -43,19 +43,43 @@
   --image-scale: 1.4;
 
   /* Text Shadow */
-  --text-shadow-dark: black 1px 1px 0px, black -1px -1px 0px, black -1px 1px 0px, black 1px -1px 0px;
+  --text-shadow-dark:
+    black 1px 1px 0px, black -1px -1px 0px, black -1px 1px 0px,
+    black 1px -1px 0px;
   --text-shadow-orange: #995924 0px 0 10px;
 }
 
-
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #131314;
-    color: white;
-    font-family: var(--font-primary) !important;
+* {
+  box-sizing: border-box;
 }
 
-body p{
-    font-weight: 600;
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #131314;
+  color: white;
+  font-family: var(--font-primary) !important;
+}
+
+body p {
+  font-weight: 600;
+}
+
+/* Mobile responsiveness for body - add padding bottom for fixed navbar */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 60px;
+  }
+}
+
+/* Ensure images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
 }
