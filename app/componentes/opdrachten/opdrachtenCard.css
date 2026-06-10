@@ -1,0 +1,504 @@
+/* ================================
+   OPDRACHTEN CARD STYLES
+   ================================ */
+
+.opdrachtenCard {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.08) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  border: 1px solid rgba(255, 149, 62, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.opdrachtenCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff943e, #ffb84d);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.opdrachtenCard:hover::before {
+  transform: scaleX(1);
+}
+
+.opdrachtenCard:hover {
+  border-color: rgba(255, 149, 62, 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.15) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  box-shadow: 0 12px 48px rgba(255, 149, 62, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Status variants */
+.opdrachtenCard.completed {
+  border-color: rgba(78, 205, 196, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(78, 205, 196, 0.05) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.opdrachtenCard.in-progress {
+  border-color: rgba(255, 184, 77, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 184, 77, 0.08) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+.opdrachtenCard.pending {
+  border-color: rgba(255, 107, 157, 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 157, 0.05) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 2px solid;
+  border-radius: 8px;
+  background: rgba(255, 149, 62, 0.1);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.btnAction {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 149, 62, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.btnAction:hover {
+  background: rgba(255, 149, 62, 0.2);
+  color: #ff943e;
+}
+
+.btnAction.delete:hover {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+}
+
+/* Card Title */
+.cardTitle {
+  margin: 0 0 12px 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+  word-break: break-word;
+}
+
+/* Card Description */
+.cardDescription {
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* Category Tag */
+.categoryTag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.2) 0%,
+    rgba(255, 149, 62, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 149, 62, 0.3);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+.categoryTag:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.3) 0%,
+    rgba(255, 149, 62, 0.2) 100%
+  );
+  border-color: rgba(255, 149, 62, 0.5);
+}
+
+/* Progress Bar */
+.progressContainer {
+  margin: 20px 0;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+.progressLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.progressLabel span {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.progressValue {
+  font-weight: 600;
+  color: #ff943e;
+}
+
+.progressBar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 149, 62, 0.2);
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff943e, #ffb84d);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 12px rgba(255, 149, 62, 0.4);
+}
+
+/* Card Footer */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 149, 62, 0.1);
+  gap: 12px;
+}
+
+.footerInfo {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+}
+
+.deadlineInfo,
+.rewardInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s ease;
+}
+
+.deadlineInfo:hover,
+.rewardInfo:hover {
+  color: #ff943e;
+}
+
+.deadlineInfo i,
+.rewardInfo i {
+  font-size: 1rem;
+}
+
+.btnComplete {
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(255, 149, 62, 0.5);
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.15) 0%,
+    rgba(255, 149, 62, 0.05) 100%
+  );
+  color: #ff943e;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.btnComplete:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.3) 0%,
+    rgba(255, 149, 62, 0.15) 100%
+  );
+  border-color: #ff943e;
+  box-shadow: 0 6px 20px rgba(255, 149, 62, 0.25);
+  transform: translateY(-2px);
+}
+
+.btnComplete:active {
+  transform: translateY(0);
+}
+
+.completedBadge {
+  padding: 8px 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(78, 205, 196, 0.2) 0%,
+    rgba(78, 205, 196, 0.1) 100%
+  );
+  border: 1px solid rgba(78, 205, 196, 0.4);
+  border-radius: 8px;
+  color: #4ecdc4;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 1024px) {
+  .opdrachtenCard {
+    padding: 20px;
+  }
+
+  .cardTitle {
+    font-size: 1.2rem;
+  }
+
+  .cardDescription {
+    font-size: 0.9rem;
+  }
+
+  .actionButtons {
+    gap: 6px;
+  }
+
+  .btnAction {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .opdrachtenCard {
+    padding: 18px;
+  }
+
+  .cardHeader {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .cardDescription {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .categoryTag {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    margin-bottom: 12px;
+  }
+
+  .statusBadge {
+    padding: 5px 10px;
+    font-size: 0.7rem;
+  }
+
+  .actionButtons {
+    gap: 5px;
+  }
+
+  .btnAction {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .progressContainer {
+    margin: 15px 0;
+    padding: 12px;
+  }
+
+  .progressLabel {
+    font-size: 0.8rem;
+  }
+
+  .progressBar {
+    height: 6px;
+  }
+
+  .cardFooter {
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .footerInfo {
+    gap: 15px;
+  }
+
+  .deadlineInfo,
+  .rewardInfo {
+    font-size: 0.85rem;
+    gap: 6px;
+  }
+
+  .deadlineInfo i,
+  .rewardInfo i {
+    font-size: 0.9rem;
+  }
+
+  .btnComplete {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .completedBadge {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .opdrachtenCard {
+    padding: 14px;
+  }
+
+  .cardHeader {
+    gap: 8px;
+  }
+
+  .cardTitle {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .cardDescription {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+
+  .categoryTag {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+  }
+
+  .statusBadge {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+
+  .actionButtons {
+    gap: 4px;
+  }
+
+  .btnAction {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .progressContainer {
+    margin: 12px 0;
+    padding: 10px;
+  }
+
+  .progressLabel {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+  }
+
+  .progressBar {
+    height: 5px;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding-top: 10px;
+  }
+
+  .footerInfo {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .deadlineInfo,
+  .rewardInfo {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .deadlineInfo i,
+  .rewardInfo i {
+    font-size: 0.85rem;
+  }
+
+  .btnComplete {
+    width: 100%;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .completedBadge {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}

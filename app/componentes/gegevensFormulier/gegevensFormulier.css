@@ -1,0 +1,157 @@
+.formulierContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #1a1a1d, #0f0f10);
+  font-family: var(--font-primary);
+  padding: 20px;
+}
+
+.gegevens-formulier {
+  width: 100%;
+  max-width: 650px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.gegevens-formulier h2 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.informatie {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+label {
+  color: #d1d1d1;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+select {
+  padding: 12px 14px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  transition: 0.25s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #ff8c42;
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+}
+
+.Sumbitbtn {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff8c42, #ff5c2c);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.Sumbitbtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255, 92, 44, 0.3);
+}
+
+/* Tablet Responsive */
+@media (max-width: 768px) {
+  .formulierContainer {
+    padding: 15px;
+    min-height: auto;
+  }
+
+  .gegevens-formulier {
+    padding: 30px 20px;
+    border-radius: 12px;
+  }
+
+  .gegevens-formulier h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .informatie {
+    gap: 15px;
+  }
+
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+
+  input,
+  select {
+    padding: 10px 12px;
+    font-size: 1rem;
+  }
+
+  .Sumbitbtn {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .formulierContainer {
+    padding: 10px;
+  }
+
+  .gegevens-formulier {
+    padding: 20px 15px;
+    border-radius: 10px;
+  }
+
+  .gegevens-formulier h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .informatie {
+    gap: 12px;
+  }
+
+  label {
+    font-size: 0.85rem;
+  }
+
+  input,
+  select {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .Sumbitbtn {
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}

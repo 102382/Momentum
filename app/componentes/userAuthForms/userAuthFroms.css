@@ -1,0 +1,392 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: var(--container-height);
+  width: var(--container-width);
+  border: var(--border-width-md) solid var(--text-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  font-family: var(--font-primary);
+}
+
+.loginBackground {
+  margin-top: var(--spacing-lg);
+  margin-left: var(--spacing-lg);
+}
+
+.loginBackground h1 {
+  font-size: var(--font-size-h1);
+  z-index: 1;
+  text-shadow: var(--text-shadow-orange);
+}
+
+.loginBackground img {
+  position: absolute;
+  left: 0;
+  top: 7%;
+  scale: var(--image-scale);
+}
+
+.loginBackground h1,
+.loginBackground img {
+  animation: fadeIn 0.3s ease-in-out forwards;
+  opacity: 0;
+  animation-delay: 1.3s;
+}
+
+.container::before {
+  content: "";
+  width: var(--gradient-size);
+  height: var(--gradient-size);
+  background-color: var(--primary-color);
+  position: absolute;
+  top: -20%;
+  rotate: -65deg;
+  left: -320%;
+}
+
+.container.byRegistering::before {
+  animation: flip 1.5s ease-in-out forwards;
+  animation-delay: 0.5s;
+}
+
+.container.byRegistering h1 {
+  animation: fadeback 2s ease-in-out forwards;
+}
+
+.container.byRegistering img {
+  animation: fadeuit 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeuit {
+  to {
+    opacity: 0;
+  }
+}
+
+.container.byRegistering img {
+  width: var(--image-width);
+  rotate: 90deg;
+  margin-top: var(--spacing-xl);
+  display: none; /* dit moet later aangepast worden */
+}
+
+.RegisterTitle {
+  font-size: var(--font-size-register-title);
+  animation: none;
+  animation: fadeIn 0.5s ease-in-out forwards;
+  margin-right: var(--spacing-xs);
+  opacity: 1;
+}
+
+.RegisterTitle {
+  text-align: center;
+  margin-right: var(--spacing-md);
+}
+
+.Momentum {
+  position: relative;
+  color: var(--dark-color);
+  font-size: var(--font-size-momentum);
+  text-align: center;
+  text-shadow: var(--text-shadow-dark);
+}
+
+.Momentum::before {
+  content: "";
+  position: absolute;
+  bottom: var(--spacing-sm);
+  left: 0;
+  width: 100%;
+  height: 2%;
+  background-color: var(--dark-color);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+  width: var(--divider-width);
+  margin: auto;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: var(--border-width-sm) solid var(--border-color);
+}
+
+.divider::before {
+  margin-right: var(--spacing-xs);
+}
+
+.divider::after {
+  margin-left: var(--spacing-xs);
+}
+
+#registreren::before {
+  content: "";
+  position: absolute;
+  all: unset;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: var(--border-width-sm) solid var(--primary-color);
+  pointer-events: none;
+}
+
+@keyframes flip {
+  0% {
+    top: -20%;
+    rotate: -65deg;
+    left: -320%;
+  }
+
+  50% {
+    left: -60%;
+    rotate: 0deg;
+    top: -80%;
+  }
+
+  100% {
+    left: -55%;
+    rotate: 115deg;
+  }
+}
+
+@keyframes fadeback {
+  30% {
+    opacity: 0;
+  }
+
+  90% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.container.byLogin::before {
+  animation: flipback 1.5s ease-in-out forwards;
+  animation-delay: 0.5s;
+  left: -55%;
+  rotate: 115deg;
+}
+
+@keyframes flipback {
+  0% {
+    left: -55%;
+    rotate: 115deg;
+  }
+
+  50% {
+    left: -60%;
+    rotate: 0deg;
+    top: -80%;
+  }
+
+  100% {
+    top: -20%;
+    rotate: -65deg;
+    left: -320%;
+  }
+}
+
+.showLogin {
+  opacity: 0;
+  animation: slideInRight 0.3s forwards;
+}
+
+.hideLogin {
+  animation: slideOutRight 0.3s forwards;
+}
+
+.showRegister {
+  animation: slideInLeft 0.3s forwards 2s;
+  opacity: 0;
+}
+
+.hideRegister {
+  animation: slideOutLeft 0.3s forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--translate-distance) * -1));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--translate-distance) * -1));
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(var(--translate-distance));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(var(--translate-distance));
+  }
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 1024px) {
+  .container {
+    width: 85%;
+    height: auto;
+    min-height: var(--container-height);
+  }
+
+  .loginBackground h1 {
+    font-size: 2rem;
+  }
+
+  .RegisterTitle {
+    font-size: 3rem;
+  }
+
+  .Momentum {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    height: auto;
+    min-height: auto;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  .loginBackground {
+    margin: 20px auto;
+    text-align: center;
+    width: 100%;
+  }
+
+  .loginBackground h1 {
+    font-size: 1.8rem;
+    margin: 0 0 15px 0;
+  }
+
+  .loginBackground img {
+    position: static;
+    scale: 1;
+    margin: 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .divider {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .RegisterTitle {
+    font-size: 2.5rem;
+    margin: 15px 0;
+  }
+
+  .Momentum {
+    font-size: 3rem;
+    margin: 15px 0;
+  }
+
+  .container::before {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 98%;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .loginBackground {
+    margin: 15px auto;
+  }
+
+  .loginBackground h1 {
+    font-size: 1.5rem;
+    margin: 0 0 12px 0;
+  }
+
+  .loginBackground img {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  .divider {
+    margin: 15px auto;
+  }
+
+  .divider::before,
+  .divider::after {
+    border-bottom-width: 1px;
+  }
+
+  .RegisterTitle {
+    font-size: 2rem;
+    margin: 12px 0;
+  }
+
+  .Momentum {
+    font-size: 2.5rem;
+    margin: 12px 0;
+  }
+}

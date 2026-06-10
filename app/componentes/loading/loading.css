@@ -1,0 +1,121 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  gap: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 149, 62, 0.05) 0%,
+    rgba(255, 149, 62, 0.02) 100%
+  );
+  border-radius: 16px;
+  border: 1px solid rgba(255, 149, 62, 0.15);
+  backdrop-filter: blur(10px);
+  min-height: 200px;
+}
+
+.spinnerWrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(255, 149, 62, 0.2);
+  border-top: 4px solid rgb(255, 149, 62);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255, 149, 62, 0.3);
+}
+
+.spinner::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 4px solid transparent;
+  border-right: 4px solid rgba(255, 149, 62, 0.5);
+  border-radius: 50%;
+  animation: spin 2s linear infinite reverse;
+}
+
+.glowRing {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid transparent;
+  border-top: 2px solid rgba(255, 149, 62, 0.6);
+  border-right: 2px solid rgba(255, 149, 62, 0.4);
+  border-radius: 50%;
+  animation: spin 3s linear infinite;
+  top: 0;
+  left: 0;
+  filter: drop-shadow(0 0 10px rgba(255, 149, 62, 0.5));
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Variant: Full screen loading */
+.loadingContainer.fullScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  border: none;
+  border-radius: 0;
+  backdrop-filter: blur(5px);
+}
+
+/* Variant: Small inline loading */
+.loadingContainer.small {
+  padding: 20px;
+  min-height: auto;
+}
+
+.loadingContainer.small .spinnerWrapper {
+  width: 40px;
+  height: 40px;
+}
+
+.loadingContainer.small .spinner {
+  border-width: 3px;
+  border-top-width: 3px;
+}
+
+.loadingContainer.small .loadingText {
+  font-size: 0.85rem;
+}
