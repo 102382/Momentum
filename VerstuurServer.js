@@ -295,7 +295,7 @@ const setupVerstuurRoutes = ({
         { $inc: { posten: 1 } },
       );
 
-      // 🔴 EMIT: Broadcast new post to all connected clients
+      //  EMIT: Broadcast new post to all connected clients
       if (io) {
         io.emit("new_post", {
           _id: newPost._id,
@@ -381,7 +381,7 @@ const setupVerstuurRoutes = ({
       });
       await newOpdracht.save();
 
-      // 🔴 EMIT: Broadcast new opdracht to all connected clients
+      // EMIT: Broadcast new opdracht to all connected clients
       if (io) {
         io.emit("new_opdracht", {
           _id: newOpdracht._id,
@@ -467,7 +467,7 @@ const setupVerstuurRoutes = ({
         return res.status(404).send("Opdracht niet gevonden");
       }
 
-      // 🔴 EMIT: Broadcast opdracht update to all connected clients
+      // EMIT: Broadcast opdracht update to all connected clients
       if (io) {
         io.emit("opdracht_updated", {
           _id: updatedOpdracht._id,

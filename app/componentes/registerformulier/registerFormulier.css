@@ -22,7 +22,7 @@
 
 .registerForm input {
   width: 90%;
-  height: 30px;
+  height: 45px;
   padding: 10px;
   border-radius: 100px;
   margin: 20px auto;
@@ -108,13 +108,19 @@
   background-color: black;
 }
 
-/* Tablet Responsive */
-@media (max-width: 1024px) {
-  .registerForm {
-    width: 40%;
-    margin-left: 5%;
-  }
 
+/* Tablet Responsive */
+
+@media (max-width: 1724px) {
+    .Momentum {
+    font-size: 3rem !important;
+    }
+}
+@media (max-width: 1524px) {
+  .registerForm {
+    width: 35%;
+    display: block;
+  }
   .registerForm h2 {
     font-size: 2rem;
   }
@@ -128,16 +134,41 @@
     height: 40px;
   }
 
-  .RegisterTitle {
-    font-size: 3rem;
-    margin-right: 30px;
-  }
-
-  .Momentum {
-    font-size: 4rem;
+  .registerForm input {
+    height: 40px;
+    padding: 12px;
+    margin: 15px auto;
+    font-size: 1rem;
   }
 }
 
+
+@media (max-width: 1223px) {
+  .registerForm {
+    width: 75% !important;
+    display: block;
+    margin: 20px auto;
+  }
+  .registerForm h2 {
+    font-size: 2rem;
+  }
+
+  .registerForm label {
+    font-size: 1.5rem;
+  }
+
+  .registerForm button {
+    font-size: 1.2rem;
+    height: 40px;
+  }
+
+  .registerForm input {
+    height: 40px;
+    padding: 12px;
+    margin: 15px auto;
+    font-size: 1rem;
+  }
+}
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .registerForm {
@@ -147,7 +178,7 @@
   }
 
   .show {
-    display: flex !important;
+    display: block !important;
   }
 
   .registerForm h2 {

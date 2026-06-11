@@ -72,7 +72,8 @@
   width: var(--image-width);
   rotate: 90deg;
   margin-top: var(--spacing-xl);
-  display: none; /* dit moet later aangepast worden */
+  display: none;
+  /* dit moet later aangepast worden */
 }
 
 .RegisterTitle {
@@ -281,29 +282,84 @@
    RESPONSIVE DESIGN
    ================================ */
 
-@media (max-width: 1024px) {
+
+@media (max-width: 1724px) {
   .container {
     width: 85%;
-    height: auto;
-    min-height: var(--container-height);
+    height: 70%;
   }
 
+  .loginBackground img {
+    display: none;
+  }
   .loginBackground h1 {
     font-size: 2rem;
   }
+}
 
-  .RegisterTitle {
-    font-size: 3rem;
+
+@media (max-width: 1524px) {
+  .container {
+    width: 85%;
+    height: 70%;
   }
 
-  .Momentum {
-    font-size: 4rem;
+  .loginBackground img {
+    display: none;
+  }
+
+  .loginBackground h1 {
+    display: none;
+  }
+}
+
+@media (max-width: 1324px) {
+  .container {
+    width: 85%;
+    height: 60%;
+  }
+
+  .loginBackground img {
+    display: none;
+  }
+
+  .loginBackground h1 {
+    display: none;
+  }
+}
+
+@media (max-width: 1224px) {
+  .container {
+    width: 85%;
+    height: 55%;
+  }
+
+  .loginBackground img {
+    display: none;
+  }
+
+  .loginBackground h1 {
+    display: none;
+  }
+}
+
+@media (max-width: 1223px) {
+  .container {
+    width: 85%;
+    height: auto;
+  }
+
+  .container::before {
+    display: none;
+  }
+
+  .loginBackground {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    width: 95%;
     height: auto;
     min-height: auto;
     flex-direction: column;
@@ -312,22 +368,7 @@
   }
 
   .loginBackground {
-    margin: 20px auto;
-    text-align: center;
-    width: 100%;
-  }
-
-  .loginBackground h1 {
-    font-size: 1.8rem;
-    margin: 0 0 15px 0;
-  }
-
-  .loginBackground img {
-    position: static;
-    scale: 1;
-    margin: 0;
-    max-width: 100%;
-    height: auto;
+    display: none;
   }
 
   .divider {
@@ -367,8 +408,7 @@
   }
 
   .loginBackground img {
-    max-width: 80%;
-    margin: 0 auto;
+    display: none;
   }
 
   .divider {
