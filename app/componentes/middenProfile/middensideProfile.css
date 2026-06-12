@@ -713,6 +713,79 @@
   display: none;
 }
 
+/* Comentaars sectie */
+.MijnProfielView .comentaarsLijst {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.MijnProfielView .comentaarsLijst h3 {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.MijnProfielView .comentaarItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.MijnProfielView .comentaarAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 149, 62, 0.2);
+  border: 1px solid rgba(255, 149, 62, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--primary-color);
+  font-size: 0.75rem;
+}
+
+.MijnProfielView .comentaarInhoud {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.MijnProfielView .comentaarNaam {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.MijnProfielView .comentaarInhoud p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.MijnProfielView .geenComentaars,
+.MijnProfielView .comentaarsLaden {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  padding: 10px 0;
+  margin: 0;
+}
+
 .MijnProfielView .fotoSelected {
   display: flex;
   align-items: center;

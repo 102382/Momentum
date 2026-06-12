@@ -272,6 +272,30 @@ const MiddenProfile = () => {
     }
   };
 
+  const [openCommentsPostId, setOpenCommentsPostId] = useState(null);
+  const [postComments, setPostComments] = useState({});
+  const [loadingComments, setLoadingComments] = useState(false);
+
+  const handleToggleComments = async (postId) => {
+    if (openCommentsPostId === postId) {
+      setOpenCommentsPostId(null);
+      return;
+    }
+    setOpenCommentsPostId(postId);
+    if (postComments[postId]) return;
+    setLoadingComments(true);
+    try {
+      const res = await fetch(`${API_URL}/receive/postComments/${postId}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setPostComments((prev) => ({ ...prev, [postId]: Array.isArray(data) ? data : [] }));
+    } catch {
+      setPostComments((prev) => ({ ...prev, [postId]: [] }));
+    }
+    setLoadingComments(false);
+  };
+
   const handleDeletePost = async (postId, postIndex) => {
     try {
       const res = await fetch(`${API_URL}/send/deletePost`, {
@@ -433,7 +457,12 @@ const MiddenProfile = () => {
                     >
                       <i className="fa-solid fa-heart"></i> {post.aantalLikes}
                     </button>
-                    <button>
+                    <button
+                      onClick={() => handleToggleComments(post._id)}
+                      style={{
+                        color: openCommentsPostId === post._id ? "var(--primary-color)" : "inherit",
+                      }}
+                    >
                       <i className="fa-solid fa-comment"></i>{" "}
                       {post.aantalComentaars}
                     </button>
@@ -459,6 +488,30 @@ const MiddenProfile = () => {
                       <p>{post.mijnComentaar}</p>
                     </div>
                   </div>
+                  {openCommentsPostId === post._id && (
+                    <div className="comentaarsLijst">
+                      <h3>
+                        <i className="fa-solid fa-comments"></i> Comentaars
+                      </h3>
+                      {loadingComments && !postComments[post._id] ? (
+                        <p className="comentaarsLaden">Laden...</p>
+                      ) : postComments[post._id] && postComments[post._id].length > 0 ? (
+                        postComments[post._id].map((comment, ci) => (
+                          <div className="comentaarItem" key={ci}>
+                            <div className="comentaarAvatar">
+                              <i className="fa-solid fa-user"></i>
+                            </div>
+                            <div className="comentaarInhoud">
+                              <span className="comentaarNaam">{comment.naam}</span>
+                              <p>{comment.text}</p>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="geenComentaars">Nog geen comentaars.</p>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))
             )}
