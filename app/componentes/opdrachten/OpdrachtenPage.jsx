@@ -26,6 +26,15 @@ const OpdrachtenPage = () => {
       });
   }, []);
 
+  const refreshOpdrachten = () => {
+    fetch(`${API_URL}/receive/mijnOpdrachten`, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => setOpdrachten(Array.isArray(data) ? data : []))
+      .catch(() => console.log("Niet ingelogd"));
+  };
+
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState("all");
 
@@ -59,6 +68,7 @@ const OpdrachtenPage = () => {
         <div className="modalOverlay" onClick={() => setShowForm(false)}>
           <OpdrachtenForm
             onCancel={() => setShowForm(false)}
+            onSuccess={() => { setShowForm(false); refreshOpdrachten(); }}
           />
         </div>
       )}

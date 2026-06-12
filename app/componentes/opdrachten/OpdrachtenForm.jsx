@@ -4,7 +4,7 @@ import "./opdrachtenForm.css";
 import Message from "../message/Message.jsx";
 import { API_URL } from "../../config";
 
-const OpdrachtenForm = ({ onCancel }) => {
+const OpdrachtenForm = ({ onCancel, onSuccess }) => {
   const [message, setMessage] = useState("");
   const [messageVisible, setMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState("success");
@@ -93,7 +93,8 @@ const OpdrachtenForm = ({ onCancel }) => {
         progress: 0,
       });
       setLoadingSubmit(false);
-      onCancel();
+      if (onSuccess) onSuccess();
+      else onCancel();
     } catch (err) {
       console.error(err);
       showMessage("Server error", "error");
