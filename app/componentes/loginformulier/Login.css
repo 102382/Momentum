@@ -116,7 +116,6 @@
 @media (max-width: 1524px) {
   .loginForm {
     width: 35%;
-    display: block;
   }
 
   .loginForm h2 {
