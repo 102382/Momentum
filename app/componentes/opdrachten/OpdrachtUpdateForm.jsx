@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./opdrachtenForm.css";
 import { API_URL } from "../../config";
-const OpdrachtUpdateForm = ({ id, onCancel }) => {
+const OpdrachtUpdateForm = ({ id, onCancel, onSuccess }) => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
 
@@ -57,7 +57,8 @@ const OpdrachtUpdateForm = ({ id, onCancel }) => {
         throw new Error("Failed to update opdracht");
       }
 
-      onCancel();
+      if (onSuccess) onSuccess(formData);
+      else onCancel();
     } catch (error) {
       console.error("Error updating opdracht:", error);
     } finally {

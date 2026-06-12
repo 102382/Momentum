@@ -340,6 +340,11 @@ const ExploreUsers = ({ onUserSelect = null }) => {
                 {post.foto && (
                   <img src={post.foto} alt={`Post by ${post.naam}`} />
                 )}
+                {post.video && (
+                  <video controls>
+                    <source src={post.video} />
+                  </video>
+                )}
                 <div className="myComentaar">
                   <div className="Myinfo">
                     <h2>{post.naam}</h2>

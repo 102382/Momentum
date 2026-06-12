@@ -129,6 +129,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
         ...userInfo,
         volgers: data.volgers,
       });
+      window.dispatchEvent(new CustomEvent("followingChanged"));
       showLocalMessage(
         data.following
           ? "Je volgt deze gebruiker!"

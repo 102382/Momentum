@@ -260,7 +260,7 @@ const setupVerstuurRoutes = ({
   // =========================
   router.post("/makePost", async (req, res) => {
     try {
-      const { email, naam, mijnComentaar, fotoURL } = req.body;
+      const { email, naam, mijnComentaar, fotoURL, videoURL } = req.body;
 
       if (
         typeof email !== "string" ||
@@ -283,6 +283,7 @@ const setupVerstuurRoutes = ({
         naam: cleanNaam,
         mijnComentaar: cleanMijnComentaar,
         foto: fotoURL || "",
+        video: videoURL || "",
         aantalLikes: 0,
         aantalComentaars: 0,
         likes: [],
@@ -303,6 +304,7 @@ const setupVerstuurRoutes = ({
           naam: cleanNaam,
           mijnComentaar: cleanMijnComentaar,
           foto: fotoURL || "",
+          video: videoURL || "",
           aantalLikes: 0,
           aantalComentaars: 0,
           likes: [],
@@ -830,6 +832,57 @@ const setupVerstuurRoutes = ({
 
       const imageUrl = `/images/${req.file.filename}`;
       res.json({ success: true, url: imageUrl });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error", message: err.message });
+    }
+  });
+
+  // =========================
+  // VIDEO UPLOAD (Lokaal)
+  // =========================
+  const videoStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const uploadDir = path.join(__dirname, "public", "videos");
+      cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+      const safeOriginal = file.originalname
+        .normalize("NFKD")
+        .replace(/[^\w.\-]+/g, "-")
+        .replace(/-+/g, "-");
+      const uniqueName =
+        Date.now() + "-" + Math.round(Math.random() * 1e9) + "-" + safeOriginal;
+      cb(null, uniqueName);
+    },
+  });
+
+  const uploadVideo = multer({
+    storage: videoStorage,
+    limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max
+    fileFilter: (req, file, cb) => {
+      const allowedMimes = [
+        "video/mp4",
+        "video/webm",
+        "video/ogg",
+        "video/quicktime",
+      ];
+      if (allowedMimes.includes(file.mimetype)) {
+        cb(null, true);
+      } else {
+        cb(new Error("Alleen video's zijn toegestaan (mp4, webm, ogg, mov)"));
+      }
+    },
+  });
+
+  router.post("/uploadVideo", uploadVideo.single("file"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "Geen bestand geupload" });
+      }
+
+      const videoUrl = `/videos/${req.file.filename}`;
+      res.json({ success: true, url: videoUrl });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Server error", message: err.message });

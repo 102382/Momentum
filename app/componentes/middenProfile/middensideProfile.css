@@ -185,6 +185,8 @@
   margin: 15px 0;
   padding-bottom: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .MijnProfielView .acties button {
@@ -234,6 +236,8 @@
   align-items: flex-start;
   gap: 12px;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .MijnProfielView .myComentaar > img {
@@ -711,6 +715,36 @@
 
 .MijnProfielView .fotoUploadContainer input[type="file"] {
   display: none;
+}
+
+/* Video in post */
+.MijnProfielView .post > video {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: -35px;
+  max-height: 400px;
+  background: rgba(0, 0, 0, 0.4);
+  object-fit: contain;
+}
+
+/* Media upload containers naast elkaar */
+.MijnProfielView .mediaUploadContainer {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.MijnProfielView .mediaUploadContainer .fotoUploadContainer {
+  flex: 1;
+  min-width: 140px;
+  margin: 0;
+}
+
+.MijnProfielView .uploadDisabled {
+  opacity: 0.4;
+  cursor: not-allowed !important;
+  pointer-events: none;
 }
 
 /* Comentaars sectie */

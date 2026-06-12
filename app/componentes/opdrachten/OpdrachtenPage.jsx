@@ -84,6 +84,7 @@ const OpdrachtenPage = () => {
               <OpdrachtenCard
                 key={opdracht._id}
                 opdracht_id={opdracht._id}
+                onDelete={(id) => setOpdrachten((prev) => prev.filter((o) => o._id !== id))}
               />
             ))}
           </div>

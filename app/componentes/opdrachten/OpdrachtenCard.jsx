@@ -6,7 +6,7 @@ import OpdrachtenForm from "./OpdrachtenForm.jsx";
 import OpdrachtUpdateForm from "./OpdrachtUpdateForm.jsx";
 import { API_URL } from "../../config";
 
-const OpdrachtenCard = ({ opdracht_id }) => {
+const OpdrachtenCard = ({ opdracht_id, onDelete }) => {
   const [message, setMessage] = useState("");
   const [messageVisible, setMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState("success");
@@ -105,7 +105,7 @@ const OpdrachtenCard = ({ opdracht_id }) => {
         return;
       }
 
-      showMessage("Opdracht verwijderd!", "success");
+      if (onDelete) onDelete(opdracht_id);
     } catch (err) {
       console.error(err);
       showMessage("Server error", "error");
@@ -143,7 +143,14 @@ const OpdrachtenCard = ({ opdracht_id }) => {
       {showForm && (
         <div className="modalOverlay" onClick={() => setShowForm(false)}>
           <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-            <OpdrachtUpdateForm id={_id} onCancel={() => setShowForm(false)} />
+            <OpdrachtUpdateForm
+              id={_id}
+              onCancel={() => setShowForm(false)}
+              onSuccess={(updatedData) => {
+                setOpdracht((prev) => ({ ...prev, ...updatedData }));
+                setShowForm(false);
+              }}
+            />
           </div>
         </div>
       )}

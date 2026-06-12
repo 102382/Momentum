@@ -97,9 +97,11 @@ const MiddenProfile = () => {
     email: "",
     naam: "",
     fotoFile: null,
+    videoFile: null,
   });
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [uploadingFoto, setUploadingFoto] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
 
   // Update formData wanneer Email en Naam beschikbaar zijn
   useEffect(() => {
@@ -108,21 +110,18 @@ const MiddenProfile = () => {
       email: Email,
       naam: Naam,
       fotoFile: null,
+      videoFile: null,
     });
   }, [Email, Naam]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "foto" && files && files.length > 0) {
-      setFormData({
-        ...formData,
-        fotoFile: files[0],
-      });
+      setFormData({ ...formData, fotoFile: files[0], videoFile: null });
+    } else if (name === "video" && files && files.length > 0) {
+      setFormData({ ...formData, videoFile: files[0], fotoFile: null });
     } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+      setFormData({ ...formData, [name]: value });
     }
   };
 
@@ -132,8 +131,8 @@ const MiddenProfile = () => {
 
     try {
       let fotoURL = null;
+      let videoURL = null;
 
-      // Upload foto naar Cloudflare als die bestaat
       if (formData.fotoFile) {
         setUploadingFoto(true);
         const fotoFormData = new FormData();
@@ -158,6 +157,30 @@ const MiddenProfile = () => {
         setUploadingFoto(false);
       }
 
+      if (formData.videoFile) {
+        setUploadingVideo(true);
+        const videoFormData = new FormData();
+        videoFormData.append("file", formData.videoFile);
+
+        const videoRes = await fetch(`${API_URL}/send/uploadVideo`, {
+          method: "POST",
+          body: videoFormData,
+          credentials: "include",
+        });
+
+        if (!videoRes.ok) {
+          const errorMsg = await videoRes.text();
+          showMessage(errorMsg || "Fout bij het uploaden van de video", "error");
+          setLoadingSubmit(false);
+          setUploadingVideo(false);
+          return;
+        }
+
+        const videoData = await videoRes.json();
+        videoURL = videoData.url;
+        setUploadingVideo(false);
+      }
+
       const res = await fetch(`${API_URL}/send/makePost`, {
         method: "POST",
         headers: {
@@ -168,6 +191,7 @@ const MiddenProfile = () => {
           email: Email,
           naam: Naam,
           fotoURL: fotoURL,
+          videoURL: videoURL,
         }),
       });
 
@@ -185,6 +209,7 @@ const MiddenProfile = () => {
         email: Email,
         naam: Naam,
         fotoFile: null,
+        videoFile: null,
       });
       setShowPostFormulier(false);
       setPosten((prev) => (prev || 0) + 1);
@@ -343,29 +368,52 @@ const MiddenProfile = () => {
             value={formData.mijnComentaar}
             onChange={handleChange}
           ></textarea>
-          <div className="fotoUploadContainer">
-            <label htmlFor="foto">
-              <i className="fa-solid fa-image"></i> Foto toevoegen
-            </label>
-            <input
-              type="file"
-              id="foto"
-              accept="image/*"
-              name="foto"
-              onChange={handleChange}
-            />
-            {formData.fotoFile && (
-              <p className="fotoSelected">
-                <i className="fa-solid fa-check"></i> {formData.fotoFile.name}
-              </p>
-            )}
+          <div className="mediaUploadContainer">
+            <div className="fotoUploadContainer">
+              <label htmlFor="foto" className={formData.videoFile ? "uploadDisabled" : ""}>
+                <i className="fa-solid fa-image"></i> Foto toevoegen
+              </label>
+              <input
+                type="file"
+                id="foto"
+                accept="image/*"
+                name="foto"
+                onChange={handleChange}
+                disabled={!!formData.videoFile}
+              />
+              {formData.fotoFile && (
+                <p className="fotoSelected">
+                  <i className="fa-solid fa-check"></i> {formData.fotoFile.name}
+                </p>
+              )}
+            </div>
+            <div className="fotoUploadContainer">
+              <label htmlFor="video" className={formData.fotoFile ? "uploadDisabled" : ""}>
+                <i className="fa-solid fa-video"></i> Video toevoegen
+              </label>
+              <input
+                type="file"
+                id="video"
+                accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                name="video"
+                onChange={handleChange}
+                disabled={!!formData.fotoFile}
+              />
+              {formData.videoFile && (
+                <p className="fotoSelected">
+                  <i className="fa-solid fa-check"></i> {formData.videoFile.name}
+                </p>
+              )}
+            </div>
           </div>
-          <button type="submit" disabled={loadingSubmit || uploadingFoto}>
+          <button type="submit" disabled={loadingSubmit || uploadingFoto || uploadingVideo}>
             {uploadingFoto
               ? "Foto uploaden..."
-              : loadingSubmit
-                ? "Posten..."
-                : "Post publiceren"}
+              : uploadingVideo
+                ? "Video uploaden..."
+                : loadingSubmit
+                  ? "Posten..."
+                  : "Post publiceren"}
           </button>
         </form>
         <button onClick={() => setShowPostFormulier(false)}>Annuleren</button>
@@ -444,6 +492,11 @@ const MiddenProfile = () => {
                 <div className="post" key={index}>
                   {post.foto && (
                     <img src={post.foto} alt={`Post ${index + 1}`} />
+                  )}
+                  {post.video && (
+                    <video controls>
+                      <source src={post.video} />
+                    </video>
                   )}
                   <div className="acties">
                     <button

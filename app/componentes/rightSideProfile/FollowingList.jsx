@@ -7,6 +7,7 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
   const [followingUsers, setFollowingUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUserEmail, setCurrentUserEmail] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     // Fetch current user info
@@ -26,7 +27,6 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
   useEffect(() => {
     if (!currentUserEmail) return;
 
-    // Fetch following users
     fetch(`${API_URL}/receive/followingUsers/${currentUserEmail}`, {
       credentials: "include",
     })
@@ -40,7 +40,13 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
         setFollowingUsers([]);
         setLoading(false);
       });
-  }, [currentUserEmail]);
+  }, [currentUserEmail, refreshKey]);
+
+  useEffect(() => {
+    const handler = () => setRefreshKey((k) => k + 1);
+    window.addEventListener("followingChanged", handler);
+    return () => window.removeEventListener("followingChanged", handler);
+  }, []);
 
   if (loading) {
     return (

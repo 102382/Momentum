@@ -82,6 +82,7 @@ const GberuikersPostSceham = new mongoose.Schema({
   email: String,
   naam: String,
   foto: String,
+  video: String,
   mijnComentaar: String,
   aantalLikes: Number,
   aantalComentaars: Number,
