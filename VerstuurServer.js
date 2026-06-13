@@ -296,7 +296,6 @@ const setupVerstuurRoutes = ({
         { $inc: { posten: 1 } },
       );
 
-      //  EMIT: Broadcast new post to all connected clients
       if (io) {
         io.emit("new_post", {
           _id: newPost._id,
@@ -523,7 +522,6 @@ const setupVerstuurRoutes = ({
 
       await post.save();
 
-      // 🔴 EMIT: Broadcast like status change to all connected clients
       if (io) {
         io.emit("post_like_changed", {
           postId: postId,
@@ -620,7 +618,6 @@ const setupVerstuurRoutes = ({
 
       await targetUser.save();
 
-      // 🔴 EMIT: Broadcast follow/unfollow event to all connected clients
       if (io) {
         io.emit("follow_status_changed", {
           targetUserEmail: cleanTargetEmail,
