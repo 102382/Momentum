@@ -360,11 +360,13 @@
 
 @media (max-width: 768px) {
   .container {
+    width: 85% !important;
     height: auto;
     min-height: auto;
     flex-direction: column;
     justify-content: center;
     border-radius: 12px;
+    max-height: 550px;
   }
 
   .loginBackground {

@@ -107,7 +107,7 @@
     height: 40px;
   }
   .loginForm input {
-    height: 40px;
+    height: 20px;
     padding: 12px;
     margin: 15px auto;
     font-size: 1rem;
@@ -131,7 +131,7 @@
     height: 40px;
   }
   .loginForm input {
-    height: 40px;
+    height: 20px;
     padding: 12px;
     margin: 15px auto;
     font-size: 1rem;
@@ -158,7 +158,7 @@
   }
 
   .loginForm input {
-    height: 45px;
+    height: 25px;
     padding: 12px;
     margin: 15px auto;
     font-size: 1rem;
@@ -195,7 +195,7 @@
   }
 
   .loginForm input {
-    height: 40px;
+    height: 20px;
     padding: 10px;
     margin: 10px auto;
     font-size: 1rem;
