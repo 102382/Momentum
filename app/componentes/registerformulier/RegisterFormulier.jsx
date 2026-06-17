@@ -5,7 +5,6 @@ import { API_URL } from "../../config";
 const RegisterFormulier = ({ onToggle, isRegistering, showMessage  }) => {
   const [isHidden, setIsHidden] = useState(!isRegistering);
 
-  // NIEUW: form state
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,7 +33,6 @@ const RegisterFormulier = ({ onToggle, isRegistering, showMessage  }) => {
     return Delay;
   };
 
-  // NIEUW: input handler
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -42,7 +40,6 @@ const RegisterFormulier = ({ onToggle, isRegistering, showMessage  }) => {
     });
   };
 
-  // NIEUW: submit handler
 const handleSubmit = async (e) => {
   e.preventDefault();
   formData.email = formData.email.trim().toLowerCase();

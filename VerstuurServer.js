@@ -382,7 +382,6 @@ const setupVerstuurRoutes = ({
       });
       await newOpdracht.save();
 
-      // EMIT: Broadcast new opdracht to all connected clients
       if (io) {
         io.emit("new_opdracht", {
           _id: newOpdracht._id,

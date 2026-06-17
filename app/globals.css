@@ -49,10 +49,6 @@
   --text-shadow-orange: #995924 0px 0 10px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 html,
 body {
   width: 100%;
