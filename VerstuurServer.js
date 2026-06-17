@@ -244,9 +244,10 @@ const setupVerstuurRoutes = ({
 
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
       });
+      
 
       res.send("ok");
     } catch (err) {
@@ -554,7 +555,6 @@ const setupVerstuurRoutes = ({
         return res.status(404).send("Post niet gevonden");
       }
 
-
       if (post.email.toLowerCase() !== email.trim().toLowerCase()) {
         return res.status(403).send("Je kan alleen je eigen posts verwijderen");
       }
@@ -646,7 +646,6 @@ const setupVerstuurRoutes = ({
           .status(400)
           .json({ message: "ID en authenticatie zijn vereist" });
       }
-
 
       let userEmail;
       try {
