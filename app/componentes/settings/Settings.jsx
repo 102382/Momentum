@@ -182,7 +182,7 @@ const Settings = () => {
             <div className="avatar-wrap">
               <div
                 className="avatar"
-                style={{ backgroundImage: `url("${encodeURI(avatar)}")` }}
+                style={{ backgroundImage: `url("${encodeURI(API_URL + avatar)}")` }}
               ></div>
               <label
                 htmlFor="profileFoto"
