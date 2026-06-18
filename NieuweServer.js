@@ -14,7 +14,6 @@ import dns from "dns";
 import setupVerstuurRoutes from "./VerstuurServer.js";
 import setupOphaalRoutes from "./OphaalServer.js";
 
-dns.setDefaultResultOrder("ipv4first");
 dotenv.config();
 
 const app = express();
@@ -144,6 +143,7 @@ const transporter = nodemailer.createTransport({
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
   },
+  family: 4,
 });
 
 // =========================
