@@ -9,10 +9,12 @@ import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import dns from "dns";
 
 import setupVerstuurRoutes from "./VerstuurServer.js";
 import setupOphaalRoutes from "./OphaalServer.js";
 
+dns.setDefaultResultOrder("ipv4first");
 dotenv.config();
 
 const app = express();
@@ -134,7 +136,9 @@ const GebruikersOpdrachten = mongoose.model(
 // 📧 Nodemailer Gmail Setup
 // =========================
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
