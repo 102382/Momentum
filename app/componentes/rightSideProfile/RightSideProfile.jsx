@@ -5,6 +5,7 @@ import FollowingList from "./FollowingList.jsx";
 import OpdrachtenStats from "./OpdrachtenStats.jsx";
 import UserOpdrachten from "./UserOpdrachten.jsx";
 
+
 const RightSideProfile = ({
   externalSelectedUser = null,
   onUserDeselect = null,

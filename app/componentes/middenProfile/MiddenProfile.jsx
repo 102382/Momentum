@@ -428,7 +428,7 @@ const MiddenProfile = () => {
               className="bgfoto"
               style={
                 profileImage
-                  ? { backgroundImage: `url("${encodeURI(profileImage)}")` }
+                  ? { backgroundImage: `url("${encodeURI(API_URL + profileImage)}")` }
                   : undefined
               }
             ></div>
@@ -491,7 +491,7 @@ const MiddenProfile = () => {
               posts.map((post, index) => (
                 <div className="post" key={index}>
                   {post.foto && (
-                    <img src={post.foto} alt={`Post ${index + 1}`} />
+                    <img src={API_URL + post.foto} alt={`Post ${index + 1}`} />
                   )}
                   {post.video && (
                     <video controls>

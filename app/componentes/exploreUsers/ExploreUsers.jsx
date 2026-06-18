@@ -338,7 +338,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
             allPosts.map((post) => (
               <div key={post._id} className="post">
                 {post.foto && (
-                  <img src={post.foto} alt={`Post by ${post.naam}`} />
+                  <img src={API_URL + post.foto} alt={`Post by ${post.naam}`} />
                 )}
                 {post.video && (
                   <video controls>

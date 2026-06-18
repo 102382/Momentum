@@ -41,7 +41,7 @@ const LeftSideprofile = () => {
           className="bgFoto"
           style={
             profileImage
-              ? { backgroundImage: `url("${encodeURI(profileImage)}")` }
+              ? { backgroundImage: `url("${encodeURI(API_URL + profileImage)}")` }
               : undefined
           }
         ></div>

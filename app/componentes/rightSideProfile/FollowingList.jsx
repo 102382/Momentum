@@ -81,7 +81,7 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
                 <img
                   src={
                     user.profileImage
-                      ? encodeURI(user.profileImage)
+                      ? encodeURI(API_URL + user.profileImage)
                       : "/images/BackgroundAvatar.jpg"
                   }
                   alt={user.naam}
