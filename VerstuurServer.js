@@ -11,7 +11,7 @@ const setupVerstuurRoutes = ({
   GebruikerInfo,
   GberuikersPost,
   GebruikersOpdrachten,
-  transporter,
+  resend,
   bcrypt,
   crypto,
   jwt,
@@ -56,8 +56,8 @@ const setupVerstuurRoutes = ({
       const verifyLink = `${process.env.BACKEND_URL}/receive/verify/${token}`;
 
       try {
-        await transporter.sendMail({
-          from: `"Momentum App" <${process.env.GMAIL_USER}>`,
+        await resend.emails.send({
+          from: "Momentum App <onboarding@resend.dev>",
           to: email,
           subject: "Verify je account",
           html: `
@@ -70,9 +70,7 @@ const setupVerstuurRoutes = ({
         res.status(200).send("Account aangemaakt! Check je inbox.");
       } catch (emailErr) {
         console.error("Email Error:", emailErr.message);
-        res
-          .status(500)
-          .send("Account created, but email failed: " + emailErr.message);
+        res.status(500).send("Account created, but email failed: " + emailErr.message);
       }
     } catch (err) {
       console.error("ERROR:", err.message);

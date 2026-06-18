@@ -9,12 +9,13 @@ import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import dns from "dns";
+import { Resend } from "resend";
 
 import setupVerstuurRoutes from "./VerstuurServer.js";
 import setupOphaalRoutes from "./OphaalServer.js";
 
 dotenv.config();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 const httpServer = createServer(app);
