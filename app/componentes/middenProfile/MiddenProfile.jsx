@@ -496,7 +496,7 @@ const MiddenProfile = () => {
                   )}
                   {post.video && (
                     <video controls>
-                      <source src={post.video} />
+                      <source src={ API_URL + post.video} />
                     </video>
                   )}
                   <div className="acties">
