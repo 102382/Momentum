@@ -371,11 +371,13 @@
   .usersGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    display: block !important;
   }
 
   .userCard {
     padding: 10px;
     max-height: 300px;
+    margin-bottom: 25px;
   }
 
   .profileImage {
@@ -428,6 +430,10 @@
   .exploreSearchSection {
     margin-bottom: 15px;
   }
+  .postsGrid{
+    display: block !important;
+  }
+  
 }
 
 .viewModeToggle {
