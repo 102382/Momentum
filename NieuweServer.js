@@ -174,7 +174,7 @@ const verstuurRoutes = setupVerstuurRoutes({
   GebruikerInfo,
   GberuikersPost,
   GebruikersOpdrachten,
-  transporter,
+  resend,
   bcrypt,
   crypto,
   jwt,
