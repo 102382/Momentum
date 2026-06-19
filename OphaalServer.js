@@ -133,10 +133,6 @@ const setupOphaalRoutes = ({
         email: req.user.email,
       });
 
-      if (gebruikerPosts.length === 0) {
-        return res.status(404).json({ error: "Geen info gevonden" });
-      }
-
       res.json(gebruikerPosts);
     } catch (err) {
       res.status(500).send("Server error");
@@ -151,10 +147,6 @@ const setupOphaalRoutes = ({
       const GebruikerOpdrachten = await GebruikersOpdrachten.find({
         email: req.user.email,
       });
-
-      if (GebruikerOpdrachten.length === 0) {
-        return res.status(404).json({ error: "Geen info gevonden" });
-      }
 
       res.json(GebruikerOpdrachten);
     } catch (err) {
