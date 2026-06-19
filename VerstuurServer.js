@@ -819,18 +819,23 @@ const setupVerstuurRoutes = ({
     },
   });
 
-  router.post("/uploadFoto", upload.single("file"), async (req, res) => {
-    try {
+  router.post("/uploadFoto", (req, res) => {
+    upload.single("file")(req, res, (err) => {
+      if (err) {
+        console.error("Foto upload fout:", err);
+        const isLimit = err instanceof multer.MulterError;
+        return res
+          .status(isLimit ? 400 : 500)
+          .json({ error: err.message || "Fout bij uploaden van de foto" });
+      }
+
       if (!req.file) {
         return res.status(400).json({ error: "Geen bestand geupload" });
       }
 
       const imageUrl = `/images/${req.file.filename}`;
       res.json({ success: true, url: imageUrl });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Server error", message: err.message });
-    }
+    });
   });
 
   // =========================
@@ -871,18 +876,23 @@ const setupVerstuurRoutes = ({
     },
   });
 
-  router.post("/uploadVideo", uploadVideo.single("file"), async (req, res) => {
-    try {
+  router.post("/uploadVideo", (req, res) => {
+    uploadVideo.single("file")(req, res, (err) => {
+      if (err) {
+        console.error("Video upload fout:", err);
+        const isLimit = err instanceof multer.MulterError;
+        return res
+          .status(isLimit ? 400 : 500)
+          .json({ error: err.message || "Fout bij uploaden van de video" });
+      }
+
       if (!req.file) {
         return res.status(400).json({ error: "Geen bestand geupload" });
       }
 
       const videoUrl = `/videos/${req.file.filename}`;
       res.json({ success: true, url: videoUrl });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Server error", message: err.message });
-    }
+    });
   });
 
   // =========================
