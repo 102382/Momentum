@@ -204,22 +204,6 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/testEmail", async (req, res) => {
-  try {
-    const result = await resend.emails.send({
-      from: "Momentum App <onboarding@resend.dev>",
-      to: "mohammedalrabeei9@gmail.com",
-      subject: "TEST vanaf Railway " + Date.now(),
-      html: "<p>Dit is een directe test, los van de registratie-flow.</p>",
-    });
-    console.log("TEST RESULT:", JSON.stringify(result));
-    res.json({ success: true, result });
-  } catch (err) {
-    console.error("TEST ERROR:", err);
-    res.status(500).json({ error: err.message, full: err });
-  }
-});
-
 // =========================
 // Start Server
 // =========================

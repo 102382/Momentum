@@ -41,7 +41,7 @@ const setupOphaalRoutes = ({
   Email succesvol geverifieerd! Je wordt doorgestuurd...
   <script>
     setTimeout(() => {
-      window.location.href = "${process.env.FRONTEND_URL}/pages/extraInfoPage?token=${regToken}";
+      window.location.href = "${process.env.NEXT_PUBLIC_API_URL}/pages/extraInfoPage?token=${regToken}";
     }, 2000);
   </script>
 `);
