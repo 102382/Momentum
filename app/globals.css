@@ -67,10 +67,11 @@ body p {
   font-weight: 600;
 }
 
-/* Mobile responsiveness for body - add padding bottom for fixed navbar */
+/* Ik laat onderaan ruimte vrij voor de vaste navigatiebalk, zodat de
+   inhoud nooit achter de balk verdwijnt (ook op een iPhone met safe-area). */
 @media (max-width: 768px) {
   body {
-    padding-bottom: 60px;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
   }
 }
 

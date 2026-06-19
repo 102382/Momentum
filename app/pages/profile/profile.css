@@ -94,14 +94,14 @@
     height: auto;
     width: 95%;
     margin-top: 10px;
-    margin-bottom: 70px;
+    margin-bottom: 80px;
     padding: 0;
   }
 
   .profileContainer > div {
     width: 100%;
     height: auto;
-    min-height: 400px;
+    min-height: 0;
     border-radius: 12px;
     padding: 15px;
   }
@@ -118,7 +118,14 @@
     height: auto;
   }
 
+  /* Ik haal de rand en achtergrond van de rechterkolom weg. De inhoud
+     (volglijst en statistieken) is op de telefoon verborgen, dus zo blijft
+     er geen leeg zwart vlak over. De inhoud heeft zelf al een eigen kader. */
   .profileContainer > div:nth-child(3) {
     flex: 1;
+    background: none;
+    border: none;
+    padding: 0;
+    backdrop-filter: none;
   }
 }

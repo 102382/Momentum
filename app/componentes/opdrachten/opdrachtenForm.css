@@ -1,7 +1,3 @@
-/* ================================
-   OPDRACHTEN FORM STYLES
-   ================================ */
-
 .opdrachtenForm {
   background: linear-gradient(
     135deg,
@@ -96,7 +92,6 @@
   color: #ff943e;
 }
 
-/* Form Group */
 .formGroup {
   margin-bottom: 24px;
 }
@@ -168,14 +163,11 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* Form Row */
 .formRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
-
-/* Slider Container */
 .sliderContainer {
   display: flex;
   gap: 12px;
@@ -231,7 +223,6 @@
   font-size: 0.95rem;
 }
 
-/* Form Actions */
 .formActions {
   display: flex;
   gap: 12px;
@@ -278,7 +269,6 @@
   transform: translateY(0);
 }
 
-/* Scrollbar Styling */
 .opdrachtenForm::-webkit-scrollbar {
   width: 8px;
 }

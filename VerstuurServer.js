@@ -517,11 +517,11 @@ const setupVerstuurRoutes = ({
       const hasLiked = post.likes && post.likes.includes(cleanEmail);
 
       if (hasLiked) {
-        // De gebruiker had al geliket, dus ik haal de like weg.
+        // ik haal de like weg.
         post.likes = post.likes.filter((e) => e !== cleanEmail);
         post.aantalLikes = Math.max(0, post.aantalLikes - 1);
       } else {
-        // De gebruiker had nog niet geliket, dus ik voeg de like toe.
+        // ik voeg de like toe.
         if (!post.likes) {
           post.likes = [];
         }
@@ -613,13 +613,13 @@ const setupVerstuurRoutes = ({
       const isFollowing = targetUser.followers.includes(cleanFollowerEmail);
 
       if (isFollowing) {
-        // De gebruiker volgt al, dus ik ontvolg deze persoon.
+        //ik ontvolg deze persoon.
         targetUser.followers = targetUser.followers.filter(
           (e) => e !== cleanFollowerEmail,
         );
         targetUser.volgers = Math.max(0, targetUser.volgers - 1);
       } else {
-        // De gebruiker volgt nog niet, dus ik voeg de volger toe.
+        // ik voeg de volger toe.
         targetUser.followers.push(cleanFollowerEmail);
         targetUser.volgers = (targetUser.volgers || 0) + 1;
       }
@@ -793,7 +793,7 @@ const setupVerstuurRoutes = ({
   // FOTO UPLOAD (Cloudinary)
   // =========================
   // Bestanden worden in het geheugen gehouden en doorgestuurd naar Cloudinary,
-  // zodat ze permanent blijven bestaan (Railway wist de lokale schijf bij elke deploy).
+
   const upload = multer({
     storage: multer.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max

@@ -17,6 +17,7 @@
   .exploreUsersContainer {
     height: auto !important;
     padding-bottom: 70px;
+    width: 91% !important;
   }
 }
 

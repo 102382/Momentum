@@ -275,8 +275,8 @@ const setupOphaalRoutes = ({
     try {
       const currentUserEmail = req.params.email;
 
-      // Ik zoek alle gebruikers die deze persoon volgt: dat zijn de mensen
-      // bij wie zijn e-mail in hun lijst met volgers staat.
+      // Ik zoek alle gebruikers die deze persoon volgt: dat zijn de mensen bij wie zijn e-mail in hun lijst met volgers staat.
+      
       const followingUsers = await GebruikerInfo.find({
         followers: currentUserEmail,
       }).select("email naam streaks profileImage");

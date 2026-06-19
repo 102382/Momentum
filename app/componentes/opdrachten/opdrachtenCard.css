@@ -1,7 +1,3 @@
-/* ================================
-   OPDRACHTEN CARD STYLES
-   ================================ */
-
 .opdrachtenCard {
   background: linear-gradient(
     135deg,
@@ -76,7 +72,6 @@
   );
 }
 
-/* Card Header */
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -129,7 +124,7 @@
   color: #ff6b6b;
 }
 
-/* Card Title */
+
 .cardTitle {
   margin: 0 0 12px 0;
   font-size: 1.3rem;
@@ -138,7 +133,6 @@
   word-break: break-word;
 }
 
-/* Card Description */
 .cardDescription {
   margin: 0 0 16px 0;
   font-size: 0.95rem;
@@ -147,7 +141,6 @@
   flex-grow: 1;
 }
 
-/* Category Tag */
 .categoryTag {
   display: inline-block;
   padding: 6px 12px;
@@ -174,7 +167,6 @@
   border-color: rgba(255, 149, 62, 0.5);
 }
 
-/* Progress Bar */
 .progressContainer {
   margin: 20px 0;
   padding: 16px;
@@ -214,7 +206,6 @@
   box-shadow: 0 0 12px rgba(255, 149, 62, 0.4);
 }
 
-/* Card Footer */
 .cardFooter {
   display: flex;
   justify-content: space-between;

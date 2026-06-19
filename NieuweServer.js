@@ -26,8 +26,8 @@ const PORT = process.env.PORT || 3001;
 // =========================
 // Middleware
 // =========================
-// Ik laat alle origins toe en stuur cookies mee, zodat de app ook werkt
-// als iemand hem via mijn IP-adres opent en niet alleen via localhost.
+
+// Ik laat alle origins toe en stuur cookies mee, zodat de app ook werkt als iemand hem via mijn IP-adres opent en niet alleen via localhost.
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
@@ -74,9 +74,9 @@ const gebruikerInfoSchema = new mongoose.Schema({
   posten: Number,
   streaks: Number,
   volgers: Number,
-  profileImage: String, // Hier bewaar ik de link naar de profielfoto.
-  followers: [String], // Hier zet ik de e-mails van mensen die deze gebruiker volgen.
-  lastCompletedAt: Date, // Hiermee houd ik bij wanneer de laatste opdracht af was (voor de streak).
+  profileImage: String,
+  followers: [String], 
+  lastCompletedAt: Date,
 });
 
 const GberuikersPostSceham = new mongoose.Schema({
@@ -87,7 +87,7 @@ const GberuikersPostSceham = new mongoose.Schema({
   mijnComentaar: String,
   aantalLikes: Number,
   aantalComentaars: Number,
-  likes: [String], // Hier zet ik de e-mails van mensen die deze post leuk vinden.
+  likes: [String],
   comments: [
     {
       email: String,
@@ -135,7 +135,7 @@ const GebruikersOpdrachten = mongoose.model(
 // Auth Middleware
 // =========================
 // Ik controleer bij elke beveiligde route of er een geldige token-cookie is.
-// Zo niet, dan stuur ik de gebruiker weg met een foutmelding.
+
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
 
@@ -183,6 +183,7 @@ app.use("/send", verstuurRoutes);
 // Socket.io Connection Handler
 // =========================
 // Ik log wanneer iemand verbinding maakt of de verbinding verbreekt.
+
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 

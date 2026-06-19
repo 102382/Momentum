@@ -1,16 +1,8 @@
-/* ================================
-   OPDRACHTEN PAGE STYLES
-   ================================ */
-
 .opdrachtenPageContainer {
   background: transparent;
   padding: 40px 20px;
   height: 90vh !important;
 }
-
-/* ================================
-   HEADER/TITLE
-   ================================ */
 
 .opdrachtenHeader {
   display: flex;
@@ -52,10 +44,6 @@
   box-shadow: 0 8px 24px rgba(255, 149, 62, 0.4);
 }
 
-/* ================================
-   MODAL OVERLAY
-   ================================ */
-
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -81,9 +69,6 @@
   }
 }
 
-/* ================================
-   OPDRACHTEN GRID
-   ================================ */
 
 .opdrachtenGridContainer {
   margin-top: 40px;
@@ -170,6 +155,7 @@
 
 @media (max-width: 768px) {
   .opdrachtenPageContainer {
+    width: 91% !important;
     padding: 25px 15px;
     height: auto;
     margin-bottom: 70px;
