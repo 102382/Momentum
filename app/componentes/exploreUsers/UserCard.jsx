@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import "../exploreUsers/exploreUsers.css";
-import { API_URL } from "../../config";
+import { mediaUrl } from "../../config";
 
 const UserCard = ({ user, onClick }) => {
   const [isHovering, setIsHovering] = useState(false);
@@ -18,7 +18,7 @@ const UserCard = ({ user, onClick }) => {
           className="profileImage"
           style={
             user.profileImage
-              ? { backgroundImage: `url("${encodeURI(API_URL + user.profileImage)}")` }
+              ? { backgroundImage: `url("${encodeURI(mediaUrl(user.profileImage))}")` }
               : undefined
           }
         ></div>

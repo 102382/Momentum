@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../middenProfile/middensideProfile.css";
 import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
-import { API_URL } from "../../config";
+import { API_URL, mediaUrl } from "../../config";
 import { FRONTEND_URL } from "../../config";
 
 const MiddenProfile = () => {
@@ -429,7 +429,7 @@ const MiddenProfile = () => {
               className="bgfoto"
               style={
                 profileImage
-                  ? { backgroundImage: `url("${encodeURI(API_URL + profileImage)}")` }
+                  ? { backgroundImage: `url("${encodeURI(mediaUrl(profileImage))}")` }
                   : undefined
               }
             ></div>
@@ -492,11 +492,11 @@ const MiddenProfile = () => {
               posts.map((post, index) => (
                 <div className="post" key={index}>
                   {post.foto && (
-                    <img src={API_URL + post.foto} alt={`Post ${index + 1}`} />
+                    <img src={mediaUrl(post.foto)} alt={`Post ${index + 1}`} />
                   )}
                   {post.video && (
                     <video controls>
-                      <source src={ API_URL + post.video} />
+                      <source src={mediaUrl(post.video)} />
                     </video>
                   )}
                   <div className="acties">
@@ -532,7 +532,7 @@ const MiddenProfile = () => {
                     <img
                       src={
                         profileImage
-                          ? encodeURI(API_URL + profileImage)
+                          ? encodeURI(mediaUrl(profileImage))
                           : "/images/BackgroundAvatar.jpg"
                       }
                       alt=""

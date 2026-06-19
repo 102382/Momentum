@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./rightSideProfile.css";
-import { API_URL } from "../../config";
+import { API_URL, mediaUrl } from "../../config";
 
 const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
   const [followingUsers, setFollowingUsers] = useState([]);
@@ -81,7 +81,7 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
                 <img
                   src={
                     user.profileImage
-                      ? encodeURI(API_URL + user.profileImage)
+                      ? encodeURI(mediaUrl(user.profileImage))
                       : "/images/BackgroundAvatar.jpg"
                   }
                   alt={user.naam}

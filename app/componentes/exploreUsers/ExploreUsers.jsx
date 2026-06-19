@@ -5,7 +5,7 @@ import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
 import UserCard from "../exploreUsers/UserCard.jsx";
 import UserProfileView from "../userProfile/UserProfileView.jsx";
-import { API_URL } from "../../config";
+import { API_URL, mediaUrl } from "../../config";
 
 const ExploreUsers = ({ onUserSelect = null }) => {
   const [users, setUsers] = useState([]);
@@ -338,11 +338,11 @@ const ExploreUsers = ({ onUserSelect = null }) => {
             allPosts.map((post) => (
               <div key={post._id} className="post">
                 {post.foto && (
-                  <img src={API_URL + post.foto} alt={`Post by ${post.naam}`} />
+                  <img src={mediaUrl(post.foto)} alt={`Post by ${post.naam}`} />
                 )}
                 {post.video && (
                   <video controls>
-                    <source src={post.video} />
+                    <source src={mediaUrl(post.video)} />
                   </video>
                 )}
                 <div className="myComentaar">

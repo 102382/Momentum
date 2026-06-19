@@ -1,11 +1,16 @@
 import express from "express";
 import multer from "multer";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
+import { v2 as cloudinary } from "cloudinary";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Upload een buffer (uit multer memoryStorage) naar Cloudinary.
+const uploadNaarCloudinary = (buffer, opties) =>
+  new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(opties, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+    stream.end(buffer);
+  });
 
 const setupVerstuurRoutes = ({
   Account,
@@ -20,6 +25,12 @@ const setupVerstuurRoutes = ({
   io, // Socket.io instance for real-time updates
 }) => {
   const router = express.Router();
+
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
 
   // =========================
   // REGISTER + EMAIL
@@ -780,29 +791,12 @@ const setupVerstuurRoutes = ({
   });
 
   // =========================
-  // FOTO UPLOAD (Lokaal)
+  // FOTO UPLOAD (Cloudinary)
   // =========================
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      const uploadDir = path.join(__dirname, "public", "images");
-      fs.mkdirSync(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-      // Maak de originele bestandsnaam veilig voor gebruik in een URL:
-      // spaties en speciale tekens vervangen door een streepje.
-      const safeOriginal = file.originalname
-        .normalize("NFKD")
-        .replace(/[^\w.\-]+/g, "-")
-        .replace(/-+/g, "-");
-      const uniqueName =
-        Date.now() + "-" + Math.round(Math.random() * 1e9) + "-" + safeOriginal;
-      cb(null, uniqueName);
-    },
-  });
-
+  // Bestanden worden in het geheugen gehouden en doorgestuurd naar Cloudinary,
+  // zodat ze permanent blijven bestaan (Railway wist de lokale schijf bij elke deploy).
   const upload = multer({
-    storage: storage,
+    storage: multer.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
     fileFilter: (req, file, cb) => {
       const allowedMimes = [
@@ -820,7 +814,7 @@ const setupVerstuurRoutes = ({
   });
 
   router.post("/uploadFoto", (req, res) => {
-    upload.single("file")(req, res, (err) => {
+    upload.single("file")(req, res, async (err) => {
       if (err) {
         console.error("Foto upload fout:", err);
         const isLimit = err instanceof multer.MulterError;
@@ -833,33 +827,26 @@ const setupVerstuurRoutes = ({
         return res.status(400).json({ error: "Geen bestand geupload" });
       }
 
-      const imageUrl = `/images/${req.file.filename}`;
-      res.json({ success: true, url: imageUrl });
+      try {
+        const result = await uploadNaarCloudinary(req.file.buffer, {
+          folder: "momentum/images",
+          resource_type: "image",
+        });
+        res.json({ success: true, url: result.secure_url });
+      } catch (e) {
+        console.error("Cloudinary foto fout:", e);
+        res
+          .status(500)
+          .json({ error: "Fout bij uploaden van de foto naar Cloudinary" });
+      }
     });
   });
 
   // =========================
-  // VIDEO UPLOAD (Lokaal)
+  // VIDEO UPLOAD (Cloudinary)
   // =========================
-  const videoStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      const uploadDir = path.join(__dirname, "public", "videos");
-      fs.mkdirSync(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-      const safeOriginal = file.originalname
-        .normalize("NFKD")
-        .replace(/[^\w.\-]+/g, "-")
-        .replace(/-+/g, "-");
-      const uniqueName =
-        Date.now() + "-" + Math.round(Math.random() * 1e9) + "-" + safeOriginal;
-      cb(null, uniqueName);
-    },
-  });
-
   const uploadVideo = multer({
-    storage: videoStorage,
+    storage: multer.memoryStorage(),
     limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max
     fileFilter: (req, file, cb) => {
       const allowedMimes = [
@@ -877,7 +864,7 @@ const setupVerstuurRoutes = ({
   });
 
   router.post("/uploadVideo", (req, res) => {
-    uploadVideo.single("file")(req, res, (err) => {
+    uploadVideo.single("file")(req, res, async (err) => {
       if (err) {
         console.error("Video upload fout:", err);
         const isLimit = err instanceof multer.MulterError;
@@ -890,8 +877,18 @@ const setupVerstuurRoutes = ({
         return res.status(400).json({ error: "Geen bestand geupload" });
       }
 
-      const videoUrl = `/videos/${req.file.filename}`;
-      res.json({ success: true, url: videoUrl });
+      try {
+        const result = await uploadNaarCloudinary(req.file.buffer, {
+          folder: "momentum/videos",
+          resource_type: "video",
+        });
+        res.json({ success: true, url: result.secure_url });
+      } catch (e) {
+        console.error("Cloudinary video fout:", e);
+        res
+          .status(500)
+          .json({ error: "Fout bij uploaden van de video naar Cloudinary" });
+      }
     });
   });
 

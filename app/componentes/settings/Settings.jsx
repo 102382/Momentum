@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./settings.css";
 import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
-import { API_URL } from "../../config";
+import { API_URL, mediaUrl } from "../../config";
 
 const Settings = () => {
   const [message, setMessage] = useState("");
@@ -182,7 +182,7 @@ const Settings = () => {
             <div className="avatar-wrap">
               <div
                 className="avatar"
-                style={{ backgroundImage: `url("${encodeURI(API_URL + avatar)}")` }}
+                style={{ backgroundImage: `url("${encodeURI(mediaUrl(avatar))}")` }}
               ></div>
               <label
                 htmlFor="profileFoto"

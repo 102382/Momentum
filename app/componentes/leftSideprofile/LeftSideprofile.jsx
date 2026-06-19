@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "../leftSideprofile/leftsideprofile.css";
-import { API_URL } from "../../config";
+import { API_URL, mediaUrl } from "../../config";
 
 const LeftSideprofile = () => {
   const [Naam, setNaam] = useState("");
@@ -41,7 +41,7 @@ const LeftSideprofile = () => {
           className="bgFoto"
           style={
             profileImage
-              ? { backgroundImage: `url("${encodeURI(API_URL + profileImage)}")` }
+              ? { backgroundImage: `url("${encodeURI(mediaUrl(profileImage))}")` }
               : undefined
           }
         ></div>
