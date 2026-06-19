@@ -82,7 +82,6 @@ const handleSubmit = async (e) => {
           - REGISTREREN -
         </h2>
 
-        {/* HIER zit de enige echte verandering */}
         <form onSubmit={handleSubmit}>
           <label
             htmlFor="emailadres"

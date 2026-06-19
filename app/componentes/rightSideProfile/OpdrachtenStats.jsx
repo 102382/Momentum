@@ -17,7 +17,7 @@ const OpdrachtenStats = () => {
       .then((data) => {
         setOpdrachten(Array.isArray(data) ? data : []);
 
-        // Calculate statistics
+        // Ik bereken de statistieken.
         const completed = data.filter((o) => o.status === "completed").length;
         const total = data.length;
 
@@ -60,12 +60,12 @@ const OpdrachtenStats = () => {
         return;
       }
 
-      // Update the opdrachten list
+      // Ik werk de lijst met opdrachten bij.
       setOpdrachten(opdrachten.map(o =>
         o._id === opdracht._id ? { ...o, status: "completed", progress: 100 } : o
       ));
 
-      // Update stats
+      // Ik werk de statistieken bij.
       setStats(prev => ({
         ...prev,
         completed: prev.completed + 1,

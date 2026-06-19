@@ -2,7 +2,7 @@
 import { useEffect, useRef, useCallback } from "react";
 import io from "socket.io-client";
 
-// Global socket instance
+// Ik bewaar de socket hier zodat ik er maar 1 heb.
 let globalSocket = null;
 
 export const useSocket = () => {
@@ -10,13 +10,13 @@ export const useSocket = () => {
   const connectedRef = useRef(false);
 
   useEffect(() => {
-    // Reuse existing socket if available
+    // Ik gebruik de bestaande socket als die er al is.
     if (globalSocket) {
       socketRef.current = globalSocket;
       return;
     }
 
-    // Create new socket connection
+    // Ik maak een nieuwe verbinding aan.
     const API_URL =
       typeof window !== "undefined"
         ? window.location.protocol + "//" + window.location.hostname + ":3001"
@@ -48,7 +48,7 @@ export const useSocket = () => {
     socketRef.current = socket;
 
     return () => {
-      // Don't disconnect on unmount - keep connection alive
+      // Ik sluit de verbinding niet. Zo blijft hij open.
     };
   }, []);
 

@@ -13,7 +13,7 @@ const RightSideProfile = ({
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentUserEmail, setCurrentUserEmail] = useState("");
 
-  // Use external selectedUser if provided, otherwise use internal state
+  // Ik gebruik de gebruiker van buitenaf als die er is, anders mijn eigen state.
   const activeSelectedUser = externalSelectedUser || selectedUser;
 
   const handleUserDeselect = () => {

@@ -41,7 +41,7 @@ const GegevensFormulier = () => {
     }));
   };
 
-  // ✅ API call
+  // Ik haal het e-mailadres op bij de server.
   const getEmail = async (token) => {
     try {
       const res = await fetch(
@@ -60,7 +60,7 @@ const GegevensFormulier = () => {
     }
   };
 
-  // ✅ Fetch email when token exists
+  // Ik haal het e-mailadres op als er een token is.
   useEffect(() => {
     const fetchEmail = async () => {
       if (!token) return;

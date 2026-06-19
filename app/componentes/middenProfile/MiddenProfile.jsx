@@ -4,7 +4,6 @@ import "../middenProfile/middensideProfile.css";
 import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
 import { API_URL, mediaUrl } from "../../config";
-import { FRONTEND_URL } from "../../config";
 
 const MiddenProfile = () => {
   const [message, setMessage] = useState("");
@@ -27,7 +26,6 @@ const MiddenProfile = () => {
   const [Posten, setPosten] = useState();
   const [Streaks, setStreaks] = useState();
   const [Volgers, setVolgers] = useState();
-  const [isFollowing, setIsFollowing] = useState(false);
   const [profileImage, setProfileImage] = useState("");
   const [loadingInfo, setLoadingInfo] = useState(true);
 
@@ -104,7 +102,7 @@ const MiddenProfile = () => {
   const [uploadingFoto, setUploadingFoto] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
 
-  // Update formData wanneer Email en Naam beschikbaar zijn
+  // Ik zet de naam en email in het formulier zodra ik die heb.
   useEffect(() => {
     setFormData({
       mijnComentaar: "",
@@ -215,7 +213,7 @@ const MiddenProfile = () => {
       setShowPostFormulier(false);
       setPosten((prev) => (prev || 0) + 1);
 
-      // Refresh posts
+      // Ik haal mijn posts opnieuw op zodat de nieuwe post zichtbaar is.
       fetch(`${API_URL}/receive/mijnPosts`, {
         credentials: "include",
       })
@@ -263,35 +261,6 @@ const MiddenProfile = () => {
           : (post.likes || []).filter((e) => e !== Email),
       };
       setPosts(updatedPosts);
-    } catch (err) {
-      console.error(err);
-      showMessage("Server error", "error");
-    }
-  };
-
-  const handleFollow = async () => {
-    try {
-      const res = await fetch(`${API_URL}/send/followUser`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ targetUserEmail: Email, followerEmail: Email }),
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        const errorMsg = await res.text();
-        showMessage(
-          errorMsg || "Fout bij het volgen van deze gebruiker",
-          "error",
-        );
-        return;
-      }
-
-      const data = await res.json();
-      setIsFollowing(data.following);
-      setVolgers(data.volgers);
     } catch (err) {
       console.error(err);
       showMessage("Server error", "error");

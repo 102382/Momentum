@@ -85,7 +85,7 @@ const Settings = () => {
     try {
       let imageUrl = profileImage;
 
-      // Upload nieuwe profielfoto als die gekozen is
+      // Ik upload de nieuwe profielfoto als ik er een heb gekozen.
       if (fotoFile) {
         const fotoFormData = new FormData();
         fotoFormData.append("file", fotoFile);
@@ -177,7 +177,7 @@ const Settings = () => {
             </button>
           </header>
 
-          {/* Profielbanner met avatar */}
+          {/* Ik toon hier de profielbanner met de avatar. */}
           <section className="settings-banner">
             <div className="avatar-wrap">
               <div

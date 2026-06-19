@@ -21,7 +21,7 @@ const Login = ({ onToggle, isRegistering, showMessage }) => {
 
   useEffect(() => {
     if (isRegistering) {
-      // Wacht tot animatie klaar is
+      // Ik wacht tot de animatie klaar is.
       const timer = setTimeout(() => {
         setIsHidden(true);
       }, 500);

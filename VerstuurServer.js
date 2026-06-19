@@ -22,7 +22,7 @@ const setupVerstuurRoutes = ({
   crypto,
   jwt,
   authMiddleware,
-  io, // Socket.io instance for real-time updates
+  io, // Hiermee stuur ik live updates naar alle gebruikers.
 }) => {
   const router = express.Router();
 
@@ -40,7 +40,7 @@ const setupVerstuurRoutes = ({
       const { email, password, confirmPassword } = req.body;
 
       if (!email || !password || !confirmPassword) {
-        return res.status(400).send("Missing fields");
+        return res.status(400).send("Vul alle velden in");
       }
       if (password !== confirmPassword) {
         return res.status(400).send("Wachtwoorden komen niet overeen");
@@ -257,7 +257,6 @@ const setupVerstuurRoutes = ({
         secure: true,
         sameSite: "none",
       });
-      
 
       res.send("ok");
     } catch (err) {
@@ -301,7 +300,7 @@ const setupVerstuurRoutes = ({
       });
       await newPost.save();
 
-      // Update the post count for the user
+      // Ik tel het aantal posts van de gebruiker met 1 op.
       await GebruikerInfo.findOneAndUpdate(
         { email: cleanEmail },
         { $inc: { posten: 1 } },
@@ -478,7 +477,7 @@ const setupVerstuurRoutes = ({
         return res.status(404).send("Opdracht niet gevonden");
       }
 
-      // EMIT: Broadcast opdracht update to all connected clients
+      // Ik stuur de bijgewerkte opdracht naar alle gebruikers.
       if (io) {
         io.emit("opdracht_updated", {
           _id: updatedOpdracht._id,
@@ -518,11 +517,11 @@ const setupVerstuurRoutes = ({
       const hasLiked = post.likes && post.likes.includes(cleanEmail);
 
       if (hasLiked) {
-        // Remove like (toggle)
+        // De gebruiker had al geliket, dus ik haal de like weg.
         post.likes = post.likes.filter((e) => e !== cleanEmail);
         post.aantalLikes = Math.max(0, post.aantalLikes - 1);
       } else {
-        // Add like
+        // De gebruiker had nog niet geliket, dus ik voeg de like toe.
         if (!post.likes) {
           post.likes = [];
         }
@@ -569,10 +568,10 @@ const setupVerstuurRoutes = ({
         return res.status(403).send("Je kan alleen je eigen posts verwijderen");
       }
 
-      // Delete the post
+      // Ik verwijder de post.
       await GberuikersPost.findByIdAndDelete(postId);
 
-      // Update the post count for the user
+      // Ik haal 1 af van het aantal posts van de gebruiker.
       await GebruikerInfo.findOneAndUpdate(
         { email: email.trim().toLowerCase() },
         { $inc: { posten: -1 } },
@@ -614,13 +613,13 @@ const setupVerstuurRoutes = ({
       const isFollowing = targetUser.followers.includes(cleanFollowerEmail);
 
       if (isFollowing) {
-        // Unfollow
+        // De gebruiker volgt al, dus ik ontvolg deze persoon.
         targetUser.followers = targetUser.followers.filter(
           (e) => e !== cleanFollowerEmail,
         );
         targetUser.volgers = Math.max(0, targetUser.volgers - 1);
       } else {
-        // Follow
+        // De gebruiker volgt nog niet, dus ik voeg de volger toe.
         targetUser.followers.push(cleanFollowerEmail);
         targetUser.volgers = (targetUser.volgers || 0) + 1;
       }
@@ -665,7 +664,7 @@ const setupVerstuurRoutes = ({
         return res.status(401).json({ message: "Ongeldige token" });
       }
 
-      // Update opdracht status to completed and set progress to 100
+      // Ik zet de opdracht op "completed" en de voortgang op 100%.
       const updatedOpdracht = await GebruikersOpdrachten.findByIdAndUpdate(
         id,
         {
@@ -680,32 +679,32 @@ const setupVerstuurRoutes = ({
         return res.status(404).json({ message: "Opdracht niet gevonden" });
       }
 
-      // Get user info to check streak status
+      // Ik haal de gebruiker op om de streak te kunnen bijwerken.
       const user = await GebruikerInfo.findOne({ email: userEmail });
       if (!user) {
         return res.status(404).json({ message: "Gebruiker niet gevonden" });
       }
 
-      // Check if 24 hours have passed since last completed task
+      // Ik kijk hoeveel uur geleden de vorige opdracht af was.
       let currentStreaks = user.streaks || 0;
       if (user.lastCompletedAt) {
         const lastCompleted = new Date(user.lastCompletedAt);
         const now = new Date();
         const hoursDifference = (now - lastCompleted) / (1000 * 60 * 60);
 
-        // If more than 24 hours have passed, reset streaks to 0
+        // Is het langer dan 24 uur geleden, dan begin ik de streak opnieuw.
         if (hoursDifference > 24) {
           currentStreaks = 0;
         } else {
-          // Otherwise, increment streaks
+          // Anders tel ik de streak met 1 op.
           currentStreaks += 1;
         }
       } else {
-        // First task completion
+        // Dit is de eerste opdracht die de gebruiker afrondt.
         currentStreaks = 1;
       }
 
-      // Update user streaks and lastCompletedAt
+      // Ik sla de nieuwe streak en de tijd van afronden op.
       await GebruikerInfo.findOneAndUpdate(
         { email: userEmail },
         {
@@ -714,7 +713,7 @@ const setupVerstuurRoutes = ({
         },
       );
 
-      // 🔴 EMIT: Broadcast opdracht completion to all connected clients
+      // Ik laat alle gebruikers weten dat deze opdracht is afgerond.
       if (io) {
         io.emit("opdracht_completed", {
           _id: updatedOpdracht._id,
@@ -745,17 +744,17 @@ const setupVerstuurRoutes = ({
       const { postId, email, text } = req.body;
 
       if (!postId || !email || !text) {
-        return res.status(400).json({ error: "Missing required fields" });
+        return res.status(400).json({ error: "Verplichte velden ontbreken" });
       }
 
       const post = await GberuikersPost.findById(postId);
       if (!post) {
-        return res.status(404).json({ error: "Post not found" });
+        return res.status(404).json({ error: "Post niet gevonden" });
       }
 
       const user = await GebruikerInfo.findOne({ email });
       if (!user) {
-        return res.status(404).json({ error: "User not found" });
+        return res.status(404).json({ error: "Gebruiker niet gevonden" });
       }
 
       const newComment = {
@@ -771,7 +770,7 @@ const setupVerstuurRoutes = ({
 
       await post.save();
 
-      // 🔴 EMIT: Broadcast new comment to all connected clients
+      // Ik stuur de nieuwe reactie naar alle gebruikers.
       if (io) {
         io.emit("post_comment_added", {
           postId: postId,
@@ -835,9 +834,10 @@ const setupVerstuurRoutes = ({
         res.json({ success: true, url: result.secure_url });
       } catch (e) {
         console.error("Cloudinary foto fout:", e);
-        res
-          .status(500)
-          .json({ error: "Fout bij uploaden van de foto naar Cloudinary" });
+        res.status(500).json({
+          error: "Fout bij uploaden van de foto naar Cloudinary",
+          message: e?.message || String(e),
+        });
       }
     });
   });
@@ -885,9 +885,10 @@ const setupVerstuurRoutes = ({
         res.json({ success: true, url: result.secure_url });
       } catch (e) {
         console.error("Cloudinary video fout:", e);
-        res
-          .status(500)
-          .json({ error: "Fout bij uploaden van de video naar Cloudinary" });
+        res.status(500).json({
+          error: "Fout bij uploaden van de video naar Cloudinary",
+          message: e?.message || String(e),
+        });
       }
     });
   });

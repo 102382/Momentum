@@ -4,7 +4,6 @@ import cors from "cors";
 import crypto from "crypto";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import { createServer } from "http";
@@ -27,14 +26,14 @@ const PORT = process.env.PORT || 3001;
 // =========================
 // Middleware
 // =========================
-// origin: true weerkaatst het aanvragende origin, zodat de app ook werkt
-// wanneer iemand hem via je IP-adres opent (niet alleen via localhost).
+// Ik laat alle origins toe en stuur cookies mee, zodat de app ook werkt
+// als iemand hem via mijn IP-adres opent en niet alleen via localhost.
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Statische files serveren (voor foto's)
+// Ik serveer de bestanden uit de map "public" (oude foto's en avatars).
 app.use(express.static("public"));
 
 // =========================
@@ -75,9 +74,9 @@ const gebruikerInfoSchema = new mongoose.Schema({
   posten: Number,
   streaks: Number,
   volgers: Number,
-  profileImage: String, // URL naar de profielfoto van de gebruiker
-  followers: [String], // Array of email addresses of users who follow this user
-  lastCompletedAt: Date, // Track last completed task for streak reset logic
+  profileImage: String, // Hier bewaar ik de link naar de profielfoto.
+  followers: [String], // Hier zet ik de e-mails van mensen die deze gebruiker volgen.
+  lastCompletedAt: Date, // Hiermee houd ik bij wanneer de laatste opdracht af was (voor de streak).
 });
 
 const GberuikersPostSceham = new mongoose.Schema({
@@ -88,7 +87,7 @@ const GberuikersPostSceham = new mongoose.Schema({
   mijnComentaar: String,
   aantalLikes: Number,
   aantalComentaars: Number,
-  likes: [String], // Array of email addresses of users who liked this post
+  likes: [String], // Hier zet ik de e-mails van mensen die deze post leuk vinden.
   comments: [
     {
       email: String,
@@ -133,23 +132,10 @@ const GebruikersOpdrachten = mongoose.model(
 );
 
 // =========================
-// 📧 Nodemailer Gmail Setup
-// =========================
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-  family: 4,
-});
-
-// =========================
 // Auth Middleware
 // =========================
+// Ik controleer bij elke beveiligde route of er een geldige token-cookie is.
+// Zo niet, dan stuur ik de gebruiker weg met een foutmelding.
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
 
@@ -179,7 +165,7 @@ const verstuurRoutes = setupVerstuurRoutes({
   crypto,
   jwt,
   authMiddleware,
-  io, // Pass Socket.io instance
+  io, // Ik geef Socket.io door zodat ik live updates kan sturen.
 });
 
 const ophaalRoutes = setupOphaalRoutes({
@@ -196,6 +182,7 @@ app.use("/send", verstuurRoutes);
 // =========================
 // Socket.io Connection Handler
 // =========================
+// Ik log wanneer iemand verbinding maakt of de verbinding verbreekt.
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 

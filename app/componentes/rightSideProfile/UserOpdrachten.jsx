@@ -7,7 +7,6 @@ const UserOpdrachten = ({ user, onBack }) => {
   const [opdrachten, setOpdrachten] = useState([]);
   const [stats, setStats] = useState({ completed: 0, total: 0 });
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(true);
 
   useEffect(() => {
     fetch(`${API_URL}/receive/userOpdrachten/${user.email}`, {
@@ -17,7 +16,7 @@ const UserOpdrachten = ({ user, onBack }) => {
       .then((data) => {
         setOpdrachten(Array.isArray(data) ? data : []);
 
-        // Calculate statistics
+        // Ik bereken de statistieken.
         const completed = data.filter((o) => o.status === "completed").length;
         const total = data.length;
 

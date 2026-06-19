@@ -17,7 +17,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
   const [messageType, setMessageType] = useState("success");
   const [isFollowing, setIsFollowing] = useState(false);
 
-  // Commentaar states
+  // Ik bewaar hier de staat van de commentaren.
   const [showCommentsPostId, setShowCommentsPostId] = useState(null);
   const [showCommentFormPostId, setShowCommentFormPostId] = useState(null);
   const [comments, setComments] = useState({});
@@ -40,7 +40,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
   };
 
   useEffect(() => {
-    // Fetch user info
+    // Ik haal de info van de gebruiker op.
     fetch(`${API_URL}/receive/userInfo/${user.email}`, {
       credentials: "include",
     })
@@ -59,7 +59,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
         setLoadingInfo(false);
       });
 
-    // Fetch user posts
+    // Ik haal de posts van de gebruiker op.
     fetch(`${API_URL}/receive/userPosts/${user.email}`, {
       credentials: "include",
     })
@@ -77,7 +77,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
         setLoadingPosts(false);
       });
 
-    // Fetch user opdrachten
+    // Ik haal de opdrachten van de gebruiker op.
     fetch(`${API_URL}/receive/userOpdrachten/${user.email}`, {
       credentials: "include",
     })
@@ -271,7 +271,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
         <Message text={message} type={messageType} visible={messageVisible} />
       )}
 
-      {/* Back Button */}
+      {/* Ik laat hier de terug-knop zien. */}
       <button className="backButton" onClick={onBack}>
         <i className="fa-solid fa-arrow-left"></i>
         Terug
@@ -281,7 +281,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
         <Loading text="Profiel laden..." />
       ) : (
         <>
-          {/* User Info Section */}
+          {/* Ik toon hier de info van de gebruiker. */}
           <div className="gebruikerInfo">
             <div className="profilePhotoSection">
               <div
@@ -332,7 +332,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
             </div>
           </div>
 
-          {/* Posts Section */}
+          {/* Ik toon hier de posts. */}
           <div className="postContainer">
             <div className="posten">
               {loadingPosts ? (
@@ -375,7 +375,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
                       </button>
                     </div>
 
-                    {/* Comments Modal */}
+                    {/* Ik toon hier het venster met de commentaren. */}
                     {showCommentsPostId === post._id && (
                       <div className="commentsModal">
                         <div className="commentsHeader">
@@ -389,7 +389,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
                         </div>
 
                         {showCommentFormPostId === post._id ? (
-                          // Show form instead of comments
+                          // Ik laat hier het formulier zien in plaats van de commentaren.
                           <div className="commentFormContainer">
                             <textarea
                               value={newComment}
@@ -420,7 +420,7 @@ const UserProfileView = ({ user, onBack, currentUserEmail, showMessage }) => {
                             </div>
                           </div>
                         ) : (
-                          // Show comments list
+                          // Ik laat hier de lijst met commentaren zien.
                           <>
                             {loadingComments ? (
                               <Loading text="Commentaren laden..." />

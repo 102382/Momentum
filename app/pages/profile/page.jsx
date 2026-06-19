@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import LeftSideprofile from "../../componentes/leftSideprofile/LeftSideprofile.jsx";
 import MiddenProfile from "../../componentes/middenProfile/MiddenProfile.jsx";
 import RightSideProfile from "../../componentes/rightSideProfile/RightSideProfile.jsx";

@@ -2,7 +2,6 @@
 import "./opdrachtenCard.css";
 import { useState, useEffect } from "react";
 import Message from "../message/Message.jsx";
-import OpdrachtenForm from "./OpdrachtenForm.jsx";
 import OpdrachtUpdateForm from "./OpdrachtUpdateForm.jsx";
 import { API_URL } from "../../config";
 

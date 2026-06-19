@@ -20,7 +20,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
   const [viewMode, setViewMode] = useState("users");
   const [allPosts, setAllPosts] = useState([]);
 
-  // Commentaar states
+  // Ik hou hier de staat van de comments bij.
   const [showCommentsPostId, setShowCommentsPostId] = useState(null);
   const [showCommentFormPostId, setShowCommentFormPostId] = useState(null);
   const [comments, setComments] = useState({});
@@ -78,7 +78,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
       })
       .then((data) => {
         const usersArray = Array.isArray(data) ? data : [];
-        // Sort users so followed users come first
+        // Ik zet de mensen die ik volg bovenaan in de lijst.
         const sorted = usersArray.sort((a, b) => {
           const aIsFollowed =
             a.followers && a.followers.includes(currentUserEmail);
@@ -100,7 +100,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
   }, [currentUserEmail]);
 
   useEffect(() => {
-    // Fetch all posts when entering posts view mode
+    // Ik haal alle posts op zodra ik naar de posts-weergave ga.
     if (viewMode === "posts" && allPosts.length === 0) {
       fetch(`${API_URL}/receive/allPosts`, {
         credentials: "include",
@@ -284,7 +284,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
     <div className="MiddenContainer exploreUsersContainer">
       <Message text={message} type={messageType} visible={messageVisible} />
 
-      {/* View Mode Toggle */}
+      {/* Ik wissel hiermee tussen gebruikers en posts. */}
       <div className="viewModeToggle">
         <button
           className={`toggleBtn ${viewMode === "users" ? "active" : ""}`}
@@ -372,7 +372,7 @@ const ExploreUsers = ({ onUserSelect = null }) => {
                   </button>
                 </div>
 
-                {/* Comments Modal */}
+                {/* Ik laat hier de comments van de post zien. */}
                 {showCommentsPostId === post._id && (
                   <div className="commentsModal">
                     <div className="commentsHeader">

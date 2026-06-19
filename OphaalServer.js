@@ -179,7 +179,7 @@ const setupOphaalRoutes = ({
   router.get("/allUsers", authMiddleware, async (req, res) => {
     try {
       const users = await GebruikerInfo.find({
-        email: { $ne: req.user.email }, // Exclude current user
+        email: { $ne: req.user.email }, // Ik laat de gebruiker zelf weg uit de lijst.
       }).select(
         "email naam about volgers posten streaks followers profileImage",
       );
@@ -204,7 +204,7 @@ const setupOphaalRoutes = ({
         return res.status(404).json({ error: "Gebruiker niet gevonden" });
       }
 
-      // Check if current user is following this user
+      // Ik kijk of de ingelogde gebruiker deze persoon al volgt.
       const isFollowing =
         userInfo.followers && userInfo.followers.includes(req.user.email);
 
@@ -275,8 +275,8 @@ const setupOphaalRoutes = ({
     try {
       const currentUserEmail = req.params.email;
 
-      // Find all users that the current user is following
-      // (where the current user's email is in their followers array)
+      // Ik zoek alle gebruikers die deze persoon volgt: dat zijn de mensen
+      // bij wie zijn e-mail in hun lijst met volgers staat.
       const followingUsers = await GebruikerInfo.find({
         followers: currentUserEmail,
       }).select("email naam streaks profileImage");

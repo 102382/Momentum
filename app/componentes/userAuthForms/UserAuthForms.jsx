@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import RegisterFormulier from "../registerformulier/RegisterFormulier.jsx";
 import Login from "../loginformulier/Login.jsx";
 import Message from "../message/Message.jsx";
@@ -10,14 +10,12 @@ const UserAuthForms = () => {
   const [delayedRegistering, setDelayedRegistering] = useState(isRegistering);
   const [isHidden, setIsHidden] = useState(!isRegistering);
 
-  // message state
-
   const [message, setMessage] = useState("");
   const [messageVisible, setMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState("success");
-  
-  // toon messge functie
 
+  // Ik laat hier een bericht zien aan de gebruiker.
+  // Na 3 seconden verberg ik het bericht weer.
   const showMessage = (text, type = "success") => {
   setMessage(text);
   setMessageType(type);
@@ -47,14 +45,14 @@ const UserAuthForms = () => {
 
   useEffect(() => {
     if (isRegistering) {
-      // wacht 1 seconde voordat je switcht
+      // Ik wacht 1 seconde voordat ik wissel.
       const timer = setTimeout(() => {
         setDelayedRegistering(true);
       }, 1000);
 
       return () => clearTimeout(timer);
     } else {
-      // meteen terug naar "Welkom terug"
+      // Ik ga meteen terug naar "Welkom terug".
       setDelayedRegistering(false);
     }
   }, [isRegistering]);

@@ -28,7 +28,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
   };
 
   useEffect(() => {
-    // Fetch user info
+    // Ik haal de info van de gebruiker op.
     fetch(`${API_URL}/receive/userInfo/${user.email}`, {
       credentials: "include",
     })
@@ -44,7 +44,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
         setLoadingInfo(false);
       });
 
-    // Fetch user posts
+    // Ik haal de posts van de gebruiker op.
     fetch(`${API_URL}/receive/userPosts/${user.email}`, {
       credentials: "include",
     })
@@ -59,7 +59,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
         setLoadingPosts(false);
       });
 
-    // Fetch user opdrachten
+    // Ik haal de opdrachten van de gebruiker op.
     fetch(`${API_URL}/receive/userOpdrachten/${user.email}`, {
       credentials: "include",
     })
@@ -154,7 +154,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
     <div className="userProfileContainer">
       <Message text={message} type={messageType} visible={messageVisible} />
 
-      {/* Back Button */}
+      {/* Ik laat hier de terug-knop zien. */}
       <button className="backButton" onClick={onBack}>
         <i className="fa-solid fa-arrow-left"></i>
         Terug naar alle gebruikers
@@ -164,7 +164,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
         <Loading text="Profiel laden..." />
       ) : (
         <div className="userProfileContent">
-          {/* User Info Section */}
+          {/* Ik toon hier de info van de gebruiker. */}
           <div className="userInfoSection">
             <div className="userInfoCard">
               <div className="bgfoto"></div>
@@ -200,7 +200,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
             </div>
           </div>
 
-          {/* Posts Section */}
+          {/* Ik toon hier de posts. */}
           <div className="postSection">
             <h2>Posts van {userInfo?.naam}</h2>
             {loadingPosts ? (
@@ -240,7 +240,7 @@ const UserProfile = ({ user, onBack, currentUserEmail }) => {
             )}
           </div>
 
-          {/* Opdrachten Section */}
+          {/* Ik toon hier de opdrachten. */}
           <div className="opdrachtenSection">
             <h2>Opdrachten van {userInfo?.naam}</h2>
             {loadingOpdrachten ? (

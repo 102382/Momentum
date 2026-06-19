@@ -10,7 +10,7 @@ const FollowingList = ({ onUserSelect, onSetCurrentUserEmail }) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    // Fetch current user info
+    // Ik haal de info van de huidige gebruiker op.
     fetch(`${API_URL}/receive/mijnInfo`, {
       credentials: "include",
     })
