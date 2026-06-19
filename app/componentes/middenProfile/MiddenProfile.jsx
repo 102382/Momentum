@@ -4,6 +4,7 @@ import "../middenProfile/middensideProfile.css";
 import Message from "../message/Message.jsx";
 import Loading from "../loading/Loading.jsx";
 import { API_URL } from "../../config";
+import { FRONTEND_URL } from "../../config";
 
 const MiddenProfile = () => {
   const [message, setMessage] = useState("");
@@ -491,7 +492,7 @@ const MiddenProfile = () => {
               posts.map((post, index) => (
                 <div className="post" key={index}>
                   {post.foto && (
-                    <img src={API_URL + post.foto} alt={`Post ${index + 1}`} />
+                    <img src={FRONTEND_URL + post.foto} alt={`Post ${index + 1}`} />
                   )}
                   {post.video && (
                     <video controls>
